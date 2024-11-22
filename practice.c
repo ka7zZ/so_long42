@@ -178,23 +178,25 @@ sdl dga
 #include <stdio.h>
 #include <stdlib.h>
 
+void	*mlx;
+void	*s_win;
+void	*img;
+
 typedef struct	s_data {
-	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	int		x_scoreboard;
-	int		y_scoreboard;
-	int		w_scoreboard;	
-	int 	h_scoreboard;
 }	t_data;
 
 typedef struct	Scoreboard {
-	void	*window;
-	void	*mlx;
+	char	*name;
+	int		x_pos;
+	int		y_pos;
+	int		width_name;	
+	int 	height_lttr;
 }	t_score;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -212,34 +214,34 @@ int	handle_close(int keycode, t_data *data)
 	return (0);
 }
 
-int scoreboard_close(int keycode, t_score *score_data)
-{ 
-	if (score_data)
-		mlx_destroy_window(score_data->mlx, score_data->window);
+int scoreboard_close(int keycode, void *param)
+{	
+	mlx_destroy_window(mlx, s_win);
 	return (0);
+
 }
 
-int handle_scoreboard(int button, int x, int y, t_data *data)
+int handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 {
-	static t_score	score;
-
+	
 	if (button == 1)
 	{
-		if (x >= data->x_scoreboard && x <= data->x_scoreboard + data->w_scoreboard && \
-				y >= data->y_scoreboard && y <= data->y_scoreboard + data->h_scoreboard)
+		if (x >= s_ptr->x_pos && x <= s_ptr->x_pos + s_ptr->width_name && \
+				y >= s_ptr->y_pos && y <= s_ptr->y_pos + s_ptr->height_lttr)
 		{
-			score.mlx = mlx_init();
 			
-			score.window = mlx_new_window(score.mlx, 300, 200, "Scoreboard");
+			s_win = mlx_new_window(mlx, 300, 200, "Scoreboard");
 
-			mlx_string_put(score.mlx, score.window,
-							50, 50, 0x00FF0000, "Your score will be displayed here!");
+			// mlx_string_put(mlx, s_win,
+			// 				1, 1, 0x00FF0000, "Your score will be displayed here!");
+			img = mlx_xpm_file_to_image(mlx, "snake.xpm", 200, 170);
+			if (img == NULL) {
+				printf("Error loading image.\n");
+				exit(1);
+			}
 
-			mlx_hook(score.window, 17, 0, scoreboard_close, &score);
-			if (score.mlx)
-				mlx_loop(score.mlx);
-			mlx_destroy_display(score.mlx);
-			free(score.mlx);
+			mlx_put_image_to_window(mlx, s_win, img, 200, 170);
+			mlx_hook(s_win, 17, 0, scoreboard_close, NULL);
 		}
 	}
 	return (0);
@@ -247,22 +249,22 @@ int handle_scoreboard(int button, int x, int y, t_data *data)
 
 int main(void)
 {
-	int		x, y;
-	int		scoreboard;
+	int		x;
+	int		y;
 	t_data  app;
+	t_score	s_board;
 
-	app.mlx_ptr = mlx_init();
-	if (!app.mlx_ptr)
+	mlx = mlx_init();
+	if (!mlx)
 	{
 		printf("Error\n");
 		return (1);
 	}
-	app.win_ptr = mlx_new_window(app.mlx_ptr, 2048, 1080, "Snakeasaurus");
-	app.img = mlx_new_image(app.mlx_ptr, 800, 600);
+	app.win_ptr = mlx_new_window(mlx, 2048, 1080, "Snakeasaurus");
+	app.img = mlx_new_image(mlx, 800, 600);
 	if (!app.win_ptr)
 	{
-		printf("Error creating window\n");
-		mlx_destroy_display(app.mlx_ptr);
+		mlx_destroy_display(mlx);
 		return (1);
 	}
 	app.addr = mlx_get_data_addr(app.img, &app.bits_per_pixel, &app.line_length,
@@ -278,31 +280,32 @@ int main(void)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(app.mlx_ptr, app.win_ptr, app.img, (2048 - 800)/2, (1080 - 600)/2);
+	mlx_put_image_to_window(mlx, app.win_ptr, app.img, (2048 - 800)/2, (1080 - 600)/2);
 	
-	mlx_hook(app.win_ptr, 17, 0, handle_close, app.mlx_ptr);
+	mlx_hook(app.win_ptr, 17, 0, handle_close, mlx);
 	mlx_hook(app.win_ptr, 2, 1L << 0, handle_close, &app);
 
-	mlx_set_font(app.mlx_ptr, app.win_ptr, "10x20");
-	mlx_string_put(app.mlx_ptr, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, "Welcome to Snakeasaurus game!");
+	mlx_set_font(mlx, app.win_ptr, "10x20");
+	mlx_string_put(mlx, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, "Welcome to Snakeasaurus game!");
+	
+	s_board.name = "Scoreboard";
+	s_board.x_pos = ((2048 - 800)/2) - 350;
+	s_board.y_pos = ((1080 - 600)/2) + 50;
+	s_board.width_name = strlen(s_board.name) * 20;
+	s_board.height_lttr = 20;
 
-	app.x_scoreboard = ((2048 - 800)/2) - 350;
-	app.y_scoreboard = ((1080 - 600)/2) + 50;
-	app.w_scoreboard = strlen("Scoreboard") * 10;
-	app.h_scoreboard = 20;
+	mlx_set_font(mlx, app.win_ptr, "10x20");
+	mlx_string_put(mlx, app.win_ptr, s_board.x_pos, s_board.y_pos, 0x00FF0000, s_board.name);
 
-	mlx_set_font(app.mlx_ptr, app.win_ptr, "10x20");
-	mlx_string_put(app.mlx_ptr, app.win_ptr, app.x_scoreboard, app.y_scoreboard, 0x00FF0000, "Scoreboard");
+	mlx_mouse_hook(app.win_ptr, handle_scoreboard, &s_board);
 
-	mlx_mouse_hook(app.win_ptr, handle_scoreboard, &app);
+	mlx_loop(mlx);
 
-	mlx_loop(app.mlx_ptr);
+	mlx_destroy_image(mlx, app.img);
+	mlx_destroy_window(mlx, app.win_ptr);
+	mlx_destroy_display(mlx);
 
-	mlx_destroy_image(app.mlx_ptr, app.img);
-	mlx_destroy_window(app.mlx_ptr, app.win_ptr);
-	mlx_destroy_display(app.mlx_ptr);
-
-	free(app.mlx_ptr);
+	free(mlx);
 
 	return (0);
 }
