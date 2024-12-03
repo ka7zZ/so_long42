@@ -174,13 +174,17 @@ sdl dga
 
 */
 
+
+#include <X11/keysym.h>
 #include "mlx/mlx.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 void	*mlx;
-void	*s_win;
 void	*img;
+void	*s_win;
+int		sx_pos = 50;
+int		sy_pos = 10;
 
 typedef struct	s_data {
 	void	*win_ptr;
@@ -199,6 +203,16 @@ typedef struct	Scoreboard {
 	int 	height_lttr;
 }	t_score;
 
+typedef struct	Snake {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		x_pos;
+	int		y_pos;
+}	t_snake;
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -207,52 +221,125 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-
-int	handle_close(int keycode, t_data *data)
+int		on_destroy(int keycode, t_data *data)
 {
 	exit(0);
 	return (0);
 }
 
-int scoreboard_close(int keycode, void *param)
+int		on_escape(int keycode, t_data *data)
+{
+	printf("keycode: %d\n", keycode);
+	if (keycode == XK_Escape)
+		exit(0);
+	return (0);
+}
+
+void	define_scoreboard(t_score *s_ptr)
+{
+	s_ptr->name = "Scoreboard";
+	s_ptr->x_pos = ((2048 - 800)/2) - 350;
+	s_ptr->y_pos = ((1080 - 600)/2) + 50;
+	s_ptr->width_name = strlen(s_ptr->name) * 20;
+	s_ptr->height_lttr = 20;
+}
+
+int		scoreboard_close(int keycode, void *param)
 {	
 	mlx_destroy_window(mlx, s_win);
 	return (0);
 
 }
 
-int handle_scoreboard(int button, int x, int y, t_score *s_ptr)
+int		move_image(int keycode, void *param)
 {
-	
+	if (keycode == XK_a)    // A key (move left)
+	{    
+		if (sx_pos <= 0)
+			return 0;
+		sx_pos -= 10;
+		printf("A KEY x_pos: %d\n", sx_pos);
+	}
+	if (keycode == XK_d)    // D key (move right)
+	{
+		if (sx_pos >= 200)
+			return 0;
+		sx_pos += 10;
+		printf("D KEY x_pos: %d\n", sx_pos);
+	}
+	if (keycode == XK_w)   // W key (move up)
+	{
+		if (sy_pos <= 0)
+			return 0;
+		sy_pos -= 10;
+		printf("W KEY y_pos: %d\n", sy_pos);
+	}
+	if (keycode == XK_s)    // S key (move down)
+	{
+		if (sy_pos >= 110)
+			return 0;
+		sy_pos += 10;
+		printf("S KEY y_pos: %d\n", sy_pos);
+	}
+	mlx_clear_window(mlx, s_win); // Clear the window
+	mlx_put_image_to_window(mlx, s_win, img, sx_pos, sy_pos); // Redraw the image at the new position
+
+	return 0;
+}
+int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
+{
+	// defining the image size
+	int	img_width = 20;
+	int	img_height = 17;
+
+	if (s_ptr == NULL)
+		return (0);
 	if (button == 1)
 	{
+		// defining the space of the window where to click to open the window
 		if (x >= s_ptr->x_pos && x <= s_ptr->x_pos + s_ptr->width_name && \
 				y >= s_ptr->y_pos && y <= s_ptr->y_pos + s_ptr->height_lttr)
 		{
-			
-			s_win = mlx_new_window(mlx, 300, 200, "Scoreboard");
-
-			// mlx_string_put(mlx, s_win,
-			// 				1, 1, 0x00FF0000, "Your score will be displayed here!");
-			img = mlx_xpm_file_to_image(mlx, "snake.xpm", 200, 170);
+			// defining the second window
+			s_win = mlx_new_window(mlx, 1000, 600, "Scoreboard");
+			if (!s_win)
+			{
+				mlx_destroy_display(mlx);
+				return (1);
+			}
+			// defining the text that will appear in the second window
+			mlx_string_put(mlx, s_win,
+							300, 10, 0x00FF0000, "Your score will be displayed here!");
+			// defining the image that will appear in the second window -->> !!! the image should be with "./"
+			img = mlx_xpm_file_to_image(mlx, "./snake.xpm", &img_width, &img_height);
 			if (img == NULL) {
 				printf("Error loading image.\n");
-				exit(1);
+				// exit(1);
 			}
-
-			mlx_put_image_to_window(mlx, s_win, img, 200, 170);
+			// put the image to the window at the center of it
+			mlx_put_image_to_window(mlx, s_win, img, sy_pos, sx_pos);
+			// define the "X" button to close the window
 			mlx_hook(s_win, 17, 0, scoreboard_close, NULL);
+			mlx_key_hook(s_win, move_image, NULL);
 		}
 	}
 	return (0);
 }
 
+
+
+
 int main(void)
 {
+	int		background_posx;
+	int		background_posy;
+	int		head_posx;
+	int		head_posy;
 	int		x;
 	int		y;
 	t_data  app;
 	t_score	s_board;
+	t_snake	head;
 
 	mlx = mlx_init();
 	if (!mlx)
@@ -260,15 +347,20 @@ int main(void)
 		printf("Error\n");
 		return (1);
 	}
-	app.win_ptr = mlx_new_window(mlx, 2048, 1080, "Snakeasaurus");
-	app.img = mlx_new_image(mlx, 800, 600);
+	// define the main window
+	app.win_ptr = mlx_new_window(mlx, 2000, 1000, "Snakeasaurus");
 	if (!app.win_ptr)
 	{
 		mlx_destroy_display(mlx);
 		return (1);
 	}
-	app.addr = mlx_get_data_addr(app.img, &app.bits_per_pixel, &app.line_length,
-								&app.endian);
+	// define the image of the main window
+	app.img = mlx_new_image(mlx, 800, 600); // 800 x 600 = size of the image
+	app.addr = mlx_get_data_addr(app.img, &app.bits_per_pixel, &app.line_length, &app.endian);
+	background_posx = (2000 - 800)/2;
+	background_posy = (1000 - 600)/2;
+
+	// draw the size of the image pixel by pixel where y = height and x = width
 	y = 0;
 	while (y < 600)
 	{
@@ -280,21 +372,42 @@ int main(void)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(mlx, app.win_ptr, app.img, (2048 - 800)/2, (1080 - 600)/2);
-	
-	mlx_hook(app.win_ptr, 17, 0, handle_close, mlx);
-	mlx_hook(app.win_ptr, 2, 1L << 0, handle_close, &app);
 
+	// define head_img
+	// head.img = mlx_new_image(mlx, 50, 50);
+	// head.addr = mlx_get_data_addr(head.img, &head.bits_per_pixel, &head.line_length, &head.endian);
+	// head.y_pos = background_posy - 50;
+	// while (head.y_pos < background_posy)
+	// {
+	// 	head.x_pos = background_posx - 50;
+	// 	while (head.x_pos < background_posx)
+	// 	{
+	// 		my_mlx_pixel_put(&head, head.x_pos, head.y_pos, 0x00FF0000);
+	// 		head.x_pos++;
+	// 	}
+	// 	head.y_pos++;
+	// }
+
+	// head_posx = background_posx - 50;
+	// head_posy = background_posy - 50;
+
+	// put the image to the window at the center of it
+	mlx_put_image_to_window(mlx, app.win_ptr, app.img, background_posx, background_posy);
+	// put the head to the image at the center of it
+	// mlx_put_image_to_window(mlx, app.win_ptr, head.img, head_posx, head_posy);
+	// define the "X" button to close the window
+	mlx_hook(app.win_ptr, 17, 0, on_destroy, mlx);
+	// define the ESC to close the window
+	mlx_key_hook(app.win_ptr, on_escape, mlx);
+
+	// define FONT of all the writtings of the window
 	mlx_set_font(mlx, app.win_ptr, "10x20");
+	// put a text into window at the precise position
 	mlx_string_put(mlx, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, "Welcome to Snakeasaurus game!");
 	
-	s_board.name = "Scoreboard";
-	s_board.x_pos = ((2048 - 800)/2) - 350;
-	s_board.y_pos = ((1080 - 600)/2) + 50;
-	s_board.width_name = strlen(s_board.name) * 20;
-	s_board.height_lttr = 20;
+	// define scoreboard window
+	define_scoreboard(&s_board);
 
-	mlx_set_font(mlx, app.win_ptr, "10x20");
 	mlx_string_put(mlx, app.win_ptr, s_board.x_pos, s_board.y_pos, 0x00FF0000, s_board.name);
 
 	mlx_mouse_hook(app.win_ptr, handle_scoreboard, &s_board);
@@ -305,10 +418,5 @@ int main(void)
 	mlx_destroy_window(mlx, app.win_ptr);
 	mlx_destroy_display(mlx);
 
-	free(mlx);
-
 	return (0);
 }
-
-
-
