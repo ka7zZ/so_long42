@@ -213,6 +213,23 @@ typedef struct	Snake {
 	int		y_pos;
 }	t_snake;
 
+void print_pixels(int * pixels) {
+    int i = 0;
+
+    while (i < 50 * 10) {
+        int pixel_color = pixels[i]; 
+
+        int alpha = (pixel_color >> 24) & 0xFF; 
+        int red   = (pixel_color >> 16) & 0xFF; 
+        int green = (pixel_color >> 8) & 0xFF;  
+        int blue  = pixel_color & 0xFF;
+
+        printf("Pixel %d: (A: %d, R: %d, G: %d, B: %d)\n", i, alpha, red, green, blue);
+
+        i++;
+    }
+}
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -223,6 +240,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 int		on_destroy(int keycode, t_data *data)
 {
+	
 	exit(0);
 	return (0);
 }
@@ -286,11 +304,13 @@ int		move_image(int keycode, void *param)
 
 	return 0;
 }
+
 int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 {
 	// defining the image size
 	int	img_width = 20;
 	int	img_height = 17;
+	int *pixels;
 
 	if (s_ptr == NULL)
 		return (0);
@@ -316,6 +336,9 @@ int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 				printf("Error loading image.\n");
 				// exit(1);
 			}
+			pixels = mlx_get_data_addr(img, &img_width, &img_height, &img_height);
+			print_pixels(pixels);
+			// printf("pixels: %d\n", pixels);
 			// put the image to the window at the center of it
 			mlx_put_image_to_window(mlx, s_win, img, sy_pos, sx_pos);
 			// define the "X" button to close the window
@@ -325,8 +348,6 @@ int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 	}
 	return (0);
 }
-
-
 
 
 int main(void)
@@ -374,6 +395,7 @@ int main(void)
 	}
 
 	// define head_img
+	
 	// head.img = mlx_new_image(mlx, 50, 50);
 	// head.addr = mlx_get_data_addr(head.img, &head.bits_per_pixel, &head.line_length, &head.endian);
 	// head.y_pos = background_posy - 50;
@@ -396,7 +418,7 @@ int main(void)
 	// put the head to the image at the center of it
 	// mlx_put_image_to_window(mlx, app.win_ptr, head.img, head_posx, head_posy);
 	// define the "X" button to close the window
-	mlx_hook(app.win_ptr, 17, 0, on_destroy, mlx);
+	mlx_hook(app.win_ptr, 17, 0, on_destroy, &app);
 	// define the ESC to close the window
 	mlx_key_hook(app.win_ptr, on_escape, mlx);
 
