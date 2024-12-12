@@ -181,28 +181,93 @@ sdl dga
 #include <stdlib.h>
 #include <string.h>
 
-void	*mlx;
 void	*img_border;
 void	*s_win;
 int		sx_pos = 50;
 int		sy_pos = 10;
 
-typedef struct	s_data {
+struct	s_data {
+	void	*mlx;
 	void	*win_ptr;
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}	t_data;
+};
 
-typedef struct	Scoreboard {
-	char	*name;
+typedef struct Snake_body
+{
+	void	*body;
 	int		x_pos;
 	int		y_pos;
-	int		width_name;	
-	int 	height_lttr;
-}	t_score;
+	struct Snake_body	*next;
+}	t_sbody;
+
+struct	Snake {
+	void	*head;
+	void	*tail;
+	t_sbody	*ptr;
+	int		xh_pos;
+	int		yh_pos;
+	int		xt_pos;	
+	int 	yt_pos;
+};
+
+struct Map_elbows
+{
+	void	*uleft_corner;
+	void	*uright_corner;
+	void	*dleft_corner;
+	void	*dright_corner;
+	int		xul_pos;
+	int		yul_pos;
+	int		xur_pos;
+	int		yur_pos;
+	int		xdl_pos;
+	int		ydl_pos;
+	int		xdr_pos;
+	int		ydr_pos;
+};
+
+struct Map_outline
+{
+	t_map_elbows	*ptr_top;
+	t_map_elbows	*ptr_low;
+	void			*corner;
+	void			*sides;
+	int				*xc_pos;
+	int				*yc_pos;
+	int				*xs_pos;
+	int				*ys_pos;
+};
+
+typedef struct Map_food
+{
+	void			*food;
+	int				x_pos;
+	int				y_pos;
+	struct Map_food	*next;
+}	tmap_food;
+
+struct Map_exit
+{
+	void	*exit_gate;
+	int		x_pos;
+	int		y_pos;
+};
+
+typedef struct Map_enemy
+{
+	void				*enemy;
+	int					x_pos;
+	int					y_pos;
+	struct Map_enemy	*next;
+}	tmap_enemy;
+
+void create_map()
+
+
 
 typedef struct	Snake {
 	void	*img;
@@ -215,21 +280,21 @@ typedef struct	Snake {
 }	t_snake;
 
 void print_pixels(int * pixels) {
-    int i = 0;
+	int i = 0;
 
-    while (i < 50 * 10) 
+	while (i < 50 * 10) 
 	{
-        int pixel_color = pixels[i]; 
+		int pixel_color = pixels[i]; 
 
-        int alpha = (pixel_color >> 24) & 0xFF; 
-        int red   = (pixel_color >> 16) & 0xFF; 
-        int green = (pixel_color >> 8) & 0xFF;  
-        int blue  = pixel_color & 0xFF;
+		int alpha = (pixel_color >> 24) & 0xFF; 
+		int red   = (pixel_color >> 16) & 0xFF; 
+		int green = (pixel_color >> 8) & 0xFF;  
+		int blue  = pixel_color & 0xFF;
 
-        printf("Pixel %d: (A: %d, R: %d, G: %d, B: %d)\n", i, alpha, red, green, blue);
+		printf("Pixel %d: (A: %d, R: %d, G: %d, B: %d)\n", i, alpha, red, green, blue);
 
-        i++;
-    }
+		i++;
+	}
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -255,7 +320,7 @@ int		on_escape(int keycode, t_data *data)
 	return (0);
 }
 
-void	second_window(t_score *s_ptr)
+void	second_window_position(t_score *s_ptr)
 {
 	s_ptr->name = "Play the game";
 	s_ptr->x_pos = ((2048 - 800)/2) - 350;
@@ -326,7 +391,7 @@ int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 				y >= s_ptr->y_pos && y <= s_ptr->y_pos + s_ptr->height_lttr)
 		{
 			// defining the second window
-			s_win = mlx_new_window(mlx, 1000, 600, "Be the best player!");
+			s_win = mlx_new_window(mlx, 980, 980, "Be the best player!");
 			if (!s_win)
 			{
 				mlx_destroy_display(mlx);
@@ -340,22 +405,23 @@ int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
 			}
 			//pixels = mlx_get_data_addr(img_border, &img_width, &img_height, &img_height);
 			x_img = 0;
-			while(x_img < 1000)
+			while(x_img <= 980)
 			{
 				y_img = 0;
 				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
-				y_img = 599;
+				y_img = 882;
 				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
 				x_img += img_width;
 			}
 			y_img = 98;
-			while (y_img < 600)
+			while (y_img <= 980)
 			{
 				x_img = 0;
 				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
+				x_img =  882;
+				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
 				y_img += img_height;
 			}
-			
 			// print_pixels(pixels);
 			// printf("pixels: %d\n", pixels);
 			// put the image to the window at the center of it
@@ -427,8 +493,8 @@ int main(void)
 	win_str = "Welcome to Snakeasaurus game!";
 	mlx_string_put(mlx, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, win_str);
 	
-	// setting second_window's values
-	second_window(&s_board);
+	// setting second_window_position's values
+	second_window_position(&s_board);
 
 	mlx_string_put(mlx, app.win_ptr, s_board.x_pos, s_board.y_pos, 0x00FF0000, s_board.name);
 
