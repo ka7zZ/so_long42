@@ -175,97 +175,15 @@ sdl dga
 */
 
 
-#include <X11/keysym.h>
-#include "mlx/mlx.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 void	*img_border;
 void	*s_win;
 int		sx_pos = 50;
 int		sy_pos = 10;
 
-struct	s_data {
-	void	*mlx;
-	void	*win_ptr;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-};
 
-typedef struct Snake_body
-{
-	void	*body;
-	int		x_pos;
-	int		y_pos;
-	struct Snake_body	*next;
-}	t_sbody;
 
-struct	Snake {
-	void	*head;
-	void	*tail;
-	t_sbody	*ptr;
-	int		xh_pos;
-	int		yh_pos;
-	int		xt_pos;	
-	int 	yt_pos;
-};
-
-struct Map_elbows
-{
-	void	*uleft_corner;
-	void	*uright_corner;
-	void	*dleft_corner;
-	void	*dright_corner;
-	int		xul_pos;
-	int		yul_pos;
-	int		xur_pos;
-	int		yur_pos;
-	int		xdl_pos;
-	int		ydl_pos;
-	int		xdr_pos;
-	int		ydr_pos;
-};
-
-struct Map_outline
-{
-	t_map_elbows	*ptr_top;
-	t_map_elbows	*ptr_low;
-	void			*corner;
-	void			*sides;
-	int				*xc_pos;
-	int				*yc_pos;
-	int				*xs_pos;
-	int				*ys_pos;
-};
-
-typedef struct Map_food
-{
-	void			*food;
-	int				x_pos;
-	int				y_pos;
-	struct Map_food	*next;
-}	tmap_food;
-
-struct Map_exit
-{
-	void	*exit_gate;
-	int		x_pos;
-	int		y_pos;
-};
-
-typedef struct Map_enemy
-{
-	void				*enemy;
-	int					x_pos;
-	int					y_pos;
-	struct Map_enemy	*next;
-}	tmap_enemy;
-
-void create_map()
 
 
 
