@@ -1,0 +1,19 @@
+created:
+1 - checkers argument(map);
+2 - Windows 1 initiation:
+        - principal image
+        - exit hooks ('X' & ESC)
+        - PLAY button (only Mouse hook): NEED keyhook ENTER;
+3 - beginning of win 2
+todo:
+-> map:
+    - put the background (calculate the x and y almost done)
+    - put the food
+    - put the exit gate
+    - put the snake
+-> continuosly moving the snake in a direction
+-> logic of the food eating
+-> increment the snake 
+-> keep the scoring
+-> enemy showdown
+-> quit the game

@@ -6,6 +6,7 @@
 #include "libft/libft.h"
 #include "ingame/ingame.h"
 #include "mapping/mapping.h"
+#include "checkers/checkers.h"
 
 // include SYS libs
 #include <X11/keysym.h>
@@ -16,12 +17,9 @@
 typedef struct	s_data {
 	void	*mlx;
 	void	*win1;
-    void    *win2
+    void    *win2;
 	void	*imgw1;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+    char    **map;
 }   t_data;
 
 // (INGAME) SNAKE
@@ -105,4 +103,10 @@ struct Map_construct
     Map_exit    *g;
     Snake       *s;
 };
+
+int     on_play(int button, int mouse_x, int mouse_y, t_data *app);
+int		on_escape(int keycode, t_data *app);
+int		on_destroy(int keycode, t_data *app);
+void	destroy_game(void *mlx, char **map);
+void    game_window(t_data *app);
 #endif

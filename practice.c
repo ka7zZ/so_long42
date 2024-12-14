@@ -174,260 +174,8 @@ sdl dga
 
 */
 
-/*PRACTICE 
 
-
-void	*img_border;
-void	*s_win;
-int		sx_pos = 50;
-int		sy_pos = 10;
-
-
-
-
-
-
-typedef struct	Snake {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		x_pos;
-	int		y_pos;
-}	t_snake;
-
-void print_pixels(int * pixels) {
-	int i = 0;
-
-	while (i < 50 * 10) 
-	{
-		int pixel_color = pixels[i]; 
-
-		int alpha = (pixel_color >> 24) & 0xFF; 
-		int red   = (pixel_color >> 16) & 0xFF; 
-		int green = (pixel_color >> 8) & 0xFF;  
-		int blue  = pixel_color & 0xFF;
-
-		printf("Pixel %d: (A: %d, R: %d, G: %d, B: %d)\n", i, alpha, red, green, blue);
-
-		i++;
-	}
-}
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-int		on_destroy(int keycode, t_data *data)
-{
-	
-	exit(0);
-	return (0);
-}
-
-int		on_escape(int keycode, t_data *data)
-{
-	printf("keycode: %d\n", keycode);
-	if (keycode == XK_Escape)
-		exit(0);
-	return (0);
-}
-
-void	second_window_position(t_score *s_ptr)
-{
-	s_ptr->name = "Play the game";
-	s_ptr->x_pos = ((2048 - 800)/2) - 350;
-	s_ptr->y_pos = ((1080 - 600)/2) + 50;
-	s_ptr->width_name = strlen(s_ptr->name) * 20;
-	s_ptr->height_lttr = 20;
-}
-
-int		scoreboard_close(int keycode, void *param)
-{	
-	mlx_destroy_window(mlx, s_win);
-	return (0);
-
-}
-
-int		move_image(int keycode, void *param)
-{
-	if (keycode == XK_a)    // A key (move left)
-	{    
-		if (sx_pos <= 0)
-			return 0;
-		sx_pos -= 10;
-		printf("A KEY x_pos: %d\n", sx_pos);
-	}
-	if (keycode == XK_d)    // D key (move right)
-	{
-		if (sx_pos >= 200)
-			return 0;
-		sx_pos += 10;
-		printf("D KEY x_pos: %d\n", sx_pos);
-	}
-	if (keycode == XK_w)   // W key (move up)
-	{
-		if (sy_pos <= 0)
-			return 0;
-		sy_pos -= 10;
-		printf("W KEY y_pos: %d\n", sy_pos);
-	}
-	if (keycode == XK_s)    // S key (move down)
-	{
-		if (sy_pos >= 110)
-			return 0;
-		sy_pos += 10;
-		printf("S KEY y_pos: %d\n", sy_pos);
-	}
-	mlx_clear_window(mlx, s_win); // Clear the window
-	mlx_put_image_to_window(mlx, s_win, img_border, sx_pos, sy_pos); // Redraw the image at the new position
-
-	return 0;
-}
-
-int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
-{
-	// defining the image size
-	int	img_width = 98;
-	int	img_height = 98;
-	int *pixels;
-	int	x_img;
-	int	y_img;
-
-
-	if (s_ptr == NULL)
-		return (0);
-	if (button == 1)
-	{
-		// defining the space of the window where to click to open the window
-		if (x >= s_ptr->x_pos && x <= s_ptr->x_pos + s_ptr->width_name && \
-				y >= s_ptr->y_pos && y <= s_ptr->y_pos + s_ptr->height_lttr)
-		{
-			// defining the second window
-			s_win = mlx_new_window(mlx, 980, 980, "Be the best player!");
-			if (!s_win)
-			{
-				mlx_destroy_display(mlx);
-				return (1);
-			}
-			// defining the image that will appear in the second window -->> !!! the image should be with "./"
-			img_border = mlx_xpm_file_to_image(mlx, "./assets/pngs/corner.xpm", &img_width, &img_height);
-			if (img_border == NULL) {
-				printf("Error loading image.\n");
-				// exit(1);
-			}
-			//pixels = mlx_get_data_addr(img_border, &img_width, &img_height, &img_height);
-			x_img = 0;
-			while(x_img <= 980)
-			{
-				y_img = 0;
-				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
-				y_img = 882;
-				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
-				x_img += img_width;
-			}
-			y_img = 98;
-			while (y_img <= 980)
-			{
-				x_img = 0;
-				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
-				x_img =  882;
-				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
-				y_img += img_height;
-			}
-			// print_pixels(pixels);
-			// printf("pixels: %d\n", pixels);
-			// put the image to the window at the center of it
-			// mlx_put_image_to_window(mlx, s_win, img, sy_pos, sx_pos);
-			// define the "X" button to close the window
-			mlx_hook(s_win, 17, 0, scoreboard_close, NULL);
-			//mlx_key_hook(s_win, move_image, NULL);
-		}
-	}
-	return (0);
-}
-
-
-int main(void)
-{
-	int		background_posx;
-	int		background_posy;
-	int		head_posx;
-	int		head_posy;
-	int		x;
-	int		y;
-	char	*win_str;
-	t_data  app;
-	t_score	s_board;
-	t_snake	head;
-
-	mlx = mlx_init();
-	if (!mlx)
-	{
-		printf("Error\n");
-		return (1);
-	}
-	// define the main window
-	app.win_ptr = mlx_new_window(mlx, 2000, 1000, "Snakeasaurus");
-	if (!app.win_ptr)
-	{
-		mlx_destroy_display(mlx);
-		return (1);
-	}
-	// define the image of the main window
-	app.img = mlx_new_image(mlx, 800, 600); // 800 x 600 = size of the image
-	app.addr = mlx_get_data_addr(app.img, &app.bits_per_pixel, &app.line_length, &app.endian);
-	background_posx = (2000 - 800)/2;
-	background_posy = (1000 - 600)/2;
-
-	// draw the size of the image pixel by pixel where y = height and x = width
-	y = 0;
-	while (y < 600)
-	{
-		x = 0;
-		while (x < 800)
-		{
-			my_mlx_pixel_put(&app, x, y, 0xFF123456);
-			x++;
-		}
-		y++;
-	}
-
-	// put the image to the window at the center of it
-	mlx_put_image_to_window(mlx, app.win_ptr, app.img, background_posx, background_posy);
-	
-	// Define exit buttons
-	mlx_hook(app.win_ptr, 17, 0, on_destroy, &app);		// "X" button of the window
-	mlx_key_hook(app.win_ptr, on_escape, mlx); 			// ESC key
-
-	// set FONT of all the writtings of the window
-	mlx_set_font(mlx, app.win_ptr, "10x20");
-	// put a text into window at the precise position
-	win_str = "Welcome to Snakeasaurus game!";
-	mlx_string_put(mlx, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, win_str);
-	
-	// setting second_window_position's values
-	second_window_position(&s_board);
-
-	mlx_string_put(mlx, app.win_ptr, s_board.x_pos, s_board.y_pos, 0x00FF0000, s_board.name);
-
-	mlx_mouse_hook(app.win_ptr, handle_scoreboard, &s_board);
-
-	mlx_loop(mlx);
-
-	mlx_destroy_image(mlx, app.img);
-	mlx_destroy_window(mlx, app.win_ptr);
-	mlx_destroy_display(mlx);
-
-	return (0);
-}
-*/
-
+/* CHECKERS
 #include "libft/libft.h"
 #   define BUFFER_SZ 1024
 void    free_map(char ***map)
@@ -463,7 +211,7 @@ static int	count_lines(char *argv)
 
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
-        return (0);
+		return (0);
 	bytes = read(fd, buffer, BUFFER_SZ);
 	if (bytes < 0)
 		return (close(fd), 0);
@@ -557,18 +305,18 @@ static char	**read_map(char *argv)
 	while (++i < lines)
 		map[i] = get_next_line(fd);
 	map[i] = NULL;
-    return (map);
+	return (map);
 }
 
 char	**check_map(char *argv)
 {
-    char    **map;
+	char    **map;
 	int     i;
 	int     j;
 
-    map = read_map(argv);
-    if (!map)
-        return_error(&map);
+	map = read_map(argv);
+	if (!map)
+		return_error(&map);
 	i = 0;
 	while (map[i] != NULL)
 	{
@@ -581,8 +329,8 @@ char	**check_map(char *argv)
 		}
 		i++;
 	}
-    if (check_format(map))
-        return (map);
+	if (check_format(map))
+		return (map);
 	return (NULL);
 }
 
@@ -659,239 +407,6 @@ void	check_exit(char **map)
 		return_error(&map);	
 }
 
-/*
-static int	count_lines(char *argv)
-{
-	int		fd;
-	int		count;
-	int		bytes;
-	int		i;
-	char	buffer[BUFFER_SZ];
-
-	fd = open(argv, O_RDONLY);
-	if (fd < 0)
-        return (0);
-	bytes = read(fd, buffer, BUFFER_SZ);
-	if (bytes < 0)
-		return (close(fd), 0);
-	buffer[bytes] = '\0';
-	i = 0;
-	count = 0;
-	while (buffer[i] != '\0')
-	{
-		if (buffer[i] == '\n')
-			count++;
-		i++;
-	}
-	close(fd);
-	return (++count);
-}
-
-static char	**read_map(char *argv)
-{
-	char	**map;
-	int		fd;
-	int		lines;
-	int		i;
-
-	fd = open(argv, O_RDONLY);
-	if (fd < 0)
-	{
-		write(1, "Error reading the map!\n", 23);
-		exit(EXIT_FAILURE);
-	}
-	lines = count_lines(argv);
-	map = malloc((lines + 1) * sizeof(char *));
-	if (!map)
-		return (close(fd), NULL);
-	i = 0;
-	while (i < lines)
-	{
-		map[i] = get_next_line(fd);
-		i++;
-	}
-	map[i] = NULL;
-	return (map);
-}
-
-NEXT FUNC ERRORS HANDLING:
-	1. eroare in cazul in care orice rand nu incepe cu un wall
-	2. eroare on cazul in care primul si ultimul rand nu contin numai wall
-	3. eroare in cazul in care harta contine pe linia verticala mai mult de un wall
-	4. eroare in cazul in care ultimul caracter nu este 1
-
-
-static int	check_format(char **map, int last_row)
-{
-	int	i;
-	int	j;
-	int	len;
-
-	i = -1;
-	while (map[++i] != NULL)
-	{
-		j = -1;
-		len = ft_strlen(map[i]);
-		if (ft_strchr(map[i], '\n'))
-			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
-		if (map[i][++j] != '1')
-			wrong_format(&map);
-		while (map[i][++j] != '\n' && map[i][j] != '\0')
-		{
-			
-			if ((i == 0 || i == last_row) && map[i][j] != '1')
-				wrong_format(&map);
-			else if ((i > 0 == i < last_row) && j < len && map[i][j] == '1')
-				wrong_format(&map);
-		}
-		if (map[i][--j] != '1')
-			wrong_format(&map);
-	}
-	return (1);
-}
-
-char	**check_input(char *argv)
-{
-	int 	i;
-	int		len;
-	int		test;
-	char    **input;
-
-	input = read_map(argv);
-	i = -1;
-	while (input[++i] != NULL)
-	{
-		if (i == 0)
-			len = ft_strlen(input[i]);
-		else
-		{
-			test = ft_strlen(input[i]);
-			if (!ft_strchr(input[i], '\n'))
-				len -= 1;		// -1 because of the char new line at the end of the string
-			if (len != test)
-				wrong_format(&input);
-		}
-	}
-	if (test == i)
-		wrong_format(&input);
-	if (check_format(input, --i)) // --i for the last row of the map
-		return (input);
-	return (0);
-}
-
-static int	count_lines(char *argv)
-{
-	int		fd;
-	int		count;
-	int		bytes;
-	int		i;
-	char	buffer[BUFFER_SZ];
-
-	fd = open(argv, O_RDONLY);
-	if (fd < 0)
-        return (0);
-	bytes = read(fd, buffer, BUFFER_SZ);
-	if (bytes < 0)
-		return (close(fd), 0);
-	buffer[bytes] = NULL;
-	i = 0;
-	count = 0;
-	while (buffer[i] != NULL)
-	{
-		if (buffer[i] == '\n')
-			count++;
-		i++;
-	}
-	close(fd);
-	return (++count);
-}
-
-static char	**read_map(char *argv)
-{
-	char	**map;
-	int		fd;
-	int		lines;
-	int		i;
-
-	fd = open(argv, O_RDONLY);
-	if (fd < 0)
-	{
-		write(1, "Error reading the map!\n", 23);
-		exit(EXIT_FAILURE);
-	}
-	lines = count_lines(argv);
-	map = malloc((lines + 1) * sizeof(char *));
-	if (!map)
-		return (close(fd), NULL);
-	i = 0;
-	while (i < lines)
-	{
-		map[i] = get_next_line(fd);
-		i++;
-	}
-	map[i] = NULL;
-	return (map);
-}
-
-static int	check_format(char **map, int last_row)
-{
-	int	i;
-	int	j;
-	int	len;
-
-	i = -1;
-	while (map[++i] != NULL)
-	{
-		j = -1;
-		len = ft_strlen(map[i]);
-		if (ft_strchr(map[i], '\n'))
-			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
-		if (map[i][++j] != '1')
-			wrong_format(&map);
-		while (map[i][++j] != '\n' && map[i][j] != '\0')
-		{
-			
-			if ((i == 0 || i == last_row) && map[i][j] != '1')
-				wrong_format(&map);
-			else if ((i > 0 == i < last_row) && j < len && map[i][j] == '1')
-				wrong_format(&map);
-		}
-		if (map[i][--j] != '1')
-			wrong_format(&map);
-	}
-	return (1);
-}
-
-char	**check_input(char *argv)
-{
-	int 	i;
-	int		len;
-	int		test;
-	char    **input;
-
-	input = read_map(argv);
-	i = -1;
-	while (input[++i] != NULL)
-	{
-		if (i == 0)
-			len = ft_strlen(input[i]);
-		else
-		{
-			test = ft_strlen(input[i]);
-			if (!ft_strchr(input[i], '\n'))
-				len -= 1;		// -1 because of the char new line at the end of the string
-			if (len != test)
-				wrong_format(&input);
-		}
-	}
-	if (test == i)
-		wrong_format(&input);
-	if (check_format(input, --i)) // --i for the last row of the map
-		return (input);
-	return (0);
-}
-*/
-
 int main(void)
 {
 	char    **map;
@@ -909,3 +424,356 @@ int main(void)
 	free_map(&map);
 	return (1);
 }
+*/
+
+#include <stdlib.h>
+#include "mlx/mlx.h"
+#include <unistd.h>
+#include <X11/keysym.h>
+#include <math.h>
+
+//PRACTICE 
+typedef struct	s_data {
+	void	*mlx;
+	void	*win1;
+	void    *win2;
+	void	*imgw1;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}   t_data;
+
+void initalize_data(t_data *ptr)
+{
+	ptr->mlx = NULL;
+	ptr->win1 = NULL;
+	ptr->win2 = NULL;
+	ptr->imgw1 = NULL;
+	ptr->addr = NULL;
+	ptr->bits_per_pixel = 0;
+	ptr->line_length = 0;
+	ptr->endian = 0;
+}
+
+void	destroy_game(t_data *app)
+{
+	write(1, "Destroying the game!\n", 21);
+	if (app->imgw1)
+		mlx_destroy_image(app->mlx, app->imgw1);
+	if (app->win1)
+		mlx_destroy_window(app->mlx, app->win1);
+	if (app->win2)
+		mlx_destroy_window(app->mlx, app->win2);
+	if (app->mlx)
+	{
+		mlx_destroy_display(app->mlx);
+		free(app->mlx);
+		app->mlx = NULL;
+	}
+	exit(0);
+}
+
+int		on_destroy(int keycode, t_data *app)
+{
+	exit(0);
+	return (0);
+}
+
+int		on_escape(int keycode, t_data *app)
+{
+	if (keycode == XK_Escape)
+		exit(0);
+	return (0);
+}
+
+/* give mouse coordinates of x and y
+int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
+{
+    int image_x = mouse_x;
+    int image_y = mouse_y;
+
+    // Check if the click is within the bounds of the image
+    if (image_x >= 0 && image_x < 1024 && image_y >= 0 && image_y < 1024)
+    {
+        printf("Mouse clicked on image at (%d, %d)\n", image_x, image_y);
+        // Handle the click event, such as checking pixel data or updating the game state
+    }
+    else
+    {
+        printf("Mouse clicked outside the image bounds\n");
+    }
+
+    return (0);
+}
+*/
+
+
+int is_point_in_bounding_box(int mouse_x, int mouse_y)
+{
+    int min_x = 354;
+    int max_x = 719;
+    int min_y = 848;
+    int max_y = 983;
+
+    if (mouse_x >= min_x && mouse_x <= max_x && mouse_y >= min_y && mouse_y <= max_y)
+        return 1;
+    return 0;
+}
+
+int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
+{
+    int circle_center_x = 512;
+    int circle_center_y = 512;
+    int circle_radius = 200;
+
+    if (is_point_in_bounding_box(mouse_x, mouse_y))
+		
+    return 0;
+}
+
+void    init(t_data *ptr)
+{
+	int	xpix;
+	int	ypix;
+
+	xpix = 1024;
+	ypix = 1024;
+	ptr->mlx = mlx_init();
+	if (!ptr->mlx)
+		return (write(1, "Error\n", 6), 1);
+	// define the main window
+	ptr->win1 = mlx_new_window(ptr->mlx, 1024, 1024, "Snake");
+	if (!ptr->win1)
+		destroy_game(ptr);
+	
+	// define the image of the main window
+	ptr->imgw1 = mlx_xpm_file_to_image(ptr->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
+	if (!ptr->imgw1)
+		destroy_game(ptr);
+
+	// put the image to the window at the center of it
+	mlx_put_image_to_window(ptr->mlx, ptr->win1, ptr->imgw1, 0, 0);
+}
+
+void	hooks(t_data *app)
+{
+	mlx_hook(app->win1, 17, 0, on_destroy, app);		// "X" button of the window
+	mlx_key_hook(app->win1, on_escape, app); 			// ESC key
+	mlx_mouse_hook(app->win1, on_mouse_click, app);
+}
+
+int main(void)
+{
+	t_data  app;	
+	
+	initalize_data(&app);
+	init(&app);
+	hooks(&app);
+	mlx_loop(app.mlx);
+	destroy_game(&app);
+	return (0);
+}
+
+/* fonts, putstrings, secondwindow, hooks
+	// Define exit buttons
+	
+
+	// set FONT of all the writtings of the window
+	mlx_set_font(mlx, app.win_ptr, "10x20");
+	// put a text into window at the precise position
+	win_str = "Welcome to Snakeasaurus game!";
+	mlx_string_put(mlx, app.win_ptr, ((2048 - 800)/2) + 250, ((1080 - 600)/2) - 50, 0x00FFFFFF, win_str);
+	
+	// setting second_window_position's values
+	second_window_position(&s_board);
+
+	mlx_string_put(mlx, app.win_ptr, s_board.x_pos, s_board.y_pos, 0x00FF0000, s_board.name);
+
+	mlx_mouse_hook(app.win_ptr, handle_scoreboard, &s_board);
+*/
+
+/* img addr + draw a background
+	app.addr = mlx_get_data_addr(app.img, &app.bits_per_pixel, &app.line_length, &app.endian);
+	background_posx = (2000 - 800)/2;
+	background_posy = (1000 - 600)/2;
+
+	// draw the size of the image pixel by pixel where y = height and x = width
+	y = 0;
+	while (y < 600)
+	{
+		x = 0;
+		while (x < 800)
+		{
+			my_mlx_pixel_put(&app, x, y, 0xFF123456);
+			x++;
+		}
+		y++;
+	}
+*/
+
+/* Rest of variables
+	// int		background_posx;
+	// int		background_posy;
+	// int		head_posx;
+	// int		head_posy;
+	// int		x;
+	// int		y;
+	// char	*win_str;
+*/
+
+/* rest of the practice
+typedef struct	Snake {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		x_pos;
+	int		y_pos;
+}	t_snake;
+
+void print_pixels(int * pixels) {
+	int i = 0;
+
+	while (i < 50 * 10) 
+	{
+		int pixel_color = pixels[i]; 
+
+		int alpha = (pixel_color >> 24) & 0xFF; 
+		int red   = (pixel_color >> 16) & 0xFF; 
+		int green = (pixel_color >> 8) & 0xFF;  
+		int blue  = pixel_color & 0xFF;
+
+		printf("Pixel %d: (A: %d, R: %d, G: %d, B: %d)\n", i, alpha, red, green, blue);
+
+		i++;
+	}
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+
+void	second_window_position(t_score *s_ptr)
+{
+	s_ptr->name = "Play the game";
+	s_ptr->x_pos = ((2048 - 800)/2) - 350;
+	s_ptr->y_pos = ((1080 - 600)/2) + 50;
+	s_ptr->width_name = strlen(s_ptr->name) * 20;
+	s_ptr->height_lttr = 20;
+}
+
+int		scoreboard_close(int keycode, void *param)
+{	
+	mlx_destroy_window(mlx, s_win);
+	return (0);
+
+}
+
+int		move_image(int keycode, void *param)
+{
+	if (keycode == XK_a)    // A key (move left)
+	{    
+		if (sx_pos <= 0)
+			return 0;
+		sx_pos -= 10;
+		printf("A KEY x_pos: %d\n", sx_pos);
+	}
+	if (keycode == XK_d)    // D key (move right)
+	{
+		if (sx_pos >= 200)
+			return 0;
+		sx_pos += 10;
+		printf("D KEY x_pos: %d\n", sx_pos);
+	}
+	if (keycode == XK_w)   // W key (move up)
+	{
+		if (sy_pos <= 0)
+			return 0;
+		sy_pos -= 10;
+		printf("W KEY y_pos: %d\n", sy_pos);
+	}
+	if (keycode == XK_s)    // S key (move down)
+	{
+		if (sy_pos >= 110)
+			return 0;
+		sy_pos += 10;
+		printf("S KEY y_pos: %d\n", sy_pos);
+	}
+	mlx_clear_window(mlx, s_win); // Clear the window
+	mlx_put_image_to_window(mlx, s_win, img_border, sx_pos, sy_pos); // Redraw the image at the new position
+
+	return 0;
+}
+
+int		handle_scoreboard(int button, int x, int y, t_score *s_ptr)
+{
+	// defining the image size
+	int	img_width = 98;
+	int	img_height = 98;
+	int *pixels;
+	int	x_img;
+	int	y_img;
+
+
+	if (s_ptr == NULL)
+		return (0);
+	if (button == 1)
+	{
+		// defining the space of the window where to click to open the window
+		if (x >= s_ptr->x_pos && x <= s_ptr->x_pos + s_ptr->width_name && \
+				y >= s_ptr->y_pos && y <= s_ptr->y_pos + s_ptr->height_lttr)
+		{
+			// defining the second window
+			s_win = mlx_new_window(mlx, 980, 980, "Be the best player!");
+			if (!s_win)
+			{
+				mlx_destroy_display(mlx);
+				retu	t_data			data;
+rn (1);
+			}
+			// defining the image that will appear in the second window -->> !!! the image should be with "./"
+			img_border = mlx_xpm_file_to_image(mlx, "./assets/pngs/corner.xpm", &img_width, &img_height);
+			if (img_border == NULL) {
+				printf("Error loading image.\n");
+				// exit(1);
+			}
+			//pixels = mlx_get_data_addr(img_border, &img_width, &img_height, &img_height);
+			x_img = 0;
+			while(x_img <= 980)
+			{
+				y_img = 0;
+				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
+				y_img = 882;
+				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
+				x_img += img_width;
+			}
+			y_img = 98;
+			while (y_img <= 980)
+			{
+				x_img = 0;
+				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
+				x_img =  882;
+				mlx_put_image_to_window(mlx, s_win, img_border, x_img, y_img);
+				y_img += img_height;
+			}
+			// print_pixels(pixels);
+			// printf("pixels: %d\n", pixels);
+			// put the image to the window at the center of it
+			// mlx_put_image_to_window(mlx, s_win, img, sy_pos, sx_pos);
+			// define the "X" button to close the window
+			mlx_hook(s_win, 17, 0, scoreboard_close, NULL);
+			//mlx_key_hook(s_win, move_image, NULL);
+		}
+	}
+	return (0);
+}
+*/
+
+

@@ -4,8 +4,12 @@
     "mlx_int.h": "c",
     "mapping.h": "c",
     "addons.h": "c",
-    "libft.h": "c"
-  },
+    "libft.h": "c",
+    "builds.h": "c",
+    "cstdlib": "c",
+    "so_long.h": "c",
+    "map": "c"
+},
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

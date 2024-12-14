@@ -2,6 +2,7 @@
 #   define CHECKERS_H
 
 #include "../so_long.h"
+#   define BUFFERSZ 1024;
 
 void	check_exit(char **map);
 void    check_snake(char  **map);
