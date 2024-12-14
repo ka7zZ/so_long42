@@ -174,7 +174,7 @@ sdl dga
 
 */
 
-
+/*PRACTICE 
 
 
 void	*img_border;
@@ -425,4 +425,487 @@ int main(void)
 	mlx_destroy_display(mlx);
 
 	return (0);
+}
+*/
+
+#include "libft/libft.h"
+#   define BUFFER_SZ 1024
+void    free_map(char ***map)
+{
+   int i;
+
+	if (!map || !*map)
+		return;
+	i = 0;
+	while((*map)[i] != NULL)
+	{
+		free((*map)[i]);
+		i++;
+	}
+	free(*map);
+	*map = NULL; 
+}
+
+static void return_error(char	***map)
+{
+	free_map(map);
+	ft_printf("Wrong format of the map!\n");
+	exit(EXIT_FAILURE);
+}
+
+static int	count_lines(char *argv)
+{
+	int		fd;
+	int		count;
+	int		bytes;
+	int		i;
+	char	buffer[BUFFER_SZ];
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+        return (0);
+	bytes = read(fd, buffer, BUFFER_SZ);
+	if (bytes < 0)
+		return (close(fd), 0);
+	buffer[bytes] = '\0';
+	i = 0;
+	count = 0;
+	while (buffer[i] != '\0')
+	{
+		if (buffer[i] == '\n')
+			count++;
+		i++;
+	}
+	close(fd);
+	return (++count);
+}
+
+static int	check_wall(char **map, int last_row)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	i = -1;
+	while (map[++i] != NULL)
+	{
+		j = -1;
+		len = ft_strlen(map[i]);
+		if (ft_strchr(map[i], '\n'))
+			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
+		if (map[i][++j] != '1')
+			return_error(&map);
+		while (map[i][++j] != '\n' && map[i][j] != '\0')
+		{
+			
+			if ((i == 0 || i == last_row) && map[i][j] != '1')
+				return_error(&map);
+			else if ((i > 0 == i < last_row) && j < len && map[i][j] == '1')
+				return_error(&map);
+		}
+		if (map[i][--j] != '1')
+			return_error(&map);
+	}
+	return (1);
+}
+
+static int	check_format(char **map)
+{
+	int 	i;
+	int		len;
+	int		test;
+
+	i = -1;
+	while (map[++i] != NULL)
+	{
+		if (i == 0)
+			len = ft_strlen(map[i]);
+		else
+		{
+			test = ft_strlen(map[i]);
+			if (!ft_strchr(map[i], '\n'))
+				len -= 1;		// -1 because of the char new line at the end of the string
+			if (len != test)
+				return_error(&map);
+		}
+	}
+	if (test == i)
+		return_error(&map);
+	if (check_wall(map, --i)) // --i for the last row of the map
+		return (1);
+	return (0);
+}
+
+static char	**read_map(char *argv)
+{
+	char	**map;
+	int		fd;
+	int		lines;
+	int		i;
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error reading the map!\n", 23);
+		exit(EXIT_FAILURE);
+	}
+	lines = count_lines(argv);
+	map = malloc((lines + 1) * sizeof(char *));
+	if (!map)
+		return (close(fd), NULL);
+	i = -1;
+	while (++i < lines)
+		map[i] = get_next_line(fd);
+	map[i] = NULL;
+    return (map);
+}
+
+char	**check_map(char *argv)
+{
+    char    **map;
+	int     i;
+	int     j;
+
+    map = read_map(argv);
+    if (!map)
+        return_error(&map);
+	i = 0;
+	while (map[i] != NULL)
+	{
+		j = 0;
+		while (map[i][j] != '\0' && map[i][j] != '\n')
+		{
+			if (!ft_strchr("01EPC", map[i][j]))
+				return_error(&map);
+			j++;                
+		}
+		i++;
+	}
+    if (check_format(map))
+        return (map);
+	return (NULL);
+}
+
+void	check_symbol(char **map)
+{
+	int	i;
+	int	j;
+	int	s;
+
+	i = 0;
+	s = 0;
+	while (map[++i] != NULL)
+	{
+		j = 0;
+		while (map[i][++j] != NULL)
+		{
+			if (map[i][j] == 'P')
+				s++;
+		}
+	}
+	if (s != 1)
+		return_error(&map);	
+}
+
+void	check_space(char **map)
+{
+	int	i;
+	int	j;
+	int err;
+
+	i = 0;
+	err = 1;
+	while (map[++i] != NULL)
+	{
+		j = 0;
+		while (map[i][++j] != NULL)
+		{
+			if (map[i][j] == 'P' &&\
+			map[i][j - 1] == '0' && map[i][j + 1] == '0' )
+				err = 0;
+			else if (map[i][j] == 'P' &&\	
+			map[i + 1][j] == '0' && map[i - 1][j] == '0')
+				err = 0;
+		}
+	}
+	if (err)
+		return_error(&map);
+}
+
+void    check_snake(char  **map)
+{
+	check_symbol(map);
+	check_space(map);
+}
+
+void	check_exit(char **map)
+{
+	int	i;
+	int	j;
+	int	s;
+
+	i = 0;
+	s = 0;
+	while (map[++i] != NULL)
+	{
+		j = 0;
+		while (map[i][++j] != NULL)
+		{
+			if (map[i][j] == 'E')
+				s++;
+		}
+	}
+	if (s != 1)
+		return_error(&map);	
+}
+
+/*
+static int	count_lines(char *argv)
+{
+	int		fd;
+	int		count;
+	int		bytes;
+	int		i;
+	char	buffer[BUFFER_SZ];
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+        return (0);
+	bytes = read(fd, buffer, BUFFER_SZ);
+	if (bytes < 0)
+		return (close(fd), 0);
+	buffer[bytes] = '\0';
+	i = 0;
+	count = 0;
+	while (buffer[i] != '\0')
+	{
+		if (buffer[i] == '\n')
+			count++;
+		i++;
+	}
+	close(fd);
+	return (++count);
+}
+
+static char	**read_map(char *argv)
+{
+	char	**map;
+	int		fd;
+	int		lines;
+	int		i;
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error reading the map!\n", 23);
+		exit(EXIT_FAILURE);
+	}
+	lines = count_lines(argv);
+	map = malloc((lines + 1) * sizeof(char *));
+	if (!map)
+		return (close(fd), NULL);
+	i = 0;
+	while (i < lines)
+	{
+		map[i] = get_next_line(fd);
+		i++;
+	}
+	map[i] = NULL;
+	return (map);
+}
+
+NEXT FUNC ERRORS HANDLING:
+	1. eroare in cazul in care orice rand nu incepe cu un wall
+	2. eroare on cazul in care primul si ultimul rand nu contin numai wall
+	3. eroare in cazul in care harta contine pe linia verticala mai mult de un wall
+	4. eroare in cazul in care ultimul caracter nu este 1
+
+
+static int	check_format(char **map, int last_row)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	i = -1;
+	while (map[++i] != NULL)
+	{
+		j = -1;
+		len = ft_strlen(map[i]);
+		if (ft_strchr(map[i], '\n'))
+			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
+		if (map[i][++j] != '1')
+			wrong_format(&map);
+		while (map[i][++j] != '\n' && map[i][j] != '\0')
+		{
+			
+			if ((i == 0 || i == last_row) && map[i][j] != '1')
+				wrong_format(&map);
+			else if ((i > 0 == i < last_row) && j < len && map[i][j] == '1')
+				wrong_format(&map);
+		}
+		if (map[i][--j] != '1')
+			wrong_format(&map);
+	}
+	return (1);
+}
+
+char	**check_input(char *argv)
+{
+	int 	i;
+	int		len;
+	int		test;
+	char    **input;
+
+	input = read_map(argv);
+	i = -1;
+	while (input[++i] != NULL)
+	{
+		if (i == 0)
+			len = ft_strlen(input[i]);
+		else
+		{
+			test = ft_strlen(input[i]);
+			if (!ft_strchr(input[i], '\n'))
+				len -= 1;		// -1 because of the char new line at the end of the string
+			if (len != test)
+				wrong_format(&input);
+		}
+	}
+	if (test == i)
+		wrong_format(&input);
+	if (check_format(input, --i)) // --i for the last row of the map
+		return (input);
+	return (0);
+}
+
+static int	count_lines(char *argv)
+{
+	int		fd;
+	int		count;
+	int		bytes;
+	int		i;
+	char	buffer[BUFFER_SZ];
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+        return (0);
+	bytes = read(fd, buffer, BUFFER_SZ);
+	if (bytes < 0)
+		return (close(fd), 0);
+	buffer[bytes] = NULL;
+	i = 0;
+	count = 0;
+	while (buffer[i] != NULL)
+	{
+		if (buffer[i] == '\n')
+			count++;
+		i++;
+	}
+	close(fd);
+	return (++count);
+}
+
+static char	**read_map(char *argv)
+{
+	char	**map;
+	int		fd;
+	int		lines;
+	int		i;
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error reading the map!\n", 23);
+		exit(EXIT_FAILURE);
+	}
+	lines = count_lines(argv);
+	map = malloc((lines + 1) * sizeof(char *));
+	if (!map)
+		return (close(fd), NULL);
+	i = 0;
+	while (i < lines)
+	{
+		map[i] = get_next_line(fd);
+		i++;
+	}
+	map[i] = NULL;
+	return (map);
+}
+
+static int	check_format(char **map, int last_row)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	i = -1;
+	while (map[++i] != NULL)
+	{
+		j = -1;
+		len = ft_strlen(map[i]);
+		if (ft_strchr(map[i], '\n'))
+			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
+		if (map[i][++j] != '1')
+			wrong_format(&map);
+		while (map[i][++j] != '\n' && map[i][j] != '\0')
+		{
+			
+			if ((i == 0 || i == last_row) && map[i][j] != '1')
+				wrong_format(&map);
+			else if ((i > 0 == i < last_row) && j < len && map[i][j] == '1')
+				wrong_format(&map);
+		}
+		if (map[i][--j] != '1')
+			wrong_format(&map);
+	}
+	return (1);
+}
+
+char	**check_input(char *argv)
+{
+	int 	i;
+	int		len;
+	int		test;
+	char    **input;
+
+	input = read_map(argv);
+	i = -1;
+	while (input[++i] != NULL)
+	{
+		if (i == 0)
+			len = ft_strlen(input[i]);
+		else
+		{
+			test = ft_strlen(input[i]);
+			if (!ft_strchr(input[i], '\n'))
+				len -= 1;		// -1 because of the char new line at the end of the string
+			if (len != test)
+				wrong_format(&input);
+		}
+	}
+	if (test == i)
+		wrong_format(&input);
+	if (check_format(input, --i)) // --i for the last row of the map
+		return (input);
+	return (0);
+}
+*/
+
+int main(void)
+{
+	char    **map;
+	char    *round;
+	int i;
+
+	round = "assets/maps/round1.ber";
+	map = check_map(round);
+	i = -1;
+	while (map[++i] != NULL)
+		ft_printf("%s", map[i]);
+	ft_printf("\n");
+	check_snake(map);
+	check_exit(map);
+	free_map(&map);
+	return (1);
 }
