@@ -528,7 +528,9 @@ int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
     int circle_radius = 200;
 
     if (is_point_in_bounding_box(mouse_x, mouse_y))
-		
+		printf("Mouse clicked on the Play Button\n");
+	else
+		printf("Mouse clicked outside the Play Button\n");
     return 0;
 }
 
@@ -543,7 +545,7 @@ void    init(t_data *ptr)
 	if (!ptr->mlx)
 		return (write(1, "Error\n", 6), 1);
 	// define the main window
-	ptr->win1 = mlx_new_window(ptr->mlx, 1024, 1024, "Snake");
+	ptr->win1 = mlx_new_window(ptr->mlx, 1024, 1024, "Maze Munch");
 	if (!ptr->win1)
 		destroy_game(ptr);
 	
@@ -558,8 +560,11 @@ void    init(t_data *ptr)
 
 void	hooks(t_data *app)
 {
-	mlx_hook(app->win1, 17, 0, on_destroy, app);		// "X" button of the window
-	mlx_key_hook(app->win1, on_escape, app); 			// ESC key
+	// 'X' button to close the window
+	mlx_hook(app->win1, 17, 0, on_destroy, app);
+	// ESC Key press to close the window
+	mlx_key_hook(app->win1, on_escape, app);
+	// Mouse click event to PLAY
 	mlx_mouse_hook(app->win1, on_mouse_click, app);
 }
 
