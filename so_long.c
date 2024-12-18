@@ -9,13 +9,6 @@ static void	initalize_data(t_data *ptr)
 	ptr->map = NULL;
 }
 
-static void	win1_hooks(t_data *app)
-{
-	mlx_hook(app->win1, 17, 0, on_destroy, app);		// "X" button of the window
-	mlx_key_hook(app->win1, on_escape, app); 			// ESC key
-	mlx_mouse_hook(app->win1, on_play, app);			// Click Play
-}
-
 static void	win1_init(t_data *app)
 {
 	int		width;
@@ -41,9 +34,7 @@ int main(int ac, char *argv[])
 	if (ac < 2)
 		return(write(1, "Not enough arguments!\n", 22), 1);
 	initalize_data(&game);
-	game.map = check_map(argv[1]);
-	check_snake(game.map);
-	check_exit(game.map);
+	checker(&game, argv[1]);
 	game->mlx = mlx_init();
 	if (!mlx)
 		return (write(1, "Error loading the game!\n", 24), 1);

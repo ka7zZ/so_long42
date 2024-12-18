@@ -1,3 +1,4 @@
+
 /* Functions of mlx categorized
 *****
 *****
@@ -173,7 +174,6 @@ sdl dga
 * 12x13
 
 */
-
 
 /* CHECKERS
 #include "libft/libft.h"
@@ -407,173 +407,7 @@ void	check_exit(char **map)
 		return_error(&map);	
 }
 
-int main(void)
-{
-	char    **map;
-	char    *round;
-	int i;
-
-	round = "assets/maps/round1.ber";
-	map = check_map(round);
-	i = -1;
-	while (map[++i] != NULL)
-		ft_printf("%s", map[i]);
-	ft_printf("\n");
-	check_snake(map);
-	check_exit(map);
-	free_map(&map);
-	return (1);
-}
 */
-
-#include <stdlib.h>
-#include "mlx/mlx.h"
-#include <unistd.h>
-#include <X11/keysym.h>
-#include <math.h>
-
-//PRACTICE 
-typedef struct	s_data {
-	void	*mlx;
-	void	*win1;
-	void    *win2;
-	void	*imgw1;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}   t_data;
-
-void initalize_data(t_data *ptr)
-{
-	ptr->mlx = NULL;
-	ptr->win1 = NULL;
-	ptr->win2 = NULL;
-	ptr->imgw1 = NULL;
-	ptr->addr = NULL;
-	ptr->bits_per_pixel = 0;
-	ptr->line_length = 0;
-	ptr->endian = 0;
-}
-
-void	destroy_game(t_data *app)
-{
-	write(1, "Destroying the game!\n", 21);
-	if (app->imgw1)
-		mlx_destroy_image(app->mlx, app->imgw1);
-	if (app->win1)
-		mlx_destroy_window(app->mlx, app->win1);
-	if (app->win2)
-		mlx_destroy_window(app->mlx, app->win2);
-	if (app->mlx)
-	{
-		mlx_destroy_display(app->mlx);
-		free(app->mlx);
-		app->mlx = NULL;
-	}
-	exit(0);
-}
-
-int		on_destroy(int keycode, t_data *app)
-{
-	exit(0);
-	return (0);
-}
-
-int		on_escape(int keycode, t_data *app)
-{
-	if (keycode == XK_Escape)
-		exit(0);
-	return (0);
-}
-
-/* give mouse coordinates of x and y
-int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
-{
-    int image_x = mouse_x;
-    int image_y = mouse_y;
-
-    // Check if the click is within the bounds of the image
-    if (image_x >= 0 && image_x < 1024 && image_y >= 0 && image_y < 1024)
-    {
-        printf("Mouse clicked on image at (%d, %d)\n", image_x, image_y);
-        // Handle the click event, such as checking pixel data or updating the game state
-    }
-    else
-    {
-        printf("Mouse clicked outside the image bounds\n");
-    }
-
-    return (0);
-}
-*/
-
-
-int is_point_in_bounding_box(int mouse_x, int mouse_y)
-{
-    int min_x = 354;
-    int max_x = 719;
-    int min_y = 848;
-    int max_y = 983;
-
-    if (mouse_x >= min_x && mouse_x <= max_x && mouse_y >= min_y && mouse_y <= max_y)
-        return 1;
-    return 0;
-}
-
-int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
-{
-    int circle_center_x = 512;
-    int circle_center_y = 512;
-    int circle_radius = 200;
-
-    if (is_point_in_bounding_box(mouse_x, mouse_y))
-		
-    return 0;
-}
-
-void    init(t_data *ptr)
-{
-	int	xpix;
-	int	ypix;
-
-	xpix = 1024;
-	ypix = 1024;
-	ptr->mlx = mlx_init();
-	if (!ptr->mlx)
-		return (write(1, "Error\n", 6), 1);
-	// define the main window
-	ptr->win1 = mlx_new_window(ptr->mlx, 1024, 1024, "Snake");
-	if (!ptr->win1)
-		destroy_game(ptr);
-	
-	// define the image of the main window
-	ptr->imgw1 = mlx_xpm_file_to_image(ptr->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
-	if (!ptr->imgw1)
-		destroy_game(ptr);
-
-	// put the image to the window at the center of it
-	mlx_put_image_to_window(ptr->mlx, ptr->win1, ptr->imgw1, 0, 0);
-}
-
-void	hooks(t_data *app)
-{
-	mlx_hook(app->win1, 17, 0, on_destroy, app);		// "X" button of the window
-	mlx_key_hook(app->win1, on_escape, app); 			// ESC key
-	mlx_mouse_hook(app->win1, on_mouse_click, app);
-}
-
-int main(void)
-{
-	t_data  app;	
-	
-	initalize_data(&app);
-	init(&app);
-	hooks(&app);
-	mlx_loop(app.mlx);
-	destroy_game(&app);
-	return (0);
-}
 
 /* fonts, putstrings, secondwindow, hooks
 	// Define exit buttons
@@ -776,4 +610,743 @@ rn (1);
 }
 */
 
+/* FIRST SCRIPT WORKS
+#include "mlx/mlx.h"
+#include "libft/libft.h"
+#include "checkers/checkers.h"
+#include "so_long.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <X11/keysym.h>
+#include <math.h>
+
+// INIT T_DATA
+void	initalize_data(t_data *ptr)
+{
+	ptr->mlx = NULL;
+	ptr->win1 = NULL;
+	ptr->win2 = NULL;
+	ptr->imgw1 = NULL;
+	ptr->map = NULL;
+}
+
+void	wall_init(t_map_walls_addr *ptr)
+{
+	(*ptr).corner = ft_strdup("assets/xpm/corner.xpm");
+	(*ptr).hor_left = ft_strdup("assets/xpm/hor_left.xpm");
+	(*ptr).hor_wall = ft_strdup("assets/xpm/hor_wall");
+	(*ptr).hor_right = ft_strdup("assets/xpm/hor_right.xpm");
+	(*ptr).ver_up = ft_strdup("assets/xpm/ver_up.xpm");
+	(*ptr).ver_down = ft_strdup("assets/xpm/ver_down.xpm");
+	(*ptr).ver_wall = ft_strdup("assets/xpm/ver_wall.xpm");
+}
+
+void	fseg_init(t_map_fesg_addr *ptr)
+{
+	(*ptr).food = ft_strdup("assets/xpm/egg.xpm");
+	(*ptr).enemy = ft_strdup("assets/xpm/enemy.xpm");
+	(*ptr).gate = ft_strdup("assets/xpm/gate.xpm");
+	(*ptr).snake_bdead = ft_strdup("assets/xpm/snake_bdead.xpm");
+	(*ptr).snake_body = ft_strdup("assets/xpm/snake_body.xpm");
+	(*ptr).snake_hdead = ft_strdup("assets/xpm/snake_hdead.xpm");
+	(*ptr).snake_head = ft_strdup("assets/xpm/snake_head.xpm");
+}
+
+void	sprites_addr_init(t_sprites *ptr)
+{
+	wall_init(&(*ptr).walls);
+	fseg_init(&(*ptr).fesg);
+}
+
+// DESTROY FUNCTION
+void	destroy_game(t_data *app)
+{
+	write(1, "Destroying the game!\n", 21);
+	if (app->map)
+		free_map(&app->map);
+	if (app->imgw1)
+		mlx_destroy_image(app->mlx, app->imgw1);
+	if (app->win1)
+		mlx_destroy_window(app->mlx, app->win1);
+	if (app->win2)
+		mlx_destroy_window(app->mlx, app->win2);
+	if (app->mlx)
+	{
+		mlx_destroy_display(app->mlx);
+		free(app->mlx);
+		app->mlx = NULL;
+	}
+	exit(0);
+}
+
+// --------------     WINDOWS 2 -----------------
+
+
+void	create_wall(t_data *app, t_map **game)
+{
+	int width;
+	int height;
+
+	width = 42;
+	height = 42;
+	app->xw2 -= width;
+	app->yw2 -= height;
+	(*game)->wall.corner = mlx_xpm_file_to_image(app->mlx, (*game)->spr.walls.corner, &width, &height);
+	if (!(*game)->wall.corner)
+		destroy_game(app);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.corner, 0, 0);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.corner, 0, app->yw2);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.corner, app->xw2, 0);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.corner, app->xw2, app->yw2);
+	(*game)->wall.lr_up = mlx_xpm_file_to_image(app->mlx, (*game)->spr.walls.ver_up, &width, &height);
+	if (!(*game)->wall.lr_up)
+		destroy_game(app);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.lr_up, 0, height);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.lr_up, app->xw2, height);
+	(*game)->wall.lr_down = mlx_xpm_file_to_image(app->mlx, (*game)->spr.walls.ver_down, &width, &height);
+	if (!(*game)->wall.lr_down)
+		destroy_game(app);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.lr_down, 0, app->yw2 - height);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.lr_down, app->xw2, app->yw2 - height);
+	(*game)->wall.ud_left = mlx_xpm_file_to_image(app->mlx, (*game)->spr.walls.hor_left, &width, &height);
+	if (!(*game)->wall.ud_left)
+		destroy_game(app);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.ud_left, width, 0);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.ud_left, width, app->yw2);
+	(*game)->wall.ud_right = mlx_xpm_file_to_image(app->mlx, (*game)->spr.walls.hor_right, &width, &height);
+	if (!(*game)->wall.ud_right)
+		destroy_game(app);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.ud_right, app->xw2 - width, 0);
+	mlx_put_image_to_window(app->mlx, app->win2, (*game)->wall.ud_right, app->xw2 - width, app->yw2);
+}
+
+
+void	game_window(t_data *app)
+{
+	int	i;
+	t_map	*game;
+
+
+	i = 0;
+	while(app->map[i] != NULL)
+		i++;
+	app->xw2 = (ft_strlen(app->map[i - 1])) * BLOCK;
+	app->yw2 = (i - 1) * BLOCK;
+	app->win2 = mlx_new_window(app->mlx, app->xw2, app->yw2, "The journey");
+	if (!app->win2)
+		destroy_game(app);
+	game = malloc(sizeof(t_map));
+	sprites_addr_init(&game->spr);
+	//ft_printf("spritees:\n%s\n%s\n%s\n%s\n", game.spr.walls.hor_left, game.spr.walls.hor_right, game.spr.fesg.enemy, game.spr.fesg.gate);
+	create_wall(app, &game);
+}
+
+void	snake_game(t_data *app)
+{
+	game_window(app);
+	//put_map(app);
+}
+
+
+// BUTTONS
+
+int		on_destroy(int keycode, t_data *app)
+{
+	exit(0);
+	return (0);
+}
+
+int		on_escape(int keycode, t_data *app)
+{
+	if (keycode == XK_Escape)
+	{
+		if (app->win2)
+			mlx_destroy_window(app->mlx, app->win2);
+		else
+			exit(0);
+	}	
+	return (0);
+}
+
+int play_box(int mouse_x, int mouse_y)
+{
+	int min_x = 354;
+	int max_x = 719;
+	int min_y = 848;
+	int max_y = 983;
+
+	if (mouse_x >= min_x && mouse_x <= max_x && mouse_y >= min_y && mouse_y <= max_y)
+		return 1;
+	return 0;
+}
+
+int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
+{
+
+	if (play_box(mouse_x, mouse_y))
+		snake_game(app);
+	return 0;
+}
+
+void	hooks(t_data *app)
+{
+	mlx_hook(app->win1, 17, 0, on_destroy, app);		// "X" button of the window
+	mlx_key_hook(app->win1, on_escape, app); 			// ESC key
+	mlx_mouse_hook(app->win1, on_mouse_click, app);
+}
+
+// INITIALISING THE APP
+void    init(t_data *ptr)
+{
+	int	xpix;
+	int	ypix;
+
+	xpix = 1024;
+	ypix = 1024;
+	ptr->mlx = mlx_init();
+	if (!ptr->mlx)
+		return (write(1, "Error\n", 6), 1);
+	// define the main window
+	ptr->win1 = mlx_new_window(ptr->mlx, xpix, ypix, "Maze Munch");
+	if (!ptr->win1)
+		destroy_game(ptr);
+	
+	// define the image of the main window
+	ptr->imgw1 = mlx_xpm_file_to_image(ptr->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
+	if (!ptr->imgw1)
+		destroy_game(ptr);
+
+	// put the image to the window at the center of it
+	mlx_put_image_to_window(ptr->mlx, ptr->win1, ptr->imgw1, 0, 0);
+}
+
+
+int main(void)
+{
+	t_data  		app;	
+
+	initalize_data(&app);
+	app.map = check_map("assets/maps/round1.ber");
+	ft_printf("mem addr map -->> %x\n", app.map);
+
+	init(&app);
+	hooks(&app);
+
+	mlx_loop(app.mlx);
+	destroy_game(&app);
+	return (0);
+}
+*/
+
+/*WALFREE
+static void	wall_free(t_map_walls_addr *ptr)
+{
+	free(ptr->corner);
+	free(ptr->hor_left);
+	free(ptr->hor_right);
+	free(ptr->hor_wall);
+	free(ptr->ver_down);
+	free(ptr->ver_up);
+	free(ptr->ver_wall);
+	free(ptr->bg);
+}
+*/
+
+/*FSEGFREE
+
+static void	fseg_free(t_map_fesg_addr *ptr)
+{
+	free(ptr->food);
+	free(ptr->enemy);
+	free(ptr->gate);
+	free(ptr->snake_bdead);
+	free(ptr->snake_body);
+	free(ptr->snake_hdead);
+	free(ptr->snake_head);
+	
+}
+*/
+
+#include "mlx/mlx.h"
+#include "libft/libft.h"
+#include "checker/checker.h"
+#include "so_long.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <X11/keysym.h>
+#include <math.h>
+
+/* -------- WINDOW 2 traspassed into files -----------
+
+void	initalize_data(t_data *ptr)
+{
+	ptr->game = NULL;
+	ptr->mlx = NULL;
+	ptr->win1 = NULL;
+	ptr->win2 = NULL;
+	ptr->imgw1 = NULL;
+	ptr->map = NULL;
+	ptr->xw2 = 0;
+	ptr->yw2 = 0;
+}
+
+static void	wall_init(t_data *app)
+{
+	app->game->spr.walls.corner = "assets/xpm/corner.xpm";
+	app->game->spr.walls.hor_left = "assets/xpm/hor_left.xpm";
+	app->game->spr.walls.hor_wall = "assets/xpm/hor_wall.xpm";
+	app->game->spr.walls.hor_right = "assets/xpm/hor_right.xpm";
+	app->game->spr.walls.ver_up = "assets/xpm/ver_up.xpm";
+	app->game->spr.walls.ver_down = "assets/xpm/ver_down.xpm";
+	app->game->spr.walls.ver_wall = "assets/xpm/ver_wall.xpm";
+	app->game->spr.walls.bg = "assets/xpm/background.xpm";
+}
+
+static void	fseg_init(t_data *app)
+{
+	app->game->spr.fesg.food = "assets/xpm/egg.xpm";
+	app->game->spr.fesg.enemy = "assets/xpm/enemy.xpm";
+	app->game->spr.fesg.gate = "assets/xpm/gate.xpm";
+	app->game->spr.fesg.snake_bdead = "assets/xpm/snake_bdead.xpm";
+	app->game->spr.fesg.snake_body = "assets/xpm/snake_body.xpm";
+	app->game->spr.fesg.snake_hdead = "assets/xpm/snake_hdead.xpm";
+	app->game->spr.fesg.snake_head = "assets/xpm/snake_head.xpm";
+	
+}
+
+void    assign_image(t_data *app, void **image, char *addr)
+{
+	int width;
+	int height;
+
+	width = 42;
+	height = 42;
+	*image = mlx_xpm_file_to_image(app->mlx, addr, &width, &height);
+	if (!(*image))
+		destroy_game(app);
+}
+
+void    deploy_image(t_data *app, void *image, int x, int y)
+{
+	mlx_put_image_to_window(app->mlx, app->win2, image, x, y);
+}
+
+void    put_corners(t_data *app)
+{
+	t_walls				*img;
+	t_map_walls_addr	*addr;
+	
+	img = &(app->game->wall);
+	addr = &(app->game->spr.walls);
+	assign_image(app, &(img->corner), addr->corner);
+	assign_image(app, &(img->lr_up), addr->ver_up);
+	assign_image(app, &(img->lr_down), addr->ver_down);
+	assign_image(app, &(img->ud_left), addr->hor_left);
+	assign_image(app, &(img->ud_right), addr->hor_right);
+	deploy_image(app, img->corner, 0, 0);
+	deploy_image(app, img->corner, 0, app->yw2 - IMAGE);
+	deploy_image(app, img->corner, app->xw2 - IMAGE, 0);
+	deploy_image(app, img->corner, app->xw2 - IMAGE, app->yw2 - IMAGE);
+	deploy_image(app, img->lr_up, 0, IMAGE);
+	deploy_image(app, img->lr_up, app->xw2 - IMAGE, IMAGE);
+	deploy_image(app, img->lr_down, 0, app->yw2 - (IMAGE * 2));
+	deploy_image(app, img->lr_down, app->xw2 - IMAGE, app->yw2 - (IMAGE * 2));
+	deploy_image(app, img->ud_left, IMAGE, 0);
+	deploy_image(app, img->ud_left, IMAGE, app->yw2 - IMAGE);
+	deploy_image(app, img->ud_right, app->xw2 - (IMAGE * 2), 0);
+	deploy_image(app, img->ud_right, app->xw2 - (IMAGE * 2), app->yw2 - IMAGE);
+}
+
+void    put_borders(t_data *app)
+{
+	t_walls				*img;
+	t_map_walls_addr	*addr;
+	int x;
+	int y;
+
+	img = &(app->game->wall);
+	addr = &(app->game->spr.walls);
+	x = IMAGE * 2;
+	y = IMAGE * 2;
+	put_corners(app);
+	assign_image(app, &(img->side_hor), addr->hor_wall);
+	assign_image(app, &(img->side_ver), addr->ver_wall);
+	while (x < (app->xw2 - IMAGE * 2))
+	{
+		deploy_image(app, img->side_hor, x, app->yw2 - IMAGE);
+		deploy_image(app, img->side_hor, x, 0);
+		x += IMAGE;
+	}
+	while (y < (app->yw2 - IMAGE * 2))
+	{
+		deploy_image(app, img->side_ver, 0, y);
+		deploy_image(app, img->side_ver, app->xw2 - IMAGE, y);
+		y += IMAGE;
+	}
+}
+
+void    put_background(t_data *app)
+{
+	t_walls				*img;
+	t_map_walls_addr	*addr;
+	int x;
+	int	y;
+
+	x = 42;
+	img = &(app->game->wall);
+	addr = &(app->game->spr.walls);
+	assign_image(app, &(img->bg), addr->bg);
+	while (x < app->xw2)
+	{
+		y = 42;
+		while (y < app->yw2)
+		{
+			deploy_image(app, img->bg, x, y);
+			y += 42;
+		}
+		x += 42;
+	}
+}
+*/
+
+
+
+void	game_window(t_data *app)
+{
+	int	i;
+
+	i = 0;
+	while(app->map[i] != NULL)
+		i++;
+	app->xw2 = (ft_strlen(app->map[i - 1])) * BLOCK;
+	app->yw2 = (i - 1) * BLOCK;
+	app->win2 = mlx_new_window(app->mlx, app->xw2, app->yw2, "The journey");
+	if (!app->win2)
+		destroy_game(app);
+	put_immutable(app);
+}
+
+int main(void)
+{
+	t_data  		app;	
+	t_map			map;
+
+	app.game = &map;
+	initalize_data(&app);
+	checker(&app, "assets/maps/round1.ber");
+	init_win1(&app);
+	hooks(&app);
+
+	mlx_loop(app.mlx);
+	destroy_game(&app);
+	return (0);
+}
+
+
+
+
+
+/*CHECKERS
+
+void    free_app(t_data *app)
+{
+   int i;
+
+	if (app->game)
+		free(app->game);
+	if (!app->map || !(*app->map))
+		return;
+	i = 0;
+	while(app->map[i] != NULL)
+	{
+		free(app->map[i]);
+		i++;
+	}
+	free(app->map);
+	app->map = NULL; 
+}
+
+void return_error(t_data *app)
+{
+	free_app(app);
+	ft_printf("Wrong format of the map!\n");
+	exit(EXIT_FAILURE);
+}
+
+
+static int	count_lines(char *argv)
+{
+	int		fd;
+	int		count;
+	int		bytes;
+	int		i;
+	char	buffer[BUFFER_SZ];
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	bytes = read(fd, buffer, BUFFER_SZ);
+	if (bytes < 0)
+		return (close(fd), 0);
+	buffer[bytes] = '\0';
+	i = 0;
+	count = 0;
+	while (buffer[i] != '\0')
+	{
+		if (buffer[i] == '\n')
+			count++;
+		i++;
+	}
+	close(fd);
+	return (++count);
+}
+
+static int	check_wall(t_data *app, int last_row)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	i = -1;
+	while (app->map[++i] != NULL)
+	{
+		j = -1;
+		len = ft_strlen(app->map[i]);
+		if (ft_strchr(app->map[i], '\n'))
+			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
+		if (app->map[i][++j] != '1')
+			return_error(app);
+		while (app->map[i][++j] != '\n' && app->map[i][j] != '\0')
+		{
+			
+			if ((i == 0 || i == last_row) && app->map[i][j] != '1')
+				return_error(app);
+			else if ((i > 0 && i < last_row) && j < len && app->map[i][j] == '1')
+				return_error(app);
+		}
+		if (app->map[i][--j] != '1')
+			return_error(app);
+	}
+	return (1);
+}
+
+static int	check_format(t_data *app)
+{
+	int 	i;
+	int		len;
+	int		test;
+
+	i = -1;
+	while (app->map[++i] != NULL)
+	{
+		if (i == 0)
+			len = ft_strlen(app->map[i]);
+		else
+		{
+			test = ft_strlen(app->map[i]);
+			if (!ft_strchr(app->map[i], '\n'))
+				len -= 1;		// -1 because of the char new line at the end of the string
+			if (len != test)
+				return_error(app);
+		}
+	}
+	if (test == i)
+		return_error(app);
+	if (check_wall(app, --i)) // --i for the last row of the map
+		return (1);
+	return (0);
+}
+
+static void	read_map(t_data *app, char *argv)
+{
+	int		fd;
+	int		lines;
+	int		i;
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error reading the map!\n", 23);
+		return_error(app);
+	}
+	lines = count_lines(argv);
+	app->map = malloc((lines + 1) * sizeof(char *));
+	if (!app->map)
+	{
+		close(fd);
+		return_error(app);
+	}
+	i = -1;
+	while (++i < lines)
+		app->map[i] = get_next_line(fd);
+	app->map[i] = NULL;
+}
+
+void	check_map(t_data *app, char *argv)
+{
+	int     i;
+	int     j;
+
+	read_map(app, argv);
+	if (!app->map)
+		return_error(app);
+	i = 0;
+	while (app->map[i] != NULL)
+	{
+		j = 0;
+		while (app->map[i][j] != '\0' && app->map[i][j] != '\n')
+		{
+			if (!ft_strchr("01EPC", app->map[i][j]))
+				return_error(app);
+			j++;                
+		}
+		i++;
+	}
+	if (check_format(app))
+		return ;
+	return_error(app);
+}
+
+static void	check_snake(t_data *app)
+{
+	int	i;
+	int	j;
+	int	s;
+
+	i = 0;
+	s = 0;
+	while (app->map[++i] != NULL)
+	{
+		j = 0;
+		while (app->map[i][++j] != NULL)
+		{
+			if (app->map[i][j] == 'P')
+				s++;
+		}
+	}
+	if (s != 1)
+		return_error(app);	
+}
+
+static void	check_exit(t_data *app)
+{
+	int	i;
+	int	j;
+	int	s;
+
+	i = 0;
+	s = 0;
+	while (app->map[++i] != NULL)
+	{
+		j = 0;
+		while (app->map[i][++j] != NULL)
+		{
+			if (app->map[i][j] == 'E')
+				s++;
+		}
+	}
+	if (s != 1)
+		return_error(app);			
+}
+
+int checker(t_data *app, char *argv)
+{
+	check_map(app, argv);
+	check_exit(app);
+	check_snake(app);
+}
+
+*/
+
+/* solong.h
+//	WALL, COLLECTIBLES, ENEMY, PLAYER, EXIT ADDRESES
+typedef	struct Map_walls
+{
+	char	*corner;
+	char	*hor_left;
+	char	*hor_right;
+	char	*hor_wall;
+	char	*ver_up;
+	char	*ver_down;
+	char	*ver_wall;
+}	t_map_walls_addr;
+
+typedef	struct Map_fesg
+{
+	char	*food;
+	char	*enemy;
+	char	*snake_head;
+	char	*snake_body;
+	char	*snake_hdead;
+	char	*snake_bdead;
+	char	*gate;
+	char    *bg;
+}	t_map_fesg_addr;
+
+typedef struct	Sprites_addr
+{
+	t_map_walls_addr	walls;
+	t_map_fesg_addr		fesg;
+}	t_sprites;
+
+// (INGAME) SNAKE
+
+typedef struct Snake_body
+{
+	void	*body;
+	int		x_pos;
+	int		y_pos;
+	struct Snake_body	*next;
+}	t_sbody;
+
+typedef struct	Snake 
+{
+	void	*head;
+	t_sbody	*ptr;
+	int		xh_pos;
+	int		yh_pos;
+}   t_snake;
+
+// (INGAME) MAP
+
+typedef struct Map_outline
+{
+	void	*ud_left;
+	void	*ud_right;
+	void	*lr_up;
+	void	*lr_down;
+	void	*corner;
+	void	*side_hor;
+	void    *side_ver;
+	void    *bg;
+}   t_walls;
+
+typedef struct Map_items
+{
+	void	*food;
+	void	*exit_gate;
+	void	*enemy;
+}	t_items;
+
+typedef struct Map_construct
+{
+	t_walls		wall;
+	t_items		item;
+	t_snake		s;
+	t_sprites	spr;
+}   t_map;
+
+// (DATAS)
+typedef struct	s_data {
+	t_map   *game;
+	void	*mlx;
+	void	*win1;
+	void    *win2;
+	void	*imgw1;
+	char    **map;
+	int		xw2;
+	int		yw2;
+}   t_data;
+
+*/
 

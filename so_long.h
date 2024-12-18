@@ -4,109 +4,115 @@
 // include own folder's libs
 #include "mlx/mlx.h"
 #include "libft/libft.h"
-#include "ingame/ingame.h"
-#include "mapping/mapping.h"
-#include "checkers/checkers.h"
+#include <X11/keysym.h>
+// #include "ingame/ingame.h"
+// #include "mapping/mapping.h"
+// #include "checker/checker.h"
 
 // include SYS libs
-#include <X11/keysym.h>
+// #include <X11/keysym.h>
 
-# define BLOCK  42
+# define BLOCK  126
+# define IMAGE  42
 
-// (DATAS)
-typedef struct	s_data {
-	void	*mlx;
-	void	*win1;
-    void    *win2;
-	void	*imgw1;
-    char    **map;
-}   t_data;
+//	WALL, COLLECTIBLES, ENEMY, PLAYER, EXIT ADDRESES
+typedef	struct Map_wall_addr
+{
+	char	*corner;
+	char	*hor_left;
+	char	*hor_right;
+	char	*hor_wall;
+	char	*ver_up;
+	char	*ver_down;
+	char	*ver_wall;
+	char    *bg;
+}	t_map_walls_addr;
+
+typedef	struct Map_fesg_addr
+{
+	char	*food;
+	char	*enemy;
+	char	*snake_head;
+	char	*snake_body;
+	char	*snake_hdead;
+	char	*snake_bdead;
+	char	*gate;
+}	t_map_fesg_addr;
+
+typedef struct	Sprites_addr
+{
+	t_map_walls_addr	walls;
+	t_map_fesg_addr		fesg;
+}	t_sprites;
 
 // (INGAME) SNAKE
 
 typedef struct Snake_body
 {
-	void	*body;
-	int		x_pos;
-	int		y_pos;
+	void				*body;
+	int					x_pos;
+	int					y_pos;
 	struct Snake_body	*next;
 }	t_sbody;
 
-struct	Snake {
+typedef struct	Snake {
 	void	*head;
-	void	*tail;
 	t_sbody	*ptr;
 	int		xh_pos;
 	int		yh_pos;
-	int		xt_pos;	
-	int 	yt_pos;
-};
+}   t_snake;
 
 // (INGAME) MAP
 
-struct Map_elbows
+typedef struct Map_walls
 {
-	void	*uleft_corner;
-	void	*uright_corner;
-	void	*dleft_corner;
-	void	*dright_corner;
-	int		xul_pos;
-	int		yul_pos;
-	int		xur_pos;
-	int		yur_pos;
-	int		xdl_pos;
-	int		ydl_pos;
-	int		xdr_pos;
-	int		ydr_pos;
-};
+	void	*ud_left;
+	void	*ud_right;
+	void	*lr_up;
+	void	*lr_down;
+	void	*corner;
+	void	*side_hor;
+	void    *side_ver;
+	void    *bg;
+}   t_walls;
 
-struct Map_outline
+typedef struct Map_items
 {
-	t_map_elbows	*ptr_top;
-	t_map_elbows	*ptr_low;
-	void			*corner;
-	void			*sides;
-	int				*xc_pos;
-	int				*yc_pos;
-	int				*xs_pos;
-	int				*ys_pos;
-};
-
-typedef struct Map_food
-{
-	void			*food;
-	int				x_pos;
-	int				y_pos;
-	struct Map_food	*next;
-}	tmap_food;
-
-struct Map_exit
-{
+	void	*food;
 	void	*exit_gate;
-	int		x_pos;
-	int		y_pos;
-};
+	void	*enemy;
+}	t_items;
 
-typedef struct Map_enemy
+typedef struct Map_construct
 {
-	void				*enemy;
-	int					x_pos;
-	int					y_pos;
-	struct Map_enemy	*next;
-}	tmap_enemy;
+	t_walls		wall;
+	t_items		item;
+	t_snake		s;
+	t_sprites	spr;
+}   t_map;
 
-struct Map_construct
-{
-    Map_outline *m;
-    tmap_food   *f;
-    tmap_enemy  *e;
-    Map_exit    *g;
-    Snake       *s;
-};
+// (DATAS)
+typedef struct	s_data {
+	t_map   *game;
+	void	*mlx;
+	void	*win1;
+	void    *win2;
+	void	*imgw1;
+	char    **map;
+	int		xw2;
+	int		yw2;
+}   t_data;
 
-int     on_play(int button, int mouse_x, int mouse_y, t_data *app);
-int		on_escape(int keycode, t_data *app);
-int		on_destroy(int keycode, t_data *app);
-void	destroy_game(void *mlx, char **map);
-void    game_window(t_data *app);
+void    hooks(t_data *app);
+void	destroy_game(t_data *app);
+void    put_borders(t_data *app);
+void    put_background(t_data *app);
+void	put_immutable(t_data *app);
+void	initalize_data(t_data *ptr);
+void	wall_init(t_data *app);
+void	fseg_init(t_data *app);
+void	init_win1(t_data *app);
+void    deploy_image(t_data *app, void *image, int x, int y);
+void    assign_image(t_data *app, void **image, char *addr);
+
 #endif

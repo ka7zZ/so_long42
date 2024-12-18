@@ -1,5 +1,5 @@
 #include "so_long.h"
-
+/*
 void	game_window(t_data *app)
 {
 	int	i;
@@ -16,3 +16,5 @@ void	game_window(t_data *app)
 		destroy_game(app);
 	create_map(app);
 }
+
+*/
