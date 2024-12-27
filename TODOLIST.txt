@@ -5,9 +5,12 @@ created:
         - exit hooks ('X' & ESC)
         - PLAY button (only Mouse hook): NEED keyhook ENTER;
 3 - beginning of win 2
+        - put the background 
+        - put the borders
+
+
 todo:
 -> map:
-    - put the background (calculate the x and y almost done)
     - put the food
     - put the exit gate
     - put the snake

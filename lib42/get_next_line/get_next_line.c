@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:05:02 by aghergut          #+#    #+#             */
-/*   Updated: 2024/10/16 15:32:27 by aghergut         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:06:56 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static char	*ft_strjoin_free(char const *s1, char const *s2)
 static int	ft_append_nodes(t_list **lst, int fd, int *reading)
 {
 	char	*line;
+	char	*added;
 
 	line = malloc(BUFFER_SIZE + 1);
 	if (!line)
@@ -56,7 +57,10 @@ static int	ft_append_nodes(t_list **lst, int fd, int *reading)
 			break ;
 		line[*reading] = '\0';
 		if (line && ft_strlen(line) > 0)
-			ft_lstadd_back(lst, ft_lstnew(ft_substr(line, 0, ft_strlen(line))));
+		{
+			added = ft_substr(line, 0, ft_strlen(line));
+			ft_lstadd_back(lst, ft_lstnew((void *)added));
+		}
 		if (ft_strchr(line, '\n'))
 			break ;
 	}
@@ -67,19 +71,21 @@ static char	*ft_line(t_list **h, t_list *buf, char *res)
 {
 	size_t	idx;
 	char	*ptr;
+	char	*temp;
 
 	while (*h)
 	{
 		buf = (*h)->next;
-		if ((*h)->content && ft_strchr((*h)->content, '\n'))
+		temp = (char *)(*h)->content;
+		if (temp && ft_strchr(temp, '\n'))
 		{
-			idx = ft_strchr((*h)->content, '\n') - (*h)->content + 1;
-			res = ft_strjoin_free(res, ft_substr((*h)->content, 0, idx));
-			if (idx == ft_strlen((*h)->content))
+			idx = ft_strchr(temp, '\n') - temp + 1;
+			res = ft_strjoin_free(res, ft_substr(temp, 0, idx));
+			if (idx == ft_strlen(temp))
 				return (ft_lstclear(h, free), res);
-			ptr = ft_substr((*h)->content, idx, ft_strlen((*h)->content) - idx);
-			free((*h)->content);
-			(*h)->content = ft_substr(ptr, 0, ft_strlen(ptr));
+			ptr = ft_substr(temp, idx, ft_strlen(temp) - idx);
+			free(temp);
+			temp = ft_substr(ptr, 0, ft_strlen(ptr));
 			return (free(ptr), res);
 		}
 		else
@@ -93,7 +99,7 @@ static char	*ft_line(t_list **h, t_list *buf, char *res)
 char	*get_next_line(int fd)
 {
 	static t_list	*head[OPEN_MAX];
-	t_list		*ptr;
+	t_list			*ptr;
 	char			*buffer;
 	int				reading;
 

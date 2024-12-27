@@ -6,12 +6,12 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 16:59:34 by aghergut          #+#    #+#             */
-/*   Updated: 2024/10/16 16:11:18 by aghergut         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:08:52 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRING_H
-# define STRING_H
+#ifndef STRINGS_H
+# define STRINGS_H
 
 # include <stdlib.h>
 # include <stddef.h>
