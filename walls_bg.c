@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-static void    put_corners(t_data *app)
+static void    deploy_corners(t_data *app)
 {
 	t_walls				*img;
 	t_map_walls_addr	*addr;
@@ -26,7 +26,7 @@ static void    put_corners(t_data *app)
 	deploy_image(app, img->ud_right, app->xw2 - (IMAGE * 2), app->yw2 - IMAGE);
 }
 
-void    put_borders(t_data *app)
+static void    deploy_borders(t_data *app)
 {
 	t_walls				*img;
 	t_map_walls_addr	*addr;
@@ -37,7 +37,7 @@ void    put_borders(t_data *app)
 	addr = &(app->game->spr.walls);
 	x = IMAGE * 2;
 	y = IMAGE * 2;
-	put_corners(app);
+	deploy_corners(app);
 	assign_image(app, &(img->side_hor), addr->hor_wall);
 	assign_image(app, &(img->side_ver), addr->ver_wall);
 	while (x < (app->xw2 - IMAGE * 2))
@@ -78,13 +78,12 @@ void    put_background(t_data *app)
 }
 */
 
-void	put_immutable(t_data *app)
+void	deploy_immutable(t_data *app)
 {
 	t_map	map;
 
 	app->game = &map;	
 	wall_init(app);
 	fseg_init(app);
-	//put_background(app);
-	put_borders(app);
+	deploy_borders(app);
 }

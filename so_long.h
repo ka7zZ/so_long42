@@ -109,15 +109,16 @@ typedef struct	s_data {
 
 void    hooks(t_data *app);
 void	destroy_game(t_data *app);
-void    put_borders(t_data *app);
-void    put_background(t_data *app);
-void	put_immutable(t_data *app);
+// void    put_borders(t_data *app);
+// void    put_background(t_data *app);
+void	deploy_immutable(t_data *app);
 void	initalize_data(t_data *ptr);
 void	wall_init(t_data *app);
 void	fseg_init(t_data *app);
 void	init_win1(t_data *app);
 void    deploy_image(t_data *app, void *image, int x, int y);
 void    assign_image(t_data *app, void **image, char *addr);
+void	deploy_items(t_data *app);
 void	game_window(t_data *app);
 
 #endif
