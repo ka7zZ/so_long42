@@ -23,8 +23,10 @@ static void	put_fe(t_data *app, char c, int j, int i)
 	}
 	if (c == 'E')
 	{
-		assign_image(app, &(img->exit_gate), addr->gate);
-		deploy_image(app, img->exit_gate, x, y);
+		assign_image(app, &(img->start_gate), addr->start_gate);
+		img->xeg = x;
+		img->yeg = y;
+		deploy_image(app, img->start_gate, img->xeg, img->yeg);
 	}
 }
 
@@ -86,13 +88,13 @@ static void put_snake(t_data *app, char c, int j, int i)
 	}
 }
 
-
 static void	put_fsew(t_data *app, char c, int j, int i)
 {
 	put_fe(app, c, j, i);
 	put_wall(app, c, j, i);
 	put_snake(app, c, j, i);
 }
+
 static void	parse_map(t_data *app)
 {
 	int					i;

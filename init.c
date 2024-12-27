@@ -29,7 +29,8 @@ void	fseg_init(t_data *app)
 	app->game->spr.fesg.egg = "./assets/xpm/egg.xpm";
 	app->game->spr.fesg.apple = "./assets/xpm/food_apple.xpm";
 	app->game->spr.fesg.enemy = "./assets/xpm/enemy.xpm";
-	app->game->spr.fesg.gate = "./assets/xpm/gate.xpm";
+	app->game->spr.fesg.exit_gate = "./assets/xpm/exit_gate.xpm";
+	app->game->spr.fesg.start_gate = "./assets/xpm/start_gate.xpm";
 	app->game->spr.fesg.snake_bdead = "./assets/xpm/snake_bdead.xpm";
 	app->game->spr.fesg.snake_body = "./assets/xpm/snake_body.xpm";
 	app->game->spr.fesg.snake_hdead = "./assets/xpm/snake_hdead.xpm";

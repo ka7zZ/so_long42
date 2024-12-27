@@ -37,7 +37,8 @@ typedef	struct Map_fesg_addr
 	char	*snake_body;
 	char	*snake_hdead;
 	char	*snake_bdead;
-	char	*gate;
+	char	*exit_gate;
+	char	*start_gate;
 }	t_map_fesg_addr;
 
 typedef struct	Sprites_addr
@@ -75,7 +76,10 @@ typedef struct Map_items
 {
 	void	*food;
 	void	*exit_gate;
+	void	*start_gate;
 	void	*enemy;
+	int		xeg;
+	int		yeg;
 }	t_items;
 
 typedef struct Map_construct
