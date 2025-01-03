@@ -64,11 +64,6 @@ void	destroy_game(t_data *app)
 		mlx_destroy_image(app->mlx, app->imgw1);
 	if (app->win1)
 		mlx_destroy_window(app->mlx, app->win1);
-	if (app->win2)
-    {
-        destroy_walls(app);
-		mlx_destroy_window(app->mlx, app->win2);
-	}
     if (app->mlx)
 	{
 		mlx_destroy_display(app->mlx);

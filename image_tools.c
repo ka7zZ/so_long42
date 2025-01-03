@@ -16,5 +16,5 @@ void    assign_image(t_data *app, void **image, char *addr)
 
 void    deploy_image(t_data *app, void *image, int x, int y)
 {
-	mlx_put_image_to_window(app->mlx, app->win2, image, x, y);
+	mlx_put_image_to_window(app->mlx, app->win1, image, x, y);
 }

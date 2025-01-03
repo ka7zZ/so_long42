@@ -1,31 +1,24 @@
 #include "so_long.h"
-
 static int		on_destroy(int keycode, t_data *app)
 {
-    ft_printf("woowoooondestrooy\n");
-    if (!app->win2 && app->win1 && keycode == 17)
+    if (app->game->s.body != NULL)
     {
-        ft_printf("now there win1\n");
-        exit(0);
+        ft_printf("aquiii estamosss");
+        while (app->game->s.body != NULL)
+        {
+            free(app->game->s.body);
+            app->game->s.body = app->game->s.body->next;
+        }
+        free(app->game->s.body);
     }
-    ft_printf("after first if\n");
-    if (app->win2 && keycode == 17)
-    {
-        ft_printf("heereeee in else if of destroy\n");
-        mlx_clear_window(app->mlx, app->win2);
-    }
-	return (0);
+    exit(0);
 }
 
 static int		on_escape(int keycode, t_data *app)
 {
 	if (keycode == XK_Escape)
     {
-        ft_printf("heree on escapeee");
-        if (app->win2)
-            mlx_clear_window(app->mlx, app->win2);
-        else if (app->win1)
-            exit(0);
+        exit(0);
     }
 	return (0);
 }
@@ -39,10 +32,9 @@ static int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
 
 	if (mouse_x >= min_x && mouse_x <= max_x && mouse_y >= min_y && mouse_y <= max_y)
 	{
-        if (!app->win2)	
-            game_window(app);
-        else
-            ft_printf("Already initialized!\n");
+        mlx_destroy_image(app->mlx, app->imgw1);
+        mlx_destroy_window(app->mlx, app->win1);
+        game_window(app);
 	}
     return 0;
 }
@@ -50,7 +42,7 @@ static int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
 
 void	hooks(t_data *app)
 {
-    mlx_hook(app->win1, 17, 0, on_destroy, app);
+    mlx_hook(app->win1, DestroyNotify, NoEventMask, on_destroy, app);
 	mlx_key_hook(app->win1, on_escape, app);
     mlx_mouse_hook(app->win1, on_mouse_click, app);
 }

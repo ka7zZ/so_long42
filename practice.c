@@ -1343,16 +1343,20 @@ void	put_snake(t_data *app, int x, int y)
 
 int main(void)
 {
-	t_data  		app;	
+	t_data  		*app;	
 	t_map			map;
 
-	app.game = &map;
-	initalize_data(&app);
-	checker(&app, "assets/maps/round2.ber");
-	init_win1(&app);
-	hooks(&app);
+    app = malloc(sizeof(t_data));
+    if (!app)
+    {
+        ft_putstr_fd("Error: Memory allocation failed for app\n", 1);
+        return 1;  // Exit if malloc fails
+    }  
+	app->game = &map;
+	initalize_data(app);
+	checker(app, "assets/maps/round2.ber");
+	init_win1(app);
 
-	mlx_loop(app.mlx);
-	destroy_game(&app);
+    free(app);
 	return (0);
 }

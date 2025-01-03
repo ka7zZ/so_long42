@@ -1,5 +1,5 @@
 #include "so_long.h"
-
+/*
 static void	initalize_data(t_data *ptr)
 {
 	ptr->mlx = NULL;
@@ -40,3 +40,4 @@ int main(int ac, char *argv[])
 	win1_init(&game)
 	return (1); 
 }
+*/

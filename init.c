@@ -1,15 +1,14 @@
 #include "so_long.h"
 
-void	initalize_data(t_data *ptr)
+void	initalize_data(t_data *app)
 {
-	ptr->game = NULL;
-	ptr->mlx = NULL;
-	ptr->win1 = NULL;
-	ptr->win2 = NULL;
-	ptr->imgw1 = NULL;
-	ptr->map = NULL;
-	ptr->xw2 = 0;
-	ptr->yw2 = 0;
+	app->game = NULL;
+	app->mlx = NULL;
+	app->win1 = NULL;
+	app->imgw1 = NULL;
+	app->map = NULL;
+	app->xw2 = 0;
+	app->yw2 = 0;
 }
 
 void	wall_init(t_data *app)
@@ -47,7 +46,10 @@ void    init_win1(t_data *app)
 	ypix = 1024;
 	app->mlx = mlx_init();
 	if (!app->mlx)
-		return (ft_putstr_fd("Error loading mlx\n", 1));
+    {
+        ft_putstr_fd("Error loading mlx\n", 1);
+		return ;
+    }
     app->win1 = mlx_new_window(app->mlx, xpix, ypix, "Maze Munch");
     if (!app->win1)
 		destroy_game(app);
@@ -56,4 +58,5 @@ void    init_win1(t_data *app)
         destroy_game(app);
 	mlx_put_image_to_window(app->mlx, app->win1, app->imgw1, 0, 0);
     hooks(app);
+    mlx_loop(app->mlx);
 }

@@ -5,6 +5,7 @@
 #include "mlx/mlx.h"
 #include "lib42/libft.h"
 #include <X11/keysym.h>
+#include <X11/X.h>
 // #include "ingame/ingame.h"
 // #include "mapping/mapping.h"
 // #include "checker/checker.h"
@@ -95,13 +96,7 @@ typedef struct	s_data {
 	t_map   *game;
 	void	*mlx;
 	void	*win1;
-	void    *win2;
 	void	*imgw1;
-	void	*imgw2;
-	char	*addr_w2;
-	int		bpp;
-	int		line;
-	int		endian;
 	char    **map;
 	int		xw2;
 	int		yw2;
@@ -109,10 +104,8 @@ typedef struct	s_data {
 
 void    hooks(t_data *app);
 void	destroy_game(t_data *app);
-// void    put_borders(t_data *app);
-// void    put_background(t_data *app);
 void	deploy_immutable(t_data *app);
-void	initalize_data(t_data *ptr);
+void	initalize_data(t_data *app);
 void	wall_init(t_data *app);
 void	fseg_init(t_data *app);
 void	init_win1(t_data *app);
