@@ -103,7 +103,7 @@ static void	read_map(t_data *app, char *argv)
     i = -1;
 	while (++i < lines)
 		app->map[i] = get_next_line(fd);
-	app->map[i] = NULL;
+	app->map[i] = '\0';
 }
 
 void	check_map(t_data *app, char *argv)

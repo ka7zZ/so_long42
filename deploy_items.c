@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deploy_items.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/04 16:32:19 by aghergut          #+#    #+#             */
+/*   Updated: 2025/01/04 16:34:36 by aghergut         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "so_long.h"
 
@@ -61,7 +73,6 @@ static void deploy_snake(t_data *app, char c, int j, int i)
 	t_list				*tail;
 	t_list				*ptr;
 	t_map_fesg_addr		*addr;
-	static int			count_tlist = 0;
 
 	if (c == 'P')
 	{
@@ -73,7 +84,7 @@ static void deploy_snake(t_data *app, char c, int j, int i)
 		assign_image(app, &(img_s->head), addr->snake_head);
 		tail = ft_lstnew(NULL);
 		assign_image(app, &(tail->content), addr->snake_body);
-		ft_lstadd_back(&(img_s->body), ft_lstnew(tail->content));
+		ft_lstadd_back(&(img_s->body), tail);
 		deploy_image(app, img_s->head, img_s->xh_pos, img_s->yh_pos);
 		img_s->xb_pos = img_s->xh_pos + IMAGE;
 		img_s->yb_pos = img_s->yh_pos;
@@ -84,10 +95,10 @@ static void deploy_snake(t_data *app, char c, int j, int i)
 			img_s->xb_pos += IMAGE;
 			ptr = ptr->next;
 		}
-		free(tail->content);
-		free(tail);
+		ft_lstclear(&tail, free);
 	}
 }
+
 
 void	deploy_items(t_data *app)
 {
@@ -100,6 +111,7 @@ void	deploy_items(t_data *app)
 	fseg_init(app);
 	wall_init(app);
 	i = 0;
+	ft_printf("aqui deploy items\n");
 	map_width = ft_strlen(app->map[0]) - 1;
 	while(app->map[++i] != NULL)
 	{
@@ -108,9 +120,12 @@ void	deploy_items(t_data *app)
 		j = 0;
 		while (app->map[i][++j] != '\0' && j < map_width - 1)
 		{
+			ft_printf("item -->> %c\n", app->map[i][j]);
+			ft_printf("aqui while-while deploy items\n");
 			deploy_fe(app, app->map[i][j], j, i);
 			deploy_wall(app, app->map[i][j], j, i);
-			deploy_snake(app, app->map[i][j], j, i);
+			// deploy_snake(app, app->map[i][j], j, i);
+			ft_printf("aqui after 1st iter while-while deploy items\n");
 		}		
 	}
 }

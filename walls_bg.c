@@ -53,30 +53,6 @@ static void    deploy_borders(t_data *app)
 		y += IMAGE;
 	}
 }
-/*
-void    put_background(t_data *app)
-{
-	t_walls				*img;
-	t_map_walls_addr	*addr;
-	int x;
-	int	y;
-
-	x = 42;
-	img = &(app->game->wall);
-	addr = &(app->game->spr.walls);
-	assign_image(app, &(img->bg), addr->bg);
-	while (x < app->xw2)
-	{
-		y = 42;
-		while (y < app->yw2)
-		{
-			deploy_image(app, img->bg, x, y);
-			y += 42;
-		}
-		x += 42;
-	}
-}
-*/
 
 void	deploy_immutable(t_data *app)
 {

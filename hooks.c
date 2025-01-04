@@ -1,4 +1,5 @@
 #include "so_long.h"
+
 static int		on_destroy(int keycode, t_data *app)
 {
     if (app->game->s.body != NULL)
@@ -38,7 +39,6 @@ static int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
 	}
     return 0;
 }
-
 
 void	hooks(t_data *app)
 {

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:46:10 by aghergut          #+#    #+#             */
-/*   Updated: 2024/12/21 16:20:42 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:54:27 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,5 @@ t_list	*ft_lstnew(void *content)
 		node->next = NULL;
 		return (node);
 	}
-	node->content = NULL;
-	node->next = NULL;
-	return (node);
+	return (free(node), NULL);
 }

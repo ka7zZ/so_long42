@@ -1353,8 +1353,11 @@ int main(void)
         return 1;  // Exit if malloc fails
     }  
 	app->game = &map;
+	ft_printf("aqui\n");
 	initalize_data(app);
+	ft_printf("aqui2\n");
 	checker(app, "assets/maps/round2.ber");
+	ft_printf("aqui3\n");
 	init_win1(app);
 
     free(app);

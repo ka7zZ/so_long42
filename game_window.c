@@ -6,14 +6,12 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:07:18 by aghergut          #+#    #+#             */
-/*   Updated: 2024/12/30 13:08:21 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:08:30 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "so_long.h"
-
-
 
 void	game_window(t_data *app)
 {
@@ -29,5 +27,6 @@ void	game_window(t_data *app)
 		destroy_game(app);
 	deploy_immutable(app);
 	deploy_items(app);
+	ft_printf("aqui3 game window\n");
     hooks(app);
 }

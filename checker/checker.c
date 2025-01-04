@@ -1,8 +1,5 @@
 #include "checker.h"
-/*ERRORS HANDLED
-	1. error if there are more than 1 symbol
-	2. error if there is not designed enough space for the snake
-*/
+
 static void	check_snake(t_data *app)
 {
 	int	i;
@@ -51,3 +48,8 @@ void	checker(t_data *app, char *argv)
     check_exit(app);
     check_snake(app);
 }
+
+/*ERRORS HANDLED
+	1. error if there are more than 1 symbol
+	2. error if there is not designed enough space for the snake
+*/

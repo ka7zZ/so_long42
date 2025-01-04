@@ -6,28 +6,25 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:45:22 by aghergut          #+#    #+#             */
-/*   Updated: 2024/12/27 15:50:14 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:54:29 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lists.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *new_node)
 {
 	t_list	*temp;
 
-	if (lst != NULL)
-	{
-		if (ft_lstsize(*lst) > 0)
-		{
-			temp = *lst;
-			while (temp->next != NULL)
-				temp = temp->next;
-			temp->next = new;
-		}
-		else
-			*lst = new;
-	}
+	if (!lst || !new_node)
+		return ;
+	if (*lst == NULL)
+		*lst = new_node;
 	else
-		*lst = new;
+	{
+		temp = *lst;
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new_node;
+	}
 }
