@@ -4,11 +4,11 @@ void	initalize_data(t_data *app)
 {
 	app->game = NULL;
 	app->mlx = NULL;
-	app->win1 = NULL;
-	app->imgw1 = NULL;
+	app->win = NULL;
+	app->img_start = NULL;
 	app->map = NULL;
-	app->xw2 = 0;
-	app->yw2 = 0;
+	app->xgw = 0;
+	app->ygw = 0;
 }
 
 void	wall_init(t_data *app)
@@ -50,13 +50,11 @@ void    init_win1(t_data *app)
         ft_putstr_fd("Error loading mlx\n", 1);
 		return ;
     }
-    app->win1 = mlx_new_window(app->mlx, xpix, ypix, "Maze Munch");
-    if (!app->win1)
+    app->win = mlx_new_window(app->mlx, xpix, ypix, "Maze Munch");
+    if (!app->win)
 		destroy_game(app);
-    app->imgw1 = mlx_xpm_file_to_image(app->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
-    if (!app->imgw1)
+    app->img_start = mlx_xpm_file_to_image(app->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
+    if (!app->img_start)
         destroy_game(app);
-	mlx_put_image_to_window(app->mlx, app->win1, app->imgw1, 0, 0);
-    hooks(app);
-    mlx_loop(app->mlx);
+	mlx_put_image_to_window(app->mlx, app->win, app->img_start, 0, 0);
 }

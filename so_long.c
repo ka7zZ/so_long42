@@ -41,3 +41,29 @@ int main(int ac, char *argv[])
 	return (1); 
 }
 */
+
+int main(void)
+{
+	t_data  		*app;	
+	t_map			map;
+
+    app = malloc(sizeof(t_data));
+    if (!app)
+    {
+        ft_putstr_fd("Error: Memory allocation failed for app\n", 1);
+        return 1;
+    }  
+	app->game = &map;
+	initalize_data(app);
+	checker(app, "assets/maps/round2.ber");
+	init_win1(app);
+	start_hooks(app);
+	mlx_loop(app->mlx);
+    if (app->img_start)
+		mlx_destroy_image(app->mlx, app->img_start);
+	if (app->win)
+		mlx_destroy_window(app->mlx, app->win);
+	mlx_destroy_display(app->mlx);
+	free(app->mlx);
+	return (0);
+}

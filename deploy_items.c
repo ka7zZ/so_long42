@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 16:32:19 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/04 16:34:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:07:11 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ static void	deploy_fe(t_data *app, char c, int j, int i)
 	if (c == 'E')
 	{
 		assign_image(app, &(img->start_gate), addr->start_gate);
-		img->xeg = x;
-		img->yeg = y;
-		deploy_image(app, img->start_gate, img->xeg, img->yeg);
+		deploy_image(app, img->start_gate, x, y);
 	}
 }
 
@@ -70,35 +68,35 @@ static void deploy_snake(t_data *app, char c, int j, int i)
 {
 	
 	t_snake				*img_s;
-	t_list				*tail;
+	void				*snk_b;
 	t_list				*ptr;
 	t_map_fesg_addr		*addr;
+	int					img;
 
 	if (c == 'P')
 	{
+		img = IMAGE;
 		img_s = &(app->game->s);
 		addr = &(app->game->spr.fesg);
 		img_s->body = ft_lstnew(NULL);
 		img_s->xh_pos = (BLOCK * j) - IMAGE;
 		img_s->yh_pos = (BLOCK * i) - IMAGE;
 		assign_image(app, &(img_s->head), addr->snake_head);
-		tail = ft_lstnew(NULL);
-		assign_image(app, &(tail->content), addr->snake_body);
-		ft_lstadd_back(&(img_s->body), tail);
 		deploy_image(app, img_s->head, img_s->xh_pos, img_s->yh_pos);
+		snk_b = mlx_xpm_file_to_image(app->mlx, addr->snake_body, &img, &img);
+		ft_lstadd_back(&(img_s->body), ft_lstnew(snk_b));
+		ft_lstadd_back(&(img_s->body), ft_lstnew(snk_b));
 		img_s->xb_pos = img_s->xh_pos + IMAGE;
 		img_s->yb_pos = img_s->yh_pos;
 		ptr = img_s->body;
 		while (ptr != NULL)
 		{
-			deploy_image(app, tail->content, img_s->xb_pos, img_s->yb_pos);
+			deploy_image(app, snk_b, img_s->xb_pos, img_s->yb_pos);
 			img_s->xb_pos += IMAGE;
 			ptr = ptr->next;
 		}
-		ft_lstclear(&tail, free);
 	}
 }
-
 
 void	deploy_items(t_data *app)
 {
@@ -111,7 +109,6 @@ void	deploy_items(t_data *app)
 	fseg_init(app);
 	wall_init(app);
 	i = 0;
-	ft_printf("aqui deploy items\n");
 	map_width = ft_strlen(app->map[0]) - 1;
 	while(app->map[++i] != NULL)
 	{
@@ -120,12 +117,9 @@ void	deploy_items(t_data *app)
 		j = 0;
 		while (app->map[i][++j] != '\0' && j < map_width - 1)
 		{
-			ft_printf("item -->> %c\n", app->map[i][j]);
-			ft_printf("aqui while-while deploy items\n");
 			deploy_fe(app, app->map[i][j], j, i);
 			deploy_wall(app, app->map[i][j], j, i);
-			// deploy_snake(app, app->map[i][j], j, i);
-			ft_printf("aqui after 1st iter while-while deploy items\n");
+			deploy_snake(app, app->map[i][j], j, i);
 		}		
 	}
 }

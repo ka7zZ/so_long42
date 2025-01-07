@@ -1,6 +1,0 @@
-{
-   x11_writev_uninit
-   Memcheck:Param
-   writev(vector[0])
-   fun:writev
-}

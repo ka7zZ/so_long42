@@ -89,20 +89,21 @@ typedef struct Map_construct
 	t_items		item;
 	t_snake		s;
 	t_sprites	spr;
+	int			moves;
 }   t_map;
 
 // (DATAS)
 typedef struct	s_data {
 	t_map   *game;
 	void	*mlx;
-	void	*win1;
-	void	*imgw1;
+	void	*win;
+	void	*img_start;
 	char    **map;
-	int		xw2;
-	int		yw2;
+	int		xgw;
+	int		ygw;
 }   t_data;
 
-void    hooks(t_data *app);
+void    start_hooks(t_data *app);
 void	destroy_game(t_data *app);
 void	deploy_immutable(t_data *app);
 void	initalize_data(t_data *app);
@@ -113,5 +114,6 @@ void    deploy_image(t_data *app, void *image, int x, int y);
 void    assign_image(t_data *app, void **image, char *addr);
 void	deploy_items(t_data *app);
 void	game_window(t_data *app);
+int		free_start(t_data *app);
 
 #endif

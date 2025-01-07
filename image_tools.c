@@ -7,8 +7,6 @@ void    assign_image(t_data *app, void **image, char *addr)
 
     if (addr == NULL)
         exit(0);
-    width = IMAGE;
-	height = IMAGE;
 	*image = mlx_xpm_file_to_image(app->mlx, addr, &width, &height);
 	if (!(*image))
 		destroy_game(app);
@@ -16,5 +14,5 @@ void    assign_image(t_data *app, void **image, char *addr)
 
 void    deploy_image(t_data *app, void *image, int x, int y)
 {
-	mlx_put_image_to_window(app->mlx, app->win1, image, x, y);
+	mlx_put_image_to_window(app->mlx, app->win, image, x, y);
 }
