@@ -12,9 +12,9 @@
 
 // include SYS libs
 // #include <X11/keysym.h>
-
-# define BLOCK  126
-# define IMAGE  42
+# define X_BLOCK	126
+# define Y_BLOCK	84
+# define IMAGE	42
 
 //	WALL, COLLECTIBLES, ENEMY, PLAYER, EXIT ADDRESES
 
@@ -37,6 +37,7 @@ typedef struct	Sprites_paths
 	char	*ver_down;
 	char	*ver_wall;
 	char    *bg;
+	char	*black;
 }	t_sprites;
 
 // (INGAME) SNAKE
@@ -68,6 +69,7 @@ typedef struct Map_items
 	void	*exit_gate;
 	void	*start_gate;
 	void	*enemy;
+	void	*black;
 	int		xeg;
 	int		yeg;
 }	t_items;
@@ -83,11 +85,12 @@ typedef struct	s_data {
 	void		*win_game;
 	void		*img_start;
 	char    	**map;
+	char		*mv_str;
 	int			xgw;
 	int			ygw;
+	int			start;
 	int			moves;
 }   t_data;
-
 
 typedef struct Body_segment
 {
@@ -105,12 +108,13 @@ typedef struct Food_segment
 
 void    start_hooks(t_data *app);
 void	deploy_immutable(t_data *app);
+void	deploy_items(t_data *app);
 void    deploy_image(t_data *app, void *image, int x, int y);
 void    assign_image(t_data *app, void **image, char *addr);
-void	deploy_items(t_data *app);
+void	game_hooks(t_data *app);
 void	game_window(t_data *app);
 int		free_start(t_data *app);
 int		free_game(t_data *app);
-int		free_start(t_data *app);
+void	checker(t_data *app, char *argv);
 
 #endif

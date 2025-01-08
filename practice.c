@@ -1,4 +1,3 @@
-
 /* Functions of mlx categorized
 *****
 *****
@@ -1343,20 +1342,5 @@ void	put_snake(t_data *app, int x, int y)
 
 int main(void)
 {
-	t_data  		*app;	
-	t_map			map;
-
-    app = malloc(sizeof(t_data));
-    if (!app)
-    {
-        ft_putstr_fd("Error: Memory allocation failed for app\n", 1);
-        return 1;  // Exit if malloc fails
-    }  
-	app->game = &map;
-	init_data(app);
-	checker(app, "assets/maps/round2.ber");
-	init_win1(app);
-
-    free(app);
 	return (0);
 }

@@ -6,11 +6,16 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:07:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/08 14:02:01 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/08 18:45:38 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+// void	start_race(t_list *app)
+// {
+	
+// }
 
 static void	init_paths(t_data *app)
 {
@@ -31,23 +36,21 @@ static void	init_paths(t_data *app)
 	app->path.snake_body = "./assets/xpm/snake_body.xpm";
 	app->path.snake_hdead = "./assets/xpm/snake_hdead.xpm";
 	app->path.snake_head = "./assets/xpm/snake_head.xpm";
-}
-
-static void	game_hooks(t_data *app)
-{
-	mlx_hook(app->win_game, DestroyNotify, NoEventMask, free_game, app);
+	app->path.black = "./assets/xpm/black.xpm";
 }
 
 void	game_window(t_data *app)
 {	
 	int	i;
+	int	map_width;
 
 	i = 0;
+	map_width = ft_strlen(app->map[0]) - 1;
 	while(app->map[i] != NULL)
 		i++;
-	app->xgw = (ft_strlen(app->map[i - 1])) * BLOCK;
-	app->ygw = (i - 1) * BLOCK;
-	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw, "Maze munch");
+	app->xgw = ((ft_strlen(app->map[i - 1])) * X_BLOCK) - X_BLOCK;
+	app->ygw = (i - 1) * Y_BLOCK;
+	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw + IMAGE, "Maze munch");
 	if (!app->win_game)
 		free_start(app);
 	init_paths(app);

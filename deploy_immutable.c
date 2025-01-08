@@ -74,7 +74,38 @@ static void    deploy_borders(t_data *app)
 	}
 }
 
+static void	deploy_wall(t_data *app, int j, int i)
+{
+	t_walls		*img;
+	t_sprites	*addr;
+	int			x;
+	int			y;
+	
+	img = &(app->wall);
+	addr = &(app->path);
+	x = (X_BLOCK * j) - (IMAGE * 2);
+	y = (Y_BLOCK * i) - IMAGE;
+	deploy_image(app, img->ud_left, x, y);
+	deploy_image(app, img->side_hor, x + IMAGE, y);
+	deploy_image(app, img->ud_right, x + (IMAGE * 2), y);
+}
+
 void	deploy_immutable(t_data *app)
 {
+	int	i;
+	int	j;
+	int	map_width;
+
 	deploy_borders(app);
+	i = 0;
+	map_width = ft_strlen(app->map[i]) - 2;
+	while (app->map[++i] != NULL)
+	{
+		j = 0;
+		while (app->map[i][++j] != NULL && j < map_width)
+		{
+			if (app->map[i][j] == '1' && app->map[i + 1] != NULL)
+				deploy_wall(app, j, i);
+		}
+	}
 }
