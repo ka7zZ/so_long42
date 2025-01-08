@@ -17,19 +17,8 @@
 # define IMAGE  42
 
 //	WALL, COLLECTIBLES, ENEMY, PLAYER, EXIT ADDRESES
-typedef	struct Map_wall_addr
-{
-	char	*corner;
-	char	*hor_left;
-	char	*hor_right;
-	char	*hor_wall;
-	char	*ver_up;
-	char	*ver_down;
-	char	*ver_wall;
-	char    *bg;
-}	t_map_walls_addr;
 
-typedef	struct Map_fesg_addr
+typedef struct	Sprites_paths
 {
 	char	*egg;
 	char	*apple;
@@ -40,12 +29,14 @@ typedef	struct Map_fesg_addr
 	char	*snake_bdead;
 	char	*exit_gate;
 	char	*start_gate;
-}	t_map_fesg_addr;
-
-typedef struct	Sprites_addr
-{
-	t_map_walls_addr	walls;
-	t_map_fesg_addr		fesg;
+	char	*corner;
+	char	*hor_left;
+	char	*hor_right;
+	char	*hor_wall;
+	char	*ver_up;
+	char	*ver_down;
+	char	*ver_wall;
+	char    *bg;
 }	t_sprites;
 
 // (INGAME) SNAKE
@@ -53,10 +44,8 @@ typedef struct	Sprites_addr
 typedef struct	Snake {
 	void	*head;
 	t_list	*body;
-	int		xh_pos;
-	int		yh_pos;
-	int		xb_pos;
-	int		yb_pos;
+	int		x;
+	int		y;
 }   t_snake;
 
 // (INGAME) MAP
@@ -75,7 +64,7 @@ typedef struct Map_walls
 
 typedef struct Map_items
 {
-	void	*food;
+	t_list	*food;
 	void	*exit_gate;
 	void	*start_gate;
 	void	*enemy;
@@ -83,37 +72,45 @@ typedef struct Map_items
 	int		yeg;
 }	t_items;
 
-typedef struct Map_construct
-{
-	t_walls		wall;
-	t_items		item;
-	t_snake		s;
-	t_sprites	spr;
-	int			moves;
-}   t_map;
-
 // (DATAS)
 typedef struct	s_data {
-	t_map   *game;
-	void	*mlx;
-	void	*win;
-	void	*img_start;
-	char    **map;
-	int		xgw;
-	int		ygw;
+	t_walls		wall;
+	t_items		item;
+	t_snake		snake;
+	t_sprites	path;
+	void		*mlx;
+	void		*win_start;
+	void		*win_game;
+	void		*img_start;
+	char    	**map;
+	int			xgw;
+	int			ygw;
+	int			moves;
 }   t_data;
 
+
+typedef struct Body_segment
+{
+	void	*img;
+	int		x;
+	int		y;
+}	t_body;
+
+typedef struct Food_segment
+{
+	void	*img;
+	int		x;
+	int		y;
+}	t_food;
+
 void    start_hooks(t_data *app);
-void	destroy_game(t_data *app);
 void	deploy_immutable(t_data *app);
-void	initalize_data(t_data *app);
-void	wall_init(t_data *app);
-void	fseg_init(t_data *app);
-void	init_win1(t_data *app);
 void    deploy_image(t_data *app, void *image, int x, int y);
 void    assign_image(t_data *app, void **image, char *addr);
 void	deploy_items(t_data *app);
 void	game_window(t_data *app);
+int		free_start(t_data *app);
+int		free_game(t_data *app);
 int		free_start(t_data *app);
 
 #endif

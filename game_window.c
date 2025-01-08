@@ -6,80 +6,51 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:07:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/07 17:17:48 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:02:01 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "so_long.h"
 
-static void destroy_images(t_data *app)
+static void	init_paths(t_data *app)
 {
-	mlx_destroy_image(app->mlx, app->game->wall.bg);
-	mlx_destroy_image(app->mlx, app->game->wall.corner);
-	mlx_destroy_image(app->mlx, app->game->wall.lr_down);
-	mlx_destroy_image(app->mlx, app->game->wall.lr_up);
-	mlx_destroy_image(app->mlx, app->game->wall.ud_left);
-	mlx_destroy_image(app->mlx, app->game->wall.ud_right);
-	mlx_destroy_image(app->mlx, app->game->wall.side_hor);
-	mlx_destroy_image(app->mlx, app->game->wall.side_ver);
-	if (app->game->item.food)
-		mlx_destroy_image(app->mlx, app->game->item.food);
-	mlx_destroy_image(app->mlx, app->game->item.start_gate);
-	if (app->game->item.enemy)
-		mlx_destroy_image(app->mlx, app->game->item.exit_gate);
-	if (app->game->item.enemy)
-	mlx_destroy_image(app->mlx, app->game->item.enemy);
-	// mlx_destroy_image(app->mlx, snake->head);
-	// while (snake->body->next != NULL)
-	// {
-	// 	buff = snake->body->next;
-	// 	free(snake->body->content);
-	// 	snake->body = buff;	
-	// }
-	// free(snake->body->content);
-	// free(snake->body);
+	app->path.corner = "./assets/xpm/corner.xpm";
+	app->path.hor_left = "./assets/xpm/hor_left.xpm";
+	app->path.hor_wall = "./assets/xpm/hor_wall.xpm";
+	app->path.hor_right = "./assets/xpm/hor_right.xpm";
+	app->path.ver_up = "./assets/xpm/ver_up.xpm";
+	app->path.ver_down = "./assets/xpm/ver_down.xpm";
+	app->path.ver_wall = "./assets/xpm/ver_wall.xpm";
+	app->path.bg = "./assets/xpm/background.xpm";
+	app->path.egg = "./assets/xpm/egg.xpm";
+	app->path.apple = "./assets/xpm/food_apple.xpm";
+	app->path.enemy = "./assets/xpm/enemy.xpm";
+	app->path.exit_gate = "./assets/xpm/exit_gate.xpm";
+	app->path.start_gate = "./assets/xpm/start_gate.xpm";
+	app->path.snake_bdead = "./assets/xpm/snake_bdead.xpm";
+	app->path.snake_body = "./assets/xpm/snake_body.xpm";
+	app->path.snake_hdead = "./assets/xpm/snake_hdead.xpm";
+	app->path.snake_head = "./assets/xpm/snake_head.xpm";
 }
 
-
-static int	on_destroy(t_data *app)
+static void	game_hooks(t_data *app)
 {
-	int i;
-
-	if (app->map)
-	{
-		i = -1;
-		while(app->map[++i])
-			free(app->map[i]);
-		free(app->map);
-	}
-	if (app->game->wall.bg)
-		ft_printf("hereeee");
-	destroy_images(app);
-	exit(0);
+	mlx_hook(app->win_game, DestroyNotify, NoEventMask, free_game, app);
 }
-
-void	game_hooks(t_data *app)
-{
-	mlx_hook(app->win, DestroyNotify, NoEventMask, on_destroy, app);
-}
-
 
 void	game_window(t_data *app)
-{
+{	
 	int	i;
 
 	i = 0;
-	app->game = (t_map *)malloc(sizeof(t_map));
-	if (!app->game)
-		free_start(app);
 	while(app->map[i] != NULL)
 		i++;
 	app->xgw = (ft_strlen(app->map[i - 1])) * BLOCK;
 	app->ygw = (i - 1) * BLOCK;
-	app->win = mlx_new_window(app->mlx, app->xgw, app->ygw, "Maze munch");
-	if (!app->win)
-		destroy_game(app);
+	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw, "Maze munch");
+	if (!app->win_game)
+		free_start(app);
+	init_paths(app);
 	deploy_immutable(app);
 	deploy_items(app);
 	game_hooks(app);

@@ -9,10 +9,10 @@ void    assign_image(t_data *app, void **image, char *addr)
         exit(0);
 	*image = mlx_xpm_file_to_image(app->mlx, addr, &width, &height);
 	if (!(*image))
-		destroy_game(app);
+		free_game(app);
 }
 
 void    deploy_image(t_data *app, void *image, int x, int y)
 {
-	mlx_put_image_to_window(app->mlx, app->win, image, x, y);
+	mlx_put_image_to_window(app->mlx, app->win_game, image, x, y);
 }

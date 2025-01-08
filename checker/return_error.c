@@ -2,10 +2,8 @@
 
 void    free_app(t_data *app)
 {
-   int i;
+    int i;
 
-    if (app->game)
-        free(app->game);
 	if (!app->map || !(*app->map))
         return;
     i = 0;

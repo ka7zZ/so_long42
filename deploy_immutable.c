@@ -2,21 +2,17 @@
 
 static void	deploy_bg(t_data *app)
 {
-	t_walls				*img;
-	t_map_walls_addr	*addr;
 	int	y;
 	int	x;
 
-	img = &(app->game->wall);
-	addr = &(app->game->spr.walls);
-	assign_image(app, &(img->bg), addr->bg);
+	assign_image(app, &(app->wall.bg), app->path.bg);
 	y = IMAGE;
 	while (y < app->ygw)
 	{
 		x = IMAGE;
 		while (x < app->xgw)
 		{
-			deploy_image(app, img->bg, x, y);
+			deploy_image(app, app->wall.bg, x, y);
 			x += IMAGE;
 		}
 		y += IMAGE;
@@ -26,10 +22,10 @@ static void	deploy_bg(t_data *app)
 static void	deploy_corners(t_data *app)
 {
 	t_walls				*img;
-	t_map_walls_addr	*addr;
+	t_sprites			*addr;
 	
-	img = &(app->game->wall);
-	addr = &(app->game->spr.walls);
+	img = &(app->wall);
+	addr = &(app->path);
 	assign_image(app, &(img->corner), addr->corner);
 	assign_image(app, &(img->lr_up), addr->ver_up);
 	assign_image(app, &(img->lr_down), addr->ver_down);
@@ -52,12 +48,12 @@ static void	deploy_corners(t_data *app)
 static void    deploy_borders(t_data *app)
 {
 	t_walls				*img;
-	t_map_walls_addr	*addr;
+	t_sprites			*addr;
 	int x;
 	int y;
 
-	img = &(app->game->wall);
-	addr = &(app->game->spr.walls);
+	img = &(app->wall);
+	addr = &(app->path);
 	x = IMAGE * 2;
 	y = IMAGE * 2;
 	deploy_bg(app);
@@ -80,10 +76,5 @@ static void    deploy_borders(t_data *app)
 
 void	deploy_immutable(t_data *app)
 {
-	t_map	map;
-
-	app->game = &map;
-	wall_init(app);
-	fseg_init(app);
 	deploy_borders(app);
 }
