@@ -12,9 +12,8 @@
 
 // include SYS libs
 // #include <X11/keysym.h>
-# define X_BLOCK	126
-# define Y_BLOCK	84
-# define IMAGE	42
+# define X_BLOCK	126 // size of snake
+# define IMAGE	42 //pixels of images
 
 //	WALL, COLLECTIBLES, ENEMY, PLAYER, EXIT ADDRESES
 
@@ -40,23 +39,14 @@ typedef struct	Sprites_paths
 	char	*black;
 }	t_sprites;
 
-// (INGAME) SNAKE
-
-typedef struct	Snake {
-	void	*head;
-	t_list	*body;
-	int		x;
-	int		y;
-}   t_snake;
-
 // (INGAME) MAP
 
 typedef struct Map_walls
 {
-	void	*ud_left;
-	void	*ud_right;
-	void	*lr_up;
-	void	*lr_down;
+	void	*hor_left;
+	void	*hor_right;
+	void	*ver_up;
+	void	*ver_down;
 	void	*corner;
 	void	*side_hor;
 	void    *side_ver;
@@ -66,19 +56,20 @@ typedef struct Map_walls
 typedef struct Map_items
 {
 	t_list	*food;
+	t_list	*wseg;
+	t_list	*enemies;
 	void	*exit_gate;
 	void	*start_gate;
-	void	*enemy;
 	void	*black;
-	int		xeg;
-	int		yeg;
+	int		xsg;
+	int		ysg;
 }	t_items;
 
 // (DATAS)
 typedef struct	s_data {
-	t_walls		wall;
-	t_items		item;
-	t_snake		snake;
+	t_walls		walls;
+	t_items		items;
+	t_list		*snake;
 	t_sprites	path;
 	void		*mlx;
 	void		*win_start;
@@ -88,16 +79,20 @@ typedef struct	s_data {
 	char		*mv_str;
 	int			xgw;
 	int			ygw;
+	int			sx_pos;
+	int			sy_pos;
+	int			sx_last;
+	int			sy_last;
 	int			start;
 	int			moves;
 }   t_data;
 
-typedef struct Body_segment
+typedef struct Snake_segment
 {
 	void	*img;
 	int		x;
 	int		y;
-}	t_body;
+}	t_snake;
 
 typedef struct Food_segment
 {
@@ -106,15 +101,38 @@ typedef struct Food_segment
 	int		y;
 }	t_food;
 
-void    start_hooks(t_data *app);
-void	deploy_immutable(t_data *app);
-void	deploy_items(t_data *app);
-void    deploy_image(t_data *app, void *image, int x, int y);
-void    assign_image(t_data *app, void **image, char *addr);
-void	game_hooks(t_data *app);
-void	game_window(t_data *app);
+typedef struct Wall_segment
+{
+	int	x;
+	int	y;
+}	t_wseg;
+
+typedef struct Enemy_segment
+{
+	int		x;
+	int		y;
+}	t_enemy;
+
+// frees
+void	free_immutable(t_data *app);
+void	free_enemies(t_data *app);
+void	free_collectibles(t_data *app);
+void	free_snake(t_data *app);
+void	free_wallseg(t_data	*app);
 int		free_start(t_data *app);
 int		free_game(t_data *app);
+
+void    start_hooks(t_data *app);
+void    deploy_image(t_data *app, void *image, int x, int y);
+void    assign_image(t_data *app, void **image, char *addr);
+void	deploy_immutable(t_data *app);
+void	deploy_map(t_data *app);
+void	game_hooks(t_data *app);
+void	game_window(t_data *app);
+
+void	add_body(t_data*app, int x, int y);
 void	checker(t_data *app, char *argv);
+int		check_body(t_data *app, int new_x, int new_y);
+void	action(t_data *app, int new_x, int new_y);
 
 #endif

@@ -1,5 +1,6 @@
 #include "so_long.h"
 
+
 static void    init_win1(t_data *app)
 {
 	int	xpix;
@@ -20,6 +21,28 @@ static void    init_win1(t_data *app)
     if (!app->img_start)
         free_start(app);
 	mlx_put_image_to_window(app->mlx, app->win_start, app->img_start, 0, 0);
+}
+
+int	free_start(t_data *app)
+{
+	int i;
+
+	if (app->map)
+	{
+		i = -1;
+		while(app->map[++i])
+			free(app->map[i]);
+		free(app->map);
+	}
+	if (app->img_start)
+		mlx_destroy_image(app->mlx, app->img_start);
+	if (app->win_start)
+		mlx_destroy_window(app->mlx, app->win_start);
+	mlx_destroy_display(app->mlx);
+	free(app->mlx);
+	free(app);
+	exit(0);
+	return (0);
 }
 
 int main(void)

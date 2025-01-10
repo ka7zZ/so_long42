@@ -1,121 +1,98 @@
 #include "so_long.h"
 
-static void	free_collectibles(t_data *app)
+void	free_immutable(t_data *app)
+{
+	if (app->items.start_gate)
+		mlx_destroy_image(app->mlx, app->items.start_gate);
+	if (app->walls.bg)
+		mlx_destroy_image(app->mlx, app->walls.bg);
+	if (app->walls.corner)
+		mlx_destroy_image(app->mlx, app->walls.corner);
+	if (app->walls.ver_down)
+		mlx_destroy_image(app->mlx, app->walls.ver_down);
+	if (app->walls.ver_up)
+		mlx_destroy_image(app->mlx, app->walls.ver_up);
+	if (app->walls.hor_left)
+		mlx_destroy_image(app->mlx, app->walls.hor_left);
+	if (app->walls.hor_right)
+		mlx_destroy_image(app->mlx, app->walls.hor_right);
+	if (app->walls.side_hor)
+		mlx_destroy_image(app->mlx, app->walls.side_hor);
+	if (app->walls.side_ver)
+		mlx_destroy_image(app->mlx, app->walls.side_ver);
+	if (app->items.exit_gate)
+		mlx_destroy_image(app->mlx, app->items.exit_gate);
+}
+
+void	free_enemies(t_data *app)
+{
+	t_enemy	*buf;
+	t_list	*ptr;
+
+	while (app->items.enemies)
+	{
+		ptr = app->items.enemies->next;
+		buf = app->items.enemies->content;
+		if (buf)
+			free(buf);
+		free(app->items.enemies);
+		app->items.enemies = ptr;
+	}
+}
+
+void	free_collectibles(t_data *app)
 {
 	t_food	*food_buf;
 	t_list	*temp;
 	
-	if (app->item.food)
+	if (app->items.food)
 	{
-		while (app->item.food)
+		while (app->items.food)
 		{
-			temp = app->item.food->next;
-			food_buf = app->item.food->content;
+			temp = app->items.food->next;
+			food_buf = app->items.food->content;
 			if (food_buf)
 			{
 				mlx_destroy_image(app->mlx, food_buf->img);
 				free(food_buf);
 			}
-			free(app->item.food);
-			app->item.food = temp;	
+			free(app->items.food);
+			app->items.food = temp;	
 		}
 	}
 }
 
-static void	free_snake(t_data *app)
+void	free_snake(t_data *app)
 {
-	t_body	*buf;
+	t_snake	*buf;
 	t_list	*temp;
 	
-	if (app->snake.head)
-		mlx_destroy_image(app->mlx, app->snake.head);
-	if (app->snake.body)
+	while (app->snake)
 	{
-		while (app->snake.body)
+		temp = app->snake->next;
+		buf = app->snake->content;
+		if (buf)
 		{
-			temp = app->snake.body->next;
-			buf = app->snake.body->content;
-			if (buf)
-			{
-				mlx_destroy_image(app->mlx, buf->img);
-				free(buf);
-			}
-			free(app->snake.body);
-			app->snake.body = temp;
+			mlx_destroy_image(app->mlx, buf->img);
+			free(buf);
 		}
+		free(app->snake);
+		app->snake = temp;
 	}
 }
 
-static void	free_immutable(t_data *app)
+void	free_wallseg(t_data	*app)
 {
-	if (app->item.start_gate)
-		mlx_destroy_image(app->mlx, app->item.start_gate);
-	if (app->wall.bg)
-		mlx_destroy_image(app->mlx, app->wall.bg);
-	if (app->wall.corner)
-		mlx_destroy_image(app->mlx, app->wall.corner);
-	if (app->wall.lr_down)
-		mlx_destroy_image(app->mlx, app->wall.lr_down);
-	if (app->wall.lr_up)
-		mlx_destroy_image(app->mlx, app->wall.lr_up);
-	if (app->wall.ud_left)
-		mlx_destroy_image(app->mlx, app->wall.ud_left);
-	if (app->wall.ud_right)
-		mlx_destroy_image(app->mlx, app->wall.ud_right);
-	if (app->wall.side_hor)
-		mlx_destroy_image(app->mlx, app->wall.side_hor);
-	if (app->wall.side_ver)
-		mlx_destroy_image(app->mlx, app->wall.side_ver);
-	if (app->item.exit_gate)
-		mlx_destroy_image(app->mlx, app->item.exit_gate);
-	if (app->item.enemy)
-		mlx_destroy_image(app->mlx, app->item.enemy);
-}
+	t_wseg	*buf;
+	t_list	*ptr;
 
-int	free_game(t_data *app)
-{
-	int i;
-
-	ft_printf("Eliberating memory...\n");
-	if (app->map)
+	while (app->items.wseg)
 	{
-		i = -1;
-		while(app->map[++i])
-			free(app->map[i]);
-		free(app->map);
+		ptr = app->items.wseg->next;
+		buf = app->items.wseg->content;
+		if (buf)
+			free(buf);
+		free(app->items.wseg);
+		app->items.wseg = ptr;
 	}
-	if (app->item.black)
-		mlx_destroy_image(app->mlx, app->item.black);
-	free_collectibles(app);
-	free_snake(app);
-	free_immutable(app);
-	mlx_destroy_window(app->mlx, app->win_game);
-	mlx_destroy_display(app->mlx);
-	free(app->mlx);
-	free(app);
-	ft_printf("Completed!\n");
-	exit(0);
-	return (0);
-}
-
-int	free_start(t_data *app)
-{
-	int i;
-
-	if (app->map)
-	{
-		i = -1;
-		while(app->map[++i])
-			free(app->map[i]);
-		free(app->map);
-	}
-	if (app->img_start)
-		mlx_destroy_image(app->mlx, app->img_start);
-	if (app->win_start)
-		mlx_destroy_window(app->mlx, app->win_start);
-	mlx_destroy_display(app->mlx);
-	free(app->mlx);
-	free(app);
-	exit(0);
-	return (0);
 }

@@ -6,16 +6,38 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:07:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/08 18:45:38 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:59:37 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-// void	start_race(t_list *app)
-// {
-	
-// }
+int	free_game(t_data *app)
+{
+	int i;
+
+	if (app->map)
+	{
+		i = -1;
+		while(app->map[++i])
+			free(app->map[i]);
+		free(app->map);
+	}
+	if (app->items.black)
+		mlx_destroy_image(app->mlx, app->items.black);
+	free_collectibles(app);
+	free_snake(app);
+	free_wallseg(app);
+	free_immutable(app);
+	free_enemies(app);
+	mlx_destroy_window(app->mlx, app->win_game);
+	mlx_destroy_display(app->mlx);
+	free(app->mlx);
+	free(app);
+	ft_printf("Successfully exit!\n");
+	exit(0);
+	return (0);
+}
 
 static void	init_paths(t_data *app)
 {
@@ -41,20 +63,11 @@ static void	init_paths(t_data *app)
 
 void	game_window(t_data *app)
 {	
-	int	i;
-	int	map_width;
-
-	i = 0;
-	map_width = ft_strlen(app->map[0]) - 1;
-	while(app->map[i] != NULL)
-		i++;
-	app->xgw = ((ft_strlen(app->map[i - 1])) * X_BLOCK) - X_BLOCK;
-	app->ygw = (i - 1) * Y_BLOCK;
 	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw + IMAGE, "Maze munch");
 	if (!app->win_game)
 		free_start(app);
 	init_paths(app);
 	deploy_immutable(app);
-	deploy_items(app);
+	deploy_map(app);
 	game_hooks(app);
 }

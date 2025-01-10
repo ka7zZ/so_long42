@@ -2,28 +2,45 @@
 
 static int		on_keypress(int keycode, t_data *app)
 {
-	if (keycode == XK_Escape && !app->win_game)
+	t_list		*snake;
+	t_snake		*head;
+	
+	if ((keycode == XK_Return || keycode == XK_Escape) && !app->win_game)
+	{
+		if (keycode == XK_Escape)
 			free_start(app);
+		mlx_destroy_image(app->mlx, app->img_start);
+		mlx_destroy_window(app->mlx, app->win_start);
+		game_window(app);
+		return (0);
+	}
 	if (keycode == XK_Escape)
 			free_game(app);
-	// if (!app->start)
-	// 	app->start = 1;
 	if ((keycode == XK_w || keycode == XK_Up) && app->win_game)
-		ft_printf("W pressed!\n");
+	{
+		if (check_body(app, app->sx_pos, app->sy_pos - IMAGE))
+			return (0);
+		app->sy_pos -= IMAGE;
+	}
 	if ((keycode == XK_a || keycode == XK_Left) && app->win_game)
-		ft_printf("A pressed!\n");
+	{
+		if (check_body(app, app->sx_pos - IMAGE, app->sy_pos))
+			return (0);
+		app->sx_pos -= IMAGE;
+	}
 	if ((keycode == XK_s || keycode == XK_Down) && app->win_game)
-		ft_printf("S pressed!\n");
+	{
+		if (check_body(app, app->sx_pos, app->sy_pos + IMAGE))
+			return (0);
+		app->sy_pos += IMAGE;
+	}
 	if ((keycode == XK_d || keycode == XK_Right) && app->win_game)
-		ft_printf("D pressed!\n");
-	app->moves += 1;
-	if (app->moves > 0)
-		app->mv_str = ft_itoa(app->moves);
-	deploy_image(app, app->item.black, IMAGE * 3, app->ygw);
-	mlx_string_put(app->mlx, app->win_game, IMAGE * 3, app->ygw + 21, 0xFFFFFF, "Moves: ");
-	mlx_string_put(app->mlx, app->win_game, IMAGE * 4, app->ygw + 21, 0xFFFFFF, app->mv_str);
-	if (app->mv_str)
-		free(app->mv_str);
+	{
+		if (check_body(app, app->sx_pos + IMAGE, app->sy_pos))
+			return (0);
+		app->sx_pos += IMAGE;
+	}
+	action(app, app->sx_pos, app->sy_pos);
 	return (0);
 }
 
@@ -45,8 +62,9 @@ static int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
 
 static int	on_mouse(int button, int mouse_x, int mouse_y, t_data *app)
 {
-	ft_printf("mouse_x -->> %d\nmouse_y -->> %d\n", mouse_x, mouse_y);
+	return (ft_printf("mouse_x -->> %d\nmouse_y -->> %d\n", mouse_x, mouse_y));
 }
+
 void	start_hooks(t_data *app)
 {
 	mlx_hook(app->win_start, DestroyNotify, NoEventMask, free_start, app);

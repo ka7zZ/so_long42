@@ -31,26 +31,25 @@ static int	check_wall(t_data *app, int last_row)
 {
 	int	i;
 	int	j;
-	int	len;
+	int	inside_length;
 
 	i = -1;
 	while (app->map[++i] != NULL)
 	{
 		j = -1;
-		len = ft_strlen(app->map[i]);
-		if (ft_strchr(app->map[i], '\n'))
-			len -= 2; // -1 for \n, -1 for the last 1. This variable is for comprobation of the else if
 		if (app->map[i][++j] != '1')
 			return_error(app);
 		while (app->map[i][++j] != '\n' && app->map[i][j] != '\0')
 		{
-			
 			if ((i == 0 || i == last_row) && app->map[i][j] != '1')
 				return_error(app);
 		}
 		if (app->map[i][--j] != '1')
 			return_error(app);
 	}
+	inside_length = ft_strlen(app->map[i - 1]) -  2; // -2 represents the exclusion of side walls
+	app->xgw = (IMAGE * 2) + (inside_length * X_BLOCK); // IMAGE * 2 represents the side walls
+	app->ygw = i * IMAGE;
 	return (1);
 }
 
@@ -103,7 +102,7 @@ static void	read_map(t_data *app, char *argv)
     i = -1;
 	while (++i < lines)
 		app->map[i] = get_next_line(fd);
-	app->map[i] = '\0';
+	app->map[i] = NULL;
 }
 
 void	check_map(t_data *app, char *argv)
