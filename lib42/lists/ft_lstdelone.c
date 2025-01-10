@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:45:48 by aghergut          #+#    #+#             */
-/*   Updated: 2024/10/15 18:08:58 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/10 18:50:00 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 		if (del)
 			del(lst->content);
 		free(lst);
+		lst = NULL;
 	}
 }

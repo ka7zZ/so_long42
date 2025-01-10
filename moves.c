@@ -95,11 +95,13 @@ static int	check_food(t_data *app, int new_x, int new_y)
 {
 	t_list	*item;
 	t_list	*buf;
+	t_list	*prev;
 	t_food	*ptr;
 	int 	check;
 
 	check = 0;
 	item = app->items.food;
+	prev = NULL;
 	while (item)
 	{
 		buf = item->next;
@@ -109,7 +111,13 @@ static int	check_food(t_data *app, int new_x, int new_y)
 			mlx_destroy_image(app->mlx, ptr->img);
 			ft_lstdelone(item, free);
 			check = 1;
+			if (prev)
+				prev->next = buf;
+			else
+				app->items.food = buf;
+			break;
 		}
+		prev = item;
 		item = buf;
 	}
 	return (check);
@@ -120,7 +128,9 @@ void	action(t_data *app, int new_x, int new_y)
 	t_list	*ptr;
 	t_snake	*buf;
 
-	if (check_wall(app, new_x, new_y) || check_enemy(app, new_x, new_y) || !new_x || !new_y)
+	if (check_wall(app, new_x, new_y) || check_enemy(app, new_x, new_y) \
+	|| !new_x || !new_y \
+	|| new_x == app->xgw - IMAGE || new_y == app->ygw - IMAGE)
 	{
 		ft_printf("Game over!\n");
 		free_game(app);
