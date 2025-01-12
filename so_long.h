@@ -132,7 +132,6 @@ void	game_window(t_data *app);
 
 void	add_body(t_data*app, int x, int y);
 void	checker(t_data *app, char *argv);
-int		check_body(t_data *app, int new_x, int new_y);
 void	action(t_data *app, int new_x, int new_y);
 
 #endif

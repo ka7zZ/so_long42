@@ -18,8 +18,8 @@ static void	move_snake(t_data *app, char *type, int new_x, int new_y)
 	t_snake	*img;
 
 	ptr = app->snake;
-	app->sx_pos = new_x;
-	app->sy_pos = new_y;
+	if (ft_strncmp("food", type, 4))
+		add_body(app, app->sx_last, app->sy_last);
 	while (ptr)
 	{
 		img = ptr->content;
@@ -32,16 +32,8 @@ static void	move_snake(t_data *app, char *type, int new_x, int new_y)
 		new_y = app->sy_last;
 		ptr = ptr->next;
 	}
-	if (ft_strncmp("food", type, 4))
-	{
-		add_body(app, app->sx_last, app->sy_last);
-		deploy_image(app, img->img, app->sx_last, app->sy_last);
-	}
-	else
-		deploy_image(app, app->walls.bg, app->sx_last, app->sy_last);
+	deploy_image(app, app->walls.bg, app->sx_last, app->sy_last);
 }
-
-
 
 static int	check_wall(t_data *app, int new_x, int new_y)
 {
@@ -75,20 +67,46 @@ static int	check_enemy(t_data *app, int new_x, int new_y)
 	return (0);
 }
 
-int	check_body(t_data *app, int new_x, int new_y)
+static int gate(t_data *app, int new_x, int new_y)
+{
+	t_list	*food;
+
+	food = app->items.food;
+	if (!food)
+	{
+		mlx_destroy_image(app->mlx, app->items.start_gate);
+		assign_image(app, &(app->items.start_gate), app->path.exit_gate);
+		deploy_image(app, app->items.start_gate, app->items.xsg, app->items.ysg);
+		return (1);
+	}
+	return (0);
+}
+
+static int	check_body(t_data *app, int new_x, int new_y)
 {
 	t_list	*item;
 	t_snake	*ptr;
+	int		i;
+	int		k;
 
+	k = 2;
 	item = app->snake;
+	i = 0;
 	while (item)
 	{
 		ptr = item->content;
 		if (ptr->x == new_x && ptr->y == new_y)
-			return (1);
+		{
+			if (i == 1)
+				k = 1;
+			else
+				k = 0;
+			break;
+		}
+		i++;
 		item = item->next;
 	}
-	return (0);
+	return (k);
 }
 
 static int	check_food(t_data *app, int new_x, int new_y)
@@ -97,9 +115,7 @@ static int	check_food(t_data *app, int new_x, int new_y)
 	t_list	*buf;
 	t_list	*prev;
 	t_food	*ptr;
-	int 	check;
 
-	check = 0;
 	item = app->items.food;
 	prev = NULL;
 	while (item)
@@ -110,29 +126,41 @@ static int	check_food(t_data *app, int new_x, int new_y)
 		{
 			mlx_destroy_image(app->mlx, ptr->img);
 			ft_lstdelone(item, free);
-			check = 1;
 			if (prev)
 				prev->next = buf;
 			else
 				app->items.food = buf;
-			break;
+			return (0);
 		}
 		prev = item;
 		item = buf;
 	}
-	return (check);
+	return (1);
 }
 
 void	action(t_data *app, int new_x, int new_y)
 {
 	t_list	*ptr;
 	t_snake	*buf;
+	int		body;
 
+	app->sx_pos = new_x;
+	app->sy_pos = new_y;
+	if (gate(app, new_x, new_y) && new_x == app->items.xsg && new_y == app->items.ysg)
+	{
+		ft_printf("Congrats!!\n");
+		free_game(app);
+	}
+	body = check_body(app, app->sx_pos, app->sy_pos);
+	if (!body)
+		free_game(app);
+	if (body == 1)
+		return ;
 	if (check_wall(app, new_x, new_y) || check_enemy(app, new_x, new_y) \
 	|| !new_x || !new_y \
 	|| new_x == app->xgw - IMAGE || new_y == app->ygw - IMAGE)
 	{
-		ft_printf("Game over!\n");
+		ft_printf("The bricks aren't digestives!\n");
 		free_game(app);
 	}
 	if (check_food(app, new_x, new_y))
@@ -140,9 +168,10 @@ void	action(t_data *app, int new_x, int new_y)
 		move_snake(app, "food", new_x, new_y);
 		show_moves(app);
 		return ;
-	}		
+	}
 	move_snake(app, "normal", new_x, new_y);
-}	
+	show_moves(app);
+}
 /*SKETCH OF DIRECTION MOVE
 static void	direction_loop(t_data *app, int k)
 {

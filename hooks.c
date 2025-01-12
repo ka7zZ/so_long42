@@ -17,30 +17,13 @@ static int		on_keypress(int keycode, t_data *app)
 	if (keycode == XK_Escape)
 			free_game(app);
 	if ((keycode == XK_w || keycode == XK_Up) && app->win_game)
-	{
-		if (check_body(app, app->sx_pos, app->sy_pos - IMAGE))
-			return (0);
-		app->sy_pos -= IMAGE;
-	}
+		action(app, app->sx_pos, app->sy_pos - IMAGE);
 	if ((keycode == XK_a || keycode == XK_Left) && app->win_game)
-	{
-		if (check_body(app, app->sx_pos - IMAGE, app->sy_pos))
-			return (0);
-		app->sx_pos -= IMAGE;
-	}
+		action(app, app->sx_pos - IMAGE, app->sy_pos);
 	if ((keycode == XK_s || keycode == XK_Down) && app->win_game)
-	{
-		if (check_body(app, app->sx_pos, app->sy_pos + IMAGE))
-			return (0);
-		app->sy_pos += IMAGE;
-	}
+		action(app, app->sx_pos, app->sy_pos + IMAGE);
 	if ((keycode == XK_d || keycode == XK_Right) && app->win_game)
-	{
-		if (check_body(app, app->sx_pos + IMAGE, app->sy_pos))
-			return (0);
-		app->sx_pos += IMAGE;
-	}
-	action(app, app->sx_pos, app->sy_pos);
+		action(app, app->sx_pos + IMAGE, app->sy_pos);
 	return (0);
 }
 

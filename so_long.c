@@ -57,7 +57,7 @@ int main(void)
     }
 	ft_memset(app, 0, sizeof(t_data));
 	//	CHECK MAP FORMAT
-	checker(app, "assets/maps/round2.ber");
+	checker(app, "assets/maps/round4.ber");
 	//	INITIALISE FIRST WINDOW
 	init_win1(app);
 	//	DEFINING CLICK/KEYBOARD ACTIONS
