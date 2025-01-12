@@ -153,7 +153,10 @@ void	action(t_data *app, int new_x, int new_y)
 	}
 	body = check_body(app, app->sx_pos, app->sy_pos);
 	if (!body)
+	{
+		ft_printf("Can't eat your own tale!\n");
 		free_game(app);
+	}
 	if (body == 1)
 		return ;
 	if (check_wall(app, new_x, new_y) || check_enemy(app, new_x, new_y) \
