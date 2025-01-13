@@ -10,13 +10,6 @@ created:
 
 
 todo:
--> map:
-    - put the food
-    - put the exit gate
-    - put the snake
 -> continuosly moving the snake in a direction
--> logic of the food eating
--> increment the snake 
 -> keep the scoring
 -> enemy showdown
--> quit the game

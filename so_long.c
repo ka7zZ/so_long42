@@ -1,6 +1,5 @@
 #include "so_long.h"
 
-
 static void    init_win1(t_data *app)
 {
 	int	xpix;
@@ -16,10 +15,14 @@ static void    init_win1(t_data *app)
     }
     app->win_start = mlx_new_window(app->mlx, xpix, ypix, "Maze Munch");
     if (!app->win_start)
-		free_start(app);
+    {
+        free_start(app);
+    }
     app->img_start = mlx_xpm_file_to_image(app->mlx, "assets/xpm/begin.xpm", &xpix, &ypix);
     if (!app->img_start)
+    {
         free_start(app);
+    }
 	mlx_put_image_to_window(app->mlx, app->win_start, app->img_start, 0, 0);
 }
 
@@ -45,25 +48,30 @@ int	free_start(t_data *app)
 	return (0);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	t_data  		*app;	
+    char            *map_path;
 
-    app = malloc(sizeof(t_data));
-    if (!app)
+    if (argc != 2)
     {
-        ft_putstr_fd("Error: Memory allocation failed for app\n", 1);
+        ft_putstr_fd("Error: Invalid number of arguments\n", 1);
         return 1;
     }
+    map_path = ft_strdup("assets/maps/");
+    app = malloc(sizeof(t_data));
+    if (!map_path || !app)
+    {
+        ft_putstr_fd("Error: Memory allocation failed\n", 1);
+        return 1;
+    }
+    map_path = ft_strjoin(map_path, argv[1]);
 	ft_memset(app, 0, sizeof(t_data));
-	//	CHECK MAP FORMAT
-	checker(app, "assets/maps/round4.ber");
-	//	INITIALISE FIRST WINDOW
+	checker(app, map_path);
 	init_win1(app);
-	//	DEFINING CLICK/KEYBOARD ACTIONS
 	start_hooks(app);
-
 	mlx_loop(app->mlx);
-
+    free(map_path);
+    free(app);
 	return (0);
 }
