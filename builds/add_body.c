@@ -6,13 +6,13 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:22:36 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 14:22:39 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:10:48 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builds.h"
 
-void	add_body(t_data*app, int x, int y)
+int	add_body(t_data*app, int x, int y)
 {
 	t_snake		*seg;
 
@@ -26,5 +26,5 @@ void	add_body(t_data*app, int x, int y)
 	seg->x = x;
 	seg->y = y;
 	ft_lstadd_back(&(app->snake), ft_lstnew(seg));
-	
+	return (0);
 }

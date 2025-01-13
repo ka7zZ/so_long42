@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 15:23:40 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:10:13 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	deploy_items(t_data *app)
 		while (app->map[i][++j] != '\0' && j < map_width - 1)
 		{
 			if (ft_strchr("CE", app->map[i][j]))
-				deploy_ce(app, app->map[i][j],j, i);
+				deploy_ce(app, app->map[i][j], j, i);
 			else if (app->map[i][j] == 'P')
 				deploy_snake(app, j, i);
 			else if (app->map[i][j] == '1' && app->map[i + 1] != NULL)

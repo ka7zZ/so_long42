@@ -6,13 +6,13 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:49 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 15:21:50 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:28:21 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-void	check_wall(t_data *app, int new_x, int new_y)
+int	check_wall(t_data *app, int new_x, int new_y)
 {
 	t_list	*item;
 	t_wseg	*ptr;
@@ -34,6 +34,8 @@ void	check_wall(t_data *app, int new_x, int new_y)
 	if (i)
 	{
 		ft_printf("The bricks aren't digestives!\n");
-		free_game(app);
+		dead_body(app);
+        return (i);
 	}
+    return (i);
 }

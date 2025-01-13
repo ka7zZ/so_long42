@@ -18,7 +18,7 @@
     "lists.h": "c",
     "deploy_items": "cpp",
     "ingame.h": "c"
-},
+  },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

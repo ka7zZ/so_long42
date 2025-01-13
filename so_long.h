@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
+/*   Updated: 2025/01/13 17:42:36 by aghergut         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 #   define SO_LONG_H
 
@@ -95,7 +107,6 @@ typedef struct	s_data {
 	int			sy_pos;
 	int			sx_last;
 	int			sy_last;
-	int			start;
 	int			moves;
 }   t_data;
 

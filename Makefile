@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/01/13 17:19:09 by aghergut         ###   ########.fr        #
+#    Updated: 2025/01/13 18:36:06 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRCS2 = $(BUILDS_FOLDER)add_body.c \
 		$(BUILDS_FOLDER)free_items.c \
 		$(BUILDS_FOLDER)game_window.c \
 		$(BUILDS_FOLDER)hooks.c \
-		$(BUILDS_FOLDER)utils.c
+		$(BUILDS_FOLDER)utils.c \
+        $(BUILDS_FOLDER)dead_body.c
 SRCS3 = $(INGAME_FOLDER)check_body.c \
 		$(INGAME_FOLDER)check_enemy.c \
 		$(INGAME_FOLDER)check_food.c \

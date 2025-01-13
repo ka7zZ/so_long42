@@ -6,13 +6,13 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 14:47:32 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:08:41 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builds.h"
 
-static void	free_wallseg(t_data	*app)
+static int	free_wallseg(t_data	*app)
 {
 	t_wseg	*buf;
 	t_list	*ptr;
@@ -26,9 +26,10 @@ static void	free_wallseg(t_data	*app)
 		free(app->items.wseg);
 		app->items.wseg = ptr;
 	}
+    return (0);
 }
 
-static void	free_immutable(t_data *app)
+static int	free_immutable(t_data *app)
 {
 	if (app->items.start_gate)
 		mlx_destroy_image(app->mlx, app->items.start_gate);
@@ -51,9 +52,10 @@ static void	free_immutable(t_data *app)
 	if (app->items.exit_gate)
 		mlx_destroy_image(app->mlx, app->items.exit_gate);
     free_wallseg(app);
+    return (0);
 }
 
-static void	free_collectibles(t_data *app)
+static int	free_collectibles(t_data *app)
 {
 	t_food	*food_buf;
 	t_list	*temp;
@@ -74,14 +76,14 @@ static void	free_collectibles(t_data *app)
 			app->items.food = temp;	
 		}
 	}
+    return (0);
 }
 
-static void	free_snake(t_data *app)
+static int	free_snake(t_data *app)
 {
 	t_snake	*buf;
 	t_list	*temp;
 	
-    free_collectibles(app);
 	while (app->snake)
 	{
 		temp = app->snake->next;
@@ -94,13 +96,15 @@ static void	free_snake(t_data *app)
 		free(app->snake);
 		app->snake = temp;
 	}
+    return (0);
 }
 
-void	free_items(t_data *app)
+int	free_items(t_data *app)
 {
 	t_enemy	*buf;
 	t_list	*ptr;
 
+    free_collectibles(app);
     free_snake(app);
 	while (app->items.enemies)
 	{
@@ -111,4 +115,5 @@ void	free_items(t_data *app)
 		free(app->items.enemies);
 		app->items.enemies = ptr;
 	}
+    return (0);
 }

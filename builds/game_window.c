@@ -6,13 +6,13 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:29:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 14:30:25 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:05:59 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builds.h"
 
-static void	init_paths(t_data *app)
+static int init_paths(t_data *app)
 {
 	app->path.corner = "./assets/xpm/corner.xpm";
 	app->path.hor_left = "./assets/xpm/hor_left.xpm";
@@ -32,9 +32,10 @@ static void	init_paths(t_data *app)
 	app->path.snake_hdead = "./assets/xpm/snake_hdead.xpm";
 	app->path.snake_head = "./assets/xpm/snake_head.xpm";
 	app->path.black = "./assets/xpm/black.xpm";
+    return (0);
 }
 
-void	game_window(t_data *app)
+int	game_window(t_data *app)
 {	
 	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw + IMAGE, "Maze munch");
 	if (!app->win_game)
@@ -43,4 +44,5 @@ void	game_window(t_data *app)
 	deploy_immutable(app);
 	deploy_items(app);
 	game_hooks(app);
+    return (0);
 }
