@@ -6,18 +6,18 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:30:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 18:32:24 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:36:18 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builds.h"
 
-static int	action(t_data *app, int new_x, int new_y)
+static int	action (t_data *app, int new_x, int new_y)
 {
 	int		body;
 	
-	if (new_x == app->items.xsg && new_y == app->items.ysg)
-		return (0);
+	if (app->items.finish)
+		change_skin(app);
 	check_gate(app, new_x, new_y);
 	body = check_body(app, new_x, new_y);
 	if (!body)
@@ -27,11 +27,40 @@ static int	action(t_data *app, int new_x, int new_y)
 	app->sx_pos = new_x;
 	app->sy_pos = new_y;
 	if (check_wall(app, new_x, new_y))
-		while(1);
+		free_game(app);
 	if (check_food(app, new_x, new_y))
 		add_body(app, app->sx_last, app->sy_last);
 	moving_around(app, new_x, new_y);
 	show_moves(app);
+	return (0);
+}
+
+static int	key_hook(t_data *app)
+{
+	if (app->w_press)
+	{
+		app->w_press = 0;
+		app->sy_pos -= IMAGE;
+		action(app, app->sx_pos, app->sy_pos);
+	}
+	if (app->a_press)
+	{
+		app->a_press = 0;
+		app->sx_pos -= IMAGE;
+		action(app, app->sx_pos, app->sy_pos);
+	}
+	if (app->s_press)
+	{
+		app->s_press = 0;
+		app->sy_pos += IMAGE;
+		action(app, app->sx_pos, app->sy_pos);
+	}
+	if (app->d_press)
+	{
+		app->d_press = 0;
+		app->sx_pos += IMAGE;
+		action(app, app->sx_pos, app->sy_pos);
+	}
 	return (0);
 }
 
@@ -49,13 +78,14 @@ static int		on_keypress(int keycode, t_data *app)
 	if (keycode == XK_Escape)
 			free_game(app);
 	if ((keycode == XK_w || keycode == XK_Up) && app->win_game)
-		action(app, app->sx_pos, app->sy_pos - IMAGE);
+		app->w_press = 1;
 	if ((keycode == XK_a || keycode == XK_Left) && app->win_game)
-		action(app, app->sx_pos - IMAGE, app->sy_pos);
+		app->a_press = 1;
 	if ((keycode == XK_s || keycode == XK_Down) && app->win_game)
-		action(app, app->sx_pos, app->sy_pos + IMAGE);
+		app->s_press = 1;
 	if ((keycode == XK_d || keycode == XK_Right) && app->win_game)
-		action(app, app->sx_pos + IMAGE, app->sy_pos);
+		app->d_press = 1;
+	key_hook(app);
 	return (0);
 }
 
@@ -90,6 +120,17 @@ int	start_hooks(t_data *app)
 int	game_hooks(t_data *app)
 {
 	mlx_hook(app->win_game, DestroyNotify, NoEventMask, free_game, app);
-	mlx_key_hook(app->win_game, on_keypress, app);
+	mlx_loop_hook(app->mlx, mlx_key_hook(app->win_game, on_keypress, app), app);
 	return (0);
 }
+
+
+
+/* passing by gate with the snake 
+	if (\
+	new_x == app->items.xgate \
+	&& new_y == app->items.ygate \
+	&& !app->items.finish\
+	)
+		return (0);	
+	*/

@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/01/13 18:36:06 by aghergut         ###   ########.fr        #
+#    Updated: 2025/01/15 10:53:26 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,16 +39,18 @@ INGAME_FOLDER = ingame/
 
 SRCS1 = $(CHECKMAP_FOLDER)check_map.c \
 		$(CHECKMAP_FOLDER)checker.c \
-		$(CHECKMAP_FOLDER)return_error.c
+		$(CHECKMAP_FOLDER)error_checkmap.c
 SRCS2 = $(BUILDS_FOLDER)add_body.c \
+		$(BUILDS_FOLDER)anime_loops.c \
+		$(BUILDS_FOLDER)deploy_anime.c \
 		$(BUILDS_FOLDER)deploy_immutable.c \
 		$(BUILDS_FOLDER)deploy_items.c \
 		$(BUILDS_FOLDER)free_game.c \
 		$(BUILDS_FOLDER)free_items.c \
 		$(BUILDS_FOLDER)game_window.c \
 		$(BUILDS_FOLDER)hooks.c \
-		$(BUILDS_FOLDER)utils.c \
-        $(BUILDS_FOLDER)dead_body.c
+		$(BUILDS_FOLDER)snake_body.c \
+		$(BUILDS_FOLDER)utils.c
 SRCS3 = $(INGAME_FOLDER)check_body.c \
 		$(INGAME_FOLDER)check_enemy.c \
 		$(INGAME_FOLDER)check_food.c \
@@ -63,9 +65,9 @@ OBJS_DIR_INGAME = $(INGAME_FOLDER)objs/
 OBJS_DIR_MAIN = objs/
 
 OBJS = $(SRCS1:$(CHECKMAP_FOLDER)%.c=$(OBJS_DIR_CHECKMAP)%.o) \
-       $(SRCS2:$(BUILDS_FOLDER)%.c=$(OBJS_DIR_BUILDS)%.o) \
-       $(SRCS3:$(INGAME_FOLDER)%.c=$(OBJS_DIR_INGAME)%.o) \
-       $(MAIN:%.c=$(OBJS_DIR_MAIN)%.o)
+	   $(SRCS2:$(BUILDS_FOLDER)%.c=$(OBJS_DIR_BUILDS)%.o) \
+	   $(SRCS3:$(INGAME_FOLDER)%.c=$(OBJS_DIR_INGAME)%.o) \
+	   $(MAIN:%.c=$(OBJS_DIR_MAIN)%.o)
 
 INCLUDES = -Imlx -Ilibft -I.
 

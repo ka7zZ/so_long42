@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 15:11:51 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 09:46:52 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	deploy_corners(t_data *app)
 	deploy_image(app, img->hor_right, app->xgw - (IMAGE * 2), app->ygw - IMAGE);
 }
 
-void    deploy_immutable(t_data *app)
+void		deploy_immutable(t_data *app)
 {
 	t_wbox				*img;
 	t_sprites			*addr;

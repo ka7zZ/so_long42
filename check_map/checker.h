@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:19 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 16:08:11 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:21:08 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void    checker(t_data *app, char *argv);
 void	check_map(t_data *app, char *argv);
-void	return_error(t_data *app);
-void    free_app(t_data *app);
+void	error_checkmap(t_data *app);
+void    free_map(char **map);
 
 #endif

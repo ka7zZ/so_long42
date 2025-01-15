@@ -51,27 +51,25 @@ int	free_start(t_data *app)
 int main(int argc, char **argv)
 {
 	t_data  		*app;	
-    char            *map_path;
 
     if (argc != 2)
     {
         ft_putstr_fd("Error: Invalid number of arguments\n", 1);
         return 1;
     }
-    map_path = ft_strdup("assets/maps/");
     app = malloc(sizeof(t_data));
-    if (!map_path || !app)
+    if (!app)
     {
         ft_putstr_fd("Error: Memory allocation failed\n", 1);
         return 1;
     }
-    map_path = ft_strjoin(map_path, argv[1]);
 	ft_memset(app, 0, sizeof(t_data));
-	checker(app, map_path);
+	ft_printf("here\n");
+	app->map_arg = ft_strjoin("./assets/maps/", argv[1]);
+	checker(app, app->map_arg);
 	init_win1(app);
 	start_hooks(app);
 	mlx_loop(app->mlx);
-    free(map_path);
     free(app);
 	return (0);
 }

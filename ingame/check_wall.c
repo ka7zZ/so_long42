@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:49 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 18:28:21 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:54:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	check_wall(t_data *app, int new_x, int new_y)
 	if (i)
 	{
 		ft_printf("The bricks aren't digestives!\n");
-		dead_body(app);
+		if (!app->items.food)
+			change_skin(app);
         return (i);
 	}
     return (i);

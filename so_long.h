@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 17:42:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:20:03 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,45 @@ typedef struct Wall_segment
 
 typedef struct Enemy_segment
 {
+	void	*img;
 	int		x;
 	int		y;
 }	t_enemy;
+
+typedef struct Gate_segment
+{
+	void	*img;
+	int		x;
+	int		y;
+}	t_gate;
+
+typedef struct	Animated_paths
+{
+	char	*enemy0;
+	char	*enemy1;
+	char	*enemy2;
+	char	*enemy3;
+	char	*enemy4;
+	char	*gate0;
+	char	*gate1;
+	char	*gate2;
+	char	*gate3;
+	char	*gate4;
+	char	*gate5;
+	char	*gate6;
+}	t_animated;
 
 typedef struct	Sprites_paths
 {
 	char	*egg;
 	char	*apple;
 	char	*enemy;
-	char	*snake_head;
-	char	*snake_body;
-	char	*snake_hdead;
-	char	*snake_bdead;
-	char	*exit_gate;
-	char	*start_gate;
+	char	*snake_ghead;
+	char	*snake_gdhead;
+	char	*snake_gbody;
+	char	*snake_yhead;
+	char	*snake_ydhead;
+	char	*snake_ybody;
 	char	*corner;
 	char	*hor_left;
 	char	*hor_right;
@@ -83,11 +107,11 @@ typedef struct Items_box
 	t_list	*food;
 	t_list	*wseg;
 	t_list	*enemies;
-	void	*exit_gate;
-	void	*start_gate;
+	t_list	*gate;
 	void	*black;
-	int		xsg;
-	int		ysg;
+	int		xgate;
+	int		ygate;
+	int		finish;
 }	t_ibox;
 
 typedef struct	s_data {
@@ -95,19 +119,27 @@ typedef struct	s_data {
 	t_ibox		items;
 	t_list		*snake;
 	t_sprites	path;
+	t_animated	anime;
 	void		*mlx;
 	void		*win_start;
 	void		*win_game;
 	void		*img_start;
 	char    	**map;
+	char		*map_arg;
 	char		*mv_str;
+	char		s_type;
 	int			xgw;
 	int			ygw;
 	int			sx_pos;
 	int			sy_pos;
 	int			sx_last;
 	int			sy_last;
+	int			w_press;
+	int			a_press;
+	int			s_press;
+	int			d_press;
 	int			moves;
+	int			start;
 }   t_data;
 
 // include own folder's libs

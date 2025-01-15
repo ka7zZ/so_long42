@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 15:50:56 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:20:37 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	check_snake(t_data *app)
 		}
 	}
 	if (s != 1)
-		return_error(app);	
+		error_checkmap(app);	
 }
 
 static void	check_exit(t_data *app)
@@ -51,7 +51,7 @@ static void	check_exit(t_data *app)
 		}
 	}
 	if (s != 1)
-		return_error(app);			
+		error_checkmap(app);			
 }
 
 void	checker(t_data *app, char *argv)

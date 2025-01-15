@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 18:10:13 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:11:36 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,26 @@ static void deploy_snake(t_data *app, int j, int i)
 		deploy_image(app, buf->img, buf->x, buf->y);
 		ptr = ptr->next;
 	}
+	app->s_type = 'g';
 }
 
-static void	deploy_ce(t_data *app, char ch, int j, int i)
+static void	deploy_col(t_data *app, int j, int i)
 {
 	t_food		*col;
 	static int	n_food = 0;
 
-	if (ch == 'C')
-	{
-		n_food++;
-		col = (t_food *)malloc(sizeof(t_food));
-		if (!col)
-			free_start(app);
-		if (n_food % 2 == 0)
-			assign_image(app, &(col->img), app->path.egg);
-		else
-			assign_image(app, &(col->img), app->path.apple);
-		col->x = (X_BLOCK * j) - (IMAGE * 2);
-		col->y = IMAGE * i;
-		ft_lstadd_back(&(app->items.food), ft_lstnew(col));	
-		deploy_image(app, col->img, col->x, col->y);
-	}
-	if (ch == 'E')
-	{
-		app->items.xsg = (X_BLOCK * j) - (IMAGE * 2);
-		app->items.ysg = IMAGE * i;
-		assign_image(app, &(app->items.start_gate), app->path.start_gate);
-		deploy_image(app, app->items.start_gate, app->items.xsg, app->items.ysg);
-	}
+	n_food++;
+	col = (t_food *)malloc(sizeof(t_food));
+	if (!col)
+		free_start(app);
+	if (n_food % 2 == 0)
+		assign_image(app, &(col->img), app->path.egg);
+	else
+		assign_image(app, &(col->img), app->path.apple);
+	col->x = (X_BLOCK * j) - (IMAGE * 2);
+	col->y = IMAGE * i;
+	ft_lstadd_back(&(app->items.food), ft_lstnew(col));	
+	deploy_image(app, col->img, col->x, col->y);
 }
 
 static void	deploy_wall(t_data *app, int j, int i)
@@ -85,28 +76,30 @@ static void	deploy_wall(t_data *app, int j, int i)
 	ft_lstadd_back(&(app->items.wseg), ft_lstnew(wall_seg3));
 }
 
-void	deploy_items(t_data *app)
+void		deploy_items(t_data *app)
 {
-	int					i;
-	int					j;
-	int					map_width;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	assign_image(app, &(app->items.black), app->path.black);
-	map_width = ft_strlen(app->map[i]) - 1;
 	while(app->map[++i] != NULL)
 	{
 		if (app->map[i + 1] == NULL)
 			break;
 		j = 0;
-		while (app->map[i][++j] != '\0' && j < map_width - 1)
+		while (app->map[i][++j] != '\0' && j < ft_strlen(app->map[i]) - 2)
 		{
-			if (ft_strchr("CE", app->map[i][j]))
-				deploy_ce(app, app->map[i][j], j, i);
+			if (app->map[i][j] == 'C')
+				deploy_col(app, j, i);
 			else if (app->map[i][j] == 'P')
 				deploy_snake(app, j, i);
 			else if (app->map[i][j] == '1' && app->map[i + 1] != NULL)
 				deploy_wall(app, j, i);
+			else if (app->map[i][j] == 'E')
+				deploy_gate_anim(app, j, i);
+			else if (app->map[i][j] == 'I')
+				add_enemy_anim(app, j, i);
 		}		
 	}
 }

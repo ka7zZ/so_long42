@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:22:36 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 18:10:48 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:16:06 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	add_body(t_data*app, int x, int y)
 	if (!seg)
 		free_game(app);
 	if (!app->snake)
-		assign_image(app, &(seg->img), app->path.snake_head);
+		assign_image(app, &(seg->img), app->path.snake_ghead);
 	else
-		assign_image(app, &(seg->img), app->path.snake_body);
+		assign_image(app, &(seg->img), app->path.snake_gbody);
 	seg->x = x;
 	seg->y = y;
 	ft_lstadd_back(&(app->snake), ft_lstnew(seg));

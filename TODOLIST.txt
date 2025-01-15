@@ -10,6 +10,11 @@ created:
 
 
 todo:
--> continuosly moving the snake in a direction
--> keep the scoring
--> enemy showdown
+-> put snake on the map correctly
+-> put enemy on the map correctly
+-> put gate on the mao correctly
+-> when no food -> animation of gate
+-> enemies animaton continuosly??
+-> inside of a loop put the hooks for practice the aall going snake
+
+-> trying mlx_loop_check!!!!

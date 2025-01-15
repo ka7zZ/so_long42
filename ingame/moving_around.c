@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:43 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 17:50:34 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/15 10:18:30 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	show_moves(t_data *app)
 {
 	app->moves += 1;
+	ft_printf("Moves: %d\n", app->moves);
 	if (app->moves > 0)
 		app->mv_str = ft_itoa(app->moves);
 	deploy_image(app, app->items.black, IMAGE * 3, app->ygw);
