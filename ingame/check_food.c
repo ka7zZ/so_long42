@@ -6,18 +6,18 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:04 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/13 15:22:05 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:11:27 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-int	check_food(t_data *app, int new_x, int new_y)
+int	check_food(t_data *app, int x, int y)
 {
-	t_list	*item;
-	t_list	*buf;
-	t_list	*prev;
-	t_food	*ptr;
+	t_list	*item; // food list pointer
+	t_list	*buf;  // next food list pointer
+	t_list	*prev; // previous food list pointer
+	t_food	*ptr;  // food pointer
 
 	item = app->items.food;
 	prev = NULL;
@@ -25,7 +25,7 @@ int	check_food(t_data *app, int new_x, int new_y)
 	{
 		buf = item->next;
 		ptr = item->content;
-		if (ptr && ptr->x == new_x && ptr->y == new_y)
+		if (ptr && ptr->x == x && ptr->y == y)
 		{
 			mlx_destroy_image(app->mlx, ptr->img);
 			ft_lstdelone(item, free);

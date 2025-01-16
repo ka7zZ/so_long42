@@ -6,37 +6,35 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:49 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 10:54:34 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:37:36 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-int	check_wall(t_data *app, int new_x, int new_y)
+int	check_wall(t_data *app, int x, int y)
 {
 	t_list	*item;
 	t_wseg	*ptr;
 	int		i;
 
 	i = 0;
-	if (!new_x || !new_y)
+	if (!x || !y)
 		i = 1;
-	if (new_x == app->xgw - IMAGE || new_y == app->ygw - IMAGE)
+    if (x == app->xpos_win - IMAGE || y == app->ypos_win - IMAGE)
 		i = 1;
 	item = app->items.wseg;
 	while (item)
 	{
 		ptr = item->content;
-		if (ptr->x == new_x && ptr->y == new_y)
+		if (ptr->x == x && ptr->y == y)
 			i = 1;
 		item = item->next;
 	}
 	if (i)
-	{
+    {
+        dead_head(app, app->s_type);
 		ft_printf("The bricks aren't digestives!\n");
-		if (!app->items.food)
-			change_skin(app);
-        return (i);
-	}
+    }
     return (i);
 }

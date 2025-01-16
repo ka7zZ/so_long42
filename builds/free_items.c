@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 10:26:25 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:07:58 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	free_gw(t_data	*app)
 		free(app->items.wseg);
 		app->items.wseg = ptr;
 	}
+    free(app->items.wseg->content);
 	while (app->items.gate)
 	{
 		ptr = app->items.gate->content;
@@ -36,7 +37,8 @@ static int	free_gw(t_data	*app)
 		free(app->items.gate);
 		app->items.gate = ptr;
 	}
-    return (0);
+    free(app->items.gate->content);
+    return (free(app->items.wseg), free(app->items.gate), 0);
 }
 
 static int	free_immutable(t_data *app)
@@ -66,7 +68,7 @@ static int	free_collectibles(t_data *app)
 	t_food	*food_buf;
 	t_list	*temp;
 	
-    free_immutable(app);
+    
 	if (app->items.food)
 	{
 		while (app->items.food)
@@ -81,7 +83,11 @@ static int	free_collectibles(t_data *app)
 			free(app->items.food);
 			app->items.food = temp;	
 		}
+        if (app->items.food)
+            free(app->items.food->content);
+        free(app->items.food);
 	}
+    free_immutable(app);
     return (0);
 }
 
@@ -102,6 +108,8 @@ static int	free_snake(t_data *app)
 		free(app->snake);
 		app->snake = temp;
 	}
+    free(app->snake->content);
+    free(app->snake);
     return (0);
 }
 
@@ -112,14 +120,21 @@ int	free_items(t_data *app)
 
     free_collectibles(app);
     free_snake(app);
-	while (app->items.enemies)
-	{
-		ptr = app->items.enemies->next;
-		buf = app->items.enemies->content;
-		if (buf)
-			free(buf);
-		free(app->items.enemies);
-		app->items.enemies = ptr;
-	}
+	if (app->items.enemies)
+    {
+        while (app->items.enemies)
+        {
+            ptr = app->items.enemies->next;
+            buf = app->items.enemies->content;
+            if (buf)
+                free(buf);
+            free(app->items.enemies);
+            app->items.enemies = ptr;
+        }
+        free(app->items.enemies->content);   
+        free(app->items.enemies);
+    }
+    if (app->items.black)
+        mlx_destroy_image(app->mlx, app->items.black);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 09:46:52 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:06:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	deploy_bg(t_data *app)
 
 	assign_image(app, &(app->walls.bg), app->path.bg);
 	y = IMAGE;
-	while (y < app->ygw)
+	while (y < app->ypos_win)
 	{
 		x = IMAGE;
-		while (x < app->xgw)
+		while (x < app->xpos_win)
 		{
 			deploy_image(app, app->walls.bg, x, y);
 			x += IMAGE;
@@ -44,17 +44,17 @@ static void	deploy_corners(t_data *app)
 	assign_image(app, &(img->hor_left), addr->hor_left);
 	assign_image(app, &(img->hor_right), addr->hor_right);
 	deploy_image(app, img->corner, 0, 0);
-	deploy_image(app, img->corner, 0, app->ygw - IMAGE);
-	deploy_image(app, img->corner, app->xgw - IMAGE, 0);
-	deploy_image(app, img->corner, app->xgw - IMAGE, app->ygw - IMAGE);
+	deploy_image(app, img->corner, 0, app->ypos_win - IMAGE);
+	deploy_image(app, img->corner, app->xpos_win - IMAGE, 0);
+	deploy_image(app, img->corner, app->xpos_win - IMAGE, app->ypos_win - IMAGE);
 	deploy_image(app, img->ver_up, 0, IMAGE);
-	deploy_image(app, img->ver_up, app->xgw - IMAGE, IMAGE);
-	deploy_image(app, img->ver_down, 0, app->ygw - (IMAGE * 2));
-	deploy_image(app, img->ver_down, app->xgw - IMAGE, app->ygw - (IMAGE * 2));
+	deploy_image(app, img->ver_up, app->xpos_win - IMAGE, IMAGE);
+	deploy_image(app, img->ver_down, 0, app->ypos_win - (IMAGE * 2));
+	deploy_image(app, img->ver_down, app->xpos_win - IMAGE, app->ypos_win - (IMAGE * 2));
 	deploy_image(app, img->hor_left, IMAGE, 0);
-	deploy_image(app, img->hor_left, IMAGE, app->ygw - IMAGE);
-	deploy_image(app, img->hor_right, app->xgw - (IMAGE * 2), 0);
-	deploy_image(app, img->hor_right, app->xgw - (IMAGE * 2), app->ygw - IMAGE);
+	deploy_image(app, img->hor_left, IMAGE, app->ypos_win - IMAGE);
+	deploy_image(app, img->hor_right, app->xpos_win - (IMAGE * 2), 0);
+	deploy_image(app, img->hor_right, app->xpos_win - (IMAGE * 2), app->ypos_win - IMAGE);
 }
 
 void		deploy_immutable(t_data *app)
@@ -72,16 +72,16 @@ void		deploy_immutable(t_data *app)
 	deploy_corners(app);
 	assign_image(app, &(img->side_hor), addr->hor_wall);
 	assign_image(app, &(img->side_ver), addr->ver_wall);
-	while (x < (app->xgw - IMAGE * 2))
+	while (x < (app->xpos_win - IMAGE * 2))
 	{
-		deploy_image(app, img->side_hor, x, app->ygw - IMAGE);
+		deploy_image(app, img->side_hor, x, app->ypos_win - IMAGE);
 		deploy_image(app, img->side_hor, x, 0);
 		x += IMAGE;
 	}
-	while (y < (app->ygw - IMAGE * 2))
+	while (y < (app->ypos_win - IMAGE * 2))
 	{
 		deploy_image(app, img->side_ver, 0, y);
-		deploy_image(app, img->side_ver, app->xgw - IMAGE, y);
+		deploy_image(app, img->side_ver, app->xpos_win - IMAGE, y);
 		y += IMAGE;
 	}
 }

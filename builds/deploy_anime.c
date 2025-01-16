@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:41:23 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 16:04:16 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:01:54 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static t_enemy	*add_enemy_img(t_data *app, int n, int x, int y)
 {
-	t_list	*ptr;
 	t_enemy	*buf;
 	
-	ptr = app->items.enemies;
 	buf = (t_enemy *)malloc(sizeof(t_enemy));
 	if (!buf)
 		free_game(app);
@@ -95,12 +93,12 @@ void	deploy_gate_anim(t_data *app, int j, int i)
 	t_gate	*buf;
 	int		n;
 	
-	app->items.xgate = (X_BLOCK * j) - (IMAGE * 2);
-	app->items.ygate = IMAGE * i;
+	app->items.xpos_gate = (X_BLOCK * j) - (IMAGE * 2);
+	app->items.ypos_gate = IMAGE * i;
 	n = -1;
 	ptr = app->items.gate;
 	while (++n < 7)
-		ft_lstadd_back(&ptr, ft_lstnew(add_gate_img(app, n, app->items.xgate, app->items.ygate)));
+		ft_lstadd_back(&ptr, ft_lstnew(add_gate_img(app, n, app->items.xpos_gate, app->items.ypos_gate)));
 	if (!ptr)
 		free_game(app);
 	n = -1;

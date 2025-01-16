@@ -64,7 +64,6 @@ int main(int argc, char **argv)
         return 1;
     }
 	ft_memset(app, 0, sizeof(t_data));
-	ft_printf("here\n");
 	app->map_arg = ft_strjoin("./assets/maps/", argv[1]);
 	checker(app, app->map_arg);
 	init_win1(app);

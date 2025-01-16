@@ -6,36 +6,36 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 10:52:58 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:05:23 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-int	check_body(t_data *app, int new_x, int new_y)
+int	check_body(t_data *app, int x, int y)
 {
 	t_list	*ptr;
 	t_snake	*buf;
-	int     i;
+	int     snake_nodes;
 
-	i = 0;
+	snake_nodes = 1;
 	ptr = app->snake;
 	while (ptr)
 	{
 		buf = ptr->content;
-		if (buf->x == new_x && buf->y == new_y)
+        if (buf->x == x && buf->y == y)
 		{
-			if (i == 1)
-				return (1);
-			else
+			if (snake_nodes == 2)
+				return (write(1, "Choose another direction!\n", 26));
+			if (snake_nodes > 2)
 			{
-				ft_printf("Can't eat your own tale!\n");
-				dead_head(app, app->s_type);
+                dead_head(app, app->s_type);
+                ft_putstr_fd("You've eaten yourself!\n", 1);
 				return(0);
 			}
 		}
-		i++;
+		snake_nodes++;
 		ptr = ptr->next;
 	}
-	return (2);
+	return (1);
 }

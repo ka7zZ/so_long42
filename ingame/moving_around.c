@@ -6,26 +6,40 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:43 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 10:18:30 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:23:52 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-void	show_moves(t_data *app)
+void	show_moves(t_data *app, int keycode)
 {
-	app->moves += 1;
-	ft_printf("Moves: %d\n", app->moves);
-	if (app->moves > 0)
-		app->mv_str = ft_itoa(app->moves);
-	deploy_image(app, app->items.black, IMAGE * 3, app->ygw);
-	mlx_string_put(app->mlx, app->win_game, IMAGE * 3, app->ygw + 21, 0xFFFFFF, "Moves: ");
-	mlx_string_put(app->mlx, app->win_game, IMAGE * 4, app->ygw + 21, 0xFFFFFF, app->mv_str);
-	if (app->mv_str)
-		free(app->mv_str);
+	int x;
+	int y;
+	unsigned int color;
+
+	if (app->win_game && \
+		(keycode == XK_w || keycode == XK_Up || \
+		keycode == XK_a || keycode == XK_Left || \
+		keycode == XK_s || keycode == XK_Down || \
+		keycode == XK_d || keycode == XK_Right))
+	{
+		x = IMAGE * 3;
+		y = app->ypos_win + 21;
+		color = 0xFFFFFF;
+		app->moves += 1;
+		ft_printf("Moves: %d\n", app->moves);
+		if (app->moves > 0)
+			app->mv = ft_itoa(app->moves);
+		deploy_image(app, app->items.black, IMAGE * 3, app->ypos_win);
+		mlx_string_put(app->mlx, app->win_game, x, y, color, "Moves: ");
+		mlx_string_put(app->mlx, app->win_game, x + IMAGE, y, color, app->mv);
+		if (app->mv)
+			free(app->mv);
+	}
 }
 
-void	moving_around(t_data *app, int new_x, int new_y)
+void	moving_around(t_data *app, int x, int y)
 {
 	t_list	*ptr;
 	t_snake	*img;
@@ -34,16 +48,16 @@ void	moving_around(t_data *app, int new_x, int new_y)
 	while (ptr)
 	{
 		img = ptr->content;
-		deploy_image(app, img->img, new_x, new_y);
-		app->sx_last = img->x;
-		app->sy_last = img->y;
-		img->x = new_x;
-		img->y = new_y;
-		new_x = app->sx_last;
-		new_y = app->sy_last;
+		deploy_image(app, img->img, x, y);
+		app->xlast_snake = img->x;
+		app->ylast_snake = img->y;
+		img->x = x;
+		img->y = y;
+		x = app->xlast_snake;
+		y = app->ylast_snake;
 		ptr = ptr->next;
 	}
-	deploy_image(app, app->walls.bg, app->sx_last, app->sy_last);
+	deploy_image(app, app->walls.bg, app->xlast_snake, app->ylast_snake);
 }
 
 /*RULES OF CHANGING DIRECTION

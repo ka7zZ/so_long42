@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 16:20:03 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:10:04 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "import/libft/libft.h"
 #include <X11/keysym.h>
 #include <X11/X.h>
+#include <limits.h>
 
 typedef struct Snake_segment
 {
@@ -109,8 +110,8 @@ typedef struct Items_box
 	t_list	*enemies;
 	t_list	*gate;
 	void	*black;
-	int		xgate;
-	int		ygate;
+	int		xpos_gate;
+	int		ypos_gate;
 	int		finish;
 }	t_ibox;
 
@@ -126,20 +127,24 @@ typedef struct	s_data {
 	void		*img_start;
 	char    	**map;
 	char		*map_arg;
-	char		*mv_str;
+	char		*mv;
 	char		s_type;
-	int			xgw;
-	int			ygw;
-	int			sx_pos;
-	int			sy_pos;
-	int			sx_last;
-	int			sy_last;
-	int			w_press;
-	int			a_press;
-	int			s_press;
-	int			d_press;
+    char        k_pressed;
+	int			xpos_win;
+	int			ypos_win;
+    int         new_x;
+    int         new_y;
+	int			xpos_snake;
+	int			ypos_snake;
+	int			xlast_snake;
+	int			ylast_snake;
+	int			w_pressed;
+    int         a_pressed;
+    int         s_pressed;
+    int         d_pressed;      
 	int			moves;
 	int			start;
+    int         frames; 
 }   t_data;
 
 // include own folder's libs
@@ -150,7 +155,7 @@ typedef struct	s_data {
 
 # define X_BLOCK	126
 # define IMAGE	42
-
+# define FPS  5000 
 
 int		free_start(t_data *app);
 int     main(int argc, char **argv);

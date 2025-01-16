@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:29:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 16:20:40 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:06:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,18 @@ static int	init_paths(t_data *app)
 }
 
 int	game_window(t_data *app)
-{	
-	app->win_game = mlx_new_window(app->mlx, app->xgw, app->ygw + IMAGE, "Maze munch");
+{
+    if (app->img_start)
+	    mlx_destroy_image(app->mlx, app->img_start);
+	if (app->win_start)
+        mlx_destroy_window(app->mlx, app->win_start);
+    app->win_game = mlx_new_window(app->mlx, app->xpos_win, app->ypos_win + IMAGE, "Maze munch");
 	if (!app->win_game)
 		free_start(app);
 	init_anime(app);
 	init_paths(app);
 	deploy_immutable(app);
 	deploy_items(app);
-	app->start = 1;
-	while (app->start)
-		game_hooks(app);
+	game_hooks(app);
     return (0);
 }

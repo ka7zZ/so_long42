@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:01 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 11:57:42 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:06:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ static int	check_border(t_data *app, int last_row)
 			error_checkmap(app);
 	}
 	inside_length = ft_strlen(app->map[i - 1]) -  2; // -2 represents the exclusion of side walls
-	app->xgw = (IMAGE * 2) + (inside_length * X_BLOCK); // IMAGE * 2 represents the side walls
-	app->ygw = i * IMAGE;
+	app->xpos_win = (IMAGE * 2) + (inside_length * X_BLOCK); // IMAGE * 2 represents the side walls
+	app->ypos_win = i * IMAGE;
 	return (1);
 }
 

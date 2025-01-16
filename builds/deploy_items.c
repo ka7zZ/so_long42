@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 13:11:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:02:43 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ static void deploy_snake(t_data *app, int j, int i)
 	t_list		*ptr;
 	t_snake		*buf;
 	
-	app->sx_pos = (X_BLOCK * j) - (IMAGE * 2); // moving the head in the first position of X_BLOCK
-	app->sy_pos = IMAGE * i;
-	add_body(app, app->sx_pos, app->sy_pos);
-	add_body(app, app->sx_pos + IMAGE, app->sy_pos);
-	add_body(app, app->sx_pos + (IMAGE * 2), app->sy_pos);
+	app->xpos_snake = (X_BLOCK * j) - (IMAGE * 2); // moving the head in the first position of X_BLOCK
+	app->ypos_snake = IMAGE * i;
+	add_body(app, app->xpos_snake, app->ypos_snake);
+	add_body(app, app->xpos_snake + IMAGE, app->ypos_snake);
+	add_body(app, app->xpos_snake + (IMAGE * 2), app->ypos_snake);
 	ptr = app->snake;
 	while (ptr != NULL)
 	{

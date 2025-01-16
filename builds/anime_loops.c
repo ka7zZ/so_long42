@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:04:57 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/15 16:19:27 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:30:47 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,5 @@ int	show_exit(t_data *app)
 			deploy_image(app, buf->img, buf->x, buf->y);
 		ptr = ptr->next;
 	}
-	app->items.finish = 1;
 	return (0);
 }

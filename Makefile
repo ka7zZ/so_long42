@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/01/15 10:53:26 by aghergut         ###   ########.fr        #
+#    Updated: 2025/01/16 12:11:01 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME = so_long
 
 COMPILER = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIE
 LIBFT_FLAGS = -Limport/libft -lft
 MLX_FLAGS = -Limport/mlx -lmlx -lX11 -lXext
 
