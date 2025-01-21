@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:29:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 16:06:34 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:33:40 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 static int	init_anime(t_data *app)
 {
-	app->anime.enemy0 = "./assets/xpm/enemy0.xpm";
-	app->anime.enemy1 = "./assets/xpm/enemy1.xpm";
-	app->anime.enemy2 = "./assets/xpm/enemy2.xpm";
-	app->anime.enemy3 = "./assets/xpm/enemy3.xpm";
-	app->anime.enemy4 = "./assets/xpm/enemy4.xpm";
 	app->anime.gate0 = "./assets/xpm/gate0.xpm";
 	app->anime.gate1 = "./assets/xpm/gate1.xpm";
 	app->anime.gate2 = "./assets/xpm/gate2.xpm";
@@ -26,6 +21,7 @@ static int	init_anime(t_data *app)
 	app->anime.gate4 = "./assets/xpm/gate4.xpm";
 	app->anime.gate5 = "./assets/xpm/gate5.xpm";
 	app->anime.gate6 = "./assets/xpm/gate6.xpm";
+    app->anime.gate7 = "./assets/xpm/gate7.xpm";
 	return (0);
 }
 
@@ -49,14 +45,15 @@ static int	init_paths(t_data *app)
 	app->path.snake_ydhead = "./assets/xpm/snake_ydhead.xpm";
 	app->path.snake_ybody = "./assets/xpm/snake_ybody.xpm";
 	app->path.black = "./assets/xpm/black.xpm";
+    app->path.enemy = "./assets/xpm/enemy.xpm";
     return (0);
 }
 
 int	game_window(t_data *app)
 {
     if (app->img_start)
-	    mlx_destroy_image(app->mlx, app->img_start);
-	if (app->win_start)
+        mlx_destroy_image(app->mlx, app->img_start);
+    if(app->win_start)
         mlx_destroy_window(app->mlx, app->win_start);
     app->win_game = mlx_new_window(app->mlx, app->xpos_win, app->ypos_win + IMAGE, "Maze munch");
 	if (!app->win_game)

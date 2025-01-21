@@ -6,53 +6,46 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:43 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 17:23:52 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:12:59 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ingame.h"
 
-void	show_moves(t_data *app, int keycode)
+void	show_moves(t_data *app)
 {
 	int x;
 	int y;
 	unsigned int color;
 
-	if (app->win_game && \
-		(keycode == XK_w || keycode == XK_Up || \
-		keycode == XK_a || keycode == XK_Left || \
-		keycode == XK_s || keycode == XK_Down || \
-		keycode == XK_d || keycode == XK_Right))
-	{
-		x = IMAGE * 3;
-		y = app->ypos_win + 21;
-		color = 0xFFFFFF;
-		app->moves += 1;
-		ft_printf("Moves: %d\n", app->moves);
-		if (app->moves > 0)
-			app->mv = ft_itoa(app->moves);
-		deploy_image(app, app->items.black, IMAGE * 3, app->ypos_win);
-		mlx_string_put(app->mlx, app->win_game, x, y, color, "Moves: ");
-		mlx_string_put(app->mlx, app->win_game, x + IMAGE, y, color, app->mv);
-		if (app->mv)
-			free(app->mv);
-	}
+	x = IMAGE * 3;
+    y = app->ypos_win + 21;
+    color = 0xFFFFFF;
+    app->moves += 1;
+    ft_printf("Moves: %d\n", app->moves);
+    if (app->moves > 0)
+        app->mv = ft_itoa(app->moves);
+    deploy_image(app, app->items.black, IMAGE * 3, app->ypos_win);
+    mlx_string_put(app->mlx, app->win_game, x, y, color, "Moves: ");
+    mlx_string_put(app->mlx, app->win_game, x + IMAGE, y, color, app->mv);
+    if (app->mv)
+        free(app->mv);
 }
 
 void	moving_around(t_data *app, int x, int y)
 {
 	t_list	*ptr;
-	t_snake	*img;
+	t_seg	*snake_ptr;
 
 	ptr = app->snake;
 	while (ptr)
 	{
-		img = ptr->content;
-		deploy_image(app, img->img, x, y);
-		app->xlast_snake = img->x;
-		app->ylast_snake = img->y;
-		img->x = x;
-		img->y = y;
+		snake_ptr = ptr->content;
+		deploy_image(app, snake_ptr->img, x, y);
+		app->xlast_snake = snake_ptr->x;
+		app->ylast_snake = snake_ptr->y;
+		snake_ptr->x = x;
+		snake_ptr->y = y;
 		x = app->xlast_snake;
 		y = app->ylast_snake;
 		ptr = ptr->next;

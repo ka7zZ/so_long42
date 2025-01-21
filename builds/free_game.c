@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:45 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 12:48:00 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/20 18:45:21 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	free_game(t_data *app)
 	}
 	if (app->map_arg)
 		free(app->map_arg);
-	if (app->items.black)
-		mlx_destroy_image(app->mlx, app->items.black);
     free_items(app);
     mlx_destroy_window(app->mlx, app->win_game);
 	mlx_destroy_display(app->mlx);

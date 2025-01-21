@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 17:10:04 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:33:18 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,21 @@
 #include <X11/X.h>
 #include <limits.h>
 
-typedef struct Snake_segment
-{
-	void	*img;
-	int		x;
-	int		y;
-}	t_snake;
-
-typedef struct Food_segment
-{
-	void	*img;
-	int		x;
-	int		y;
-}	t_food;
-
 typedef struct Wall_segment
 {
 	int	x;
 	int	y;
 }	t_wseg;
 
-typedef struct Enemy_segment
+typedef struct Segments
 {
 	void	*img;
 	int		x;
 	int		y;
-}	t_enemy;
-
-typedef struct Gate_segment
-{
-	void	*img;
-	int		x;
-	int		y;
-}	t_gate;
+}	t_seg;
 
 typedef struct	Animated_paths
 {
-	char	*enemy0;
-	char	*enemy1;
-	char	*enemy2;
-	char	*enemy3;
-	char	*enemy4;
 	char	*gate0;
 	char	*gate1;
 	char	*gate2;
@@ -67,6 +41,7 @@ typedef struct	Animated_paths
 	char	*gate4;
 	char	*gate5;
 	char	*gate6;
+    char    *gate7;
 }	t_animated;
 
 typedef struct	Sprites_paths

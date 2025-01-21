@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 18:07:58 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:31:58 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	free_gw(t_data	*app)
 {
-	t_gate	*gbuf;
+	t_seg	*gbuf;
 	t_wseg	*wbuf;
 	t_list	*ptr;
 
@@ -27,18 +27,17 @@ static int	free_gw(t_data	*app)
 		free(app->items.wseg);
 		app->items.wseg = ptr;
 	}
-    free(app->items.wseg->content);
 	while (app->items.gate)
 	{
-		ptr = app->items.gate->content;
-		gbuf = ptr->content;
-		if (gbuf)
-			free(gbuf);
+		ptr = app->items.gate->next;
+		gbuf = app->items.gate->content;
+		if (gbuf->img)
+			mlx_destroy_image(app->mlx, gbuf->img);
+        free(gbuf);
 		free(app->items.gate);
 		app->items.gate = ptr;
 	}
-    free(app->items.gate->content);
-    return (free(app->items.wseg), free(app->items.gate), 0);
+    return (0);
 }
 
 static int	free_immutable(t_data *app)
@@ -65,7 +64,7 @@ static int	free_immutable(t_data *app)
 
 static int	free_collectibles(t_data *app)
 {
-	t_food	*food_buf;
+	t_seg	*food_buf;
 	t_list	*temp;
 	
     
@@ -78,13 +77,12 @@ static int	free_collectibles(t_data *app)
 			if (food_buf)
 			{
 				mlx_destroy_image(app->mlx, food_buf->img);
+                food_buf->img = NULL;
 				free(food_buf);
 			}
 			free(app->items.food);
 			app->items.food = temp;	
 		}
-        if (app->items.food)
-            free(app->items.food->content);
         free(app->items.food);
 	}
     free_immutable(app);
@@ -93,7 +91,7 @@ static int	free_collectibles(t_data *app)
 
 static int	free_snake(t_data *app)
 {
-	t_snake	*buf;
+	t_seg	*buf;
 	t_list	*temp;
 	
 	while (app->snake)
@@ -108,14 +106,12 @@ static int	free_snake(t_data *app)
 		free(app->snake);
 		app->snake = temp;
 	}
-    free(app->snake->content);
-    free(app->snake);
-    return (0);
+    return (free(app->snake), 0);
 }
 
 int	free_items(t_data *app)
 {
-	t_enemy	*buf;
+	t_seg	*buf;
 	t_list	*ptr;
 
     free_collectibles(app);
@@ -126,12 +122,12 @@ int	free_items(t_data *app)
         {
             ptr = app->items.enemies->next;
             buf = app->items.enemies->content;
-            if (buf)
-                free(buf);
+            if (buf->img)
+                mlx_destroy_image(app->mlx, buf->img);
+            free(buf);
             free(app->items.enemies);
             app->items.enemies = ptr;
         }
-        free(app->items.enemies->content);   
         free(app->items.enemies);
     }
     if (app->items.black)

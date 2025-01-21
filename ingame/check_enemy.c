@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:11 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 16:28:16 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:48:36 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_enemy(t_data *app, int x, int y)
 {
 	t_list	*item;
-	t_enemy	*ptr;
+	t_seg	*ptr;
 
 	item = app->items.enemies;
 	while (item)

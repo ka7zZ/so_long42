@@ -6,16 +6,31 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 16:02:43 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:28:48 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builds.h"
 
+static void	deploy_enemy(t_data *app, int j, int i)
+{
+	t_seg		*enemy;
+	
+	enemy = (t_seg *)malloc(sizeof(t_seg));
+	if (!enemy)
+		free_game(app);
+    enemy->img = NULL;
+	enemy->x = (X_BLOCK * j) - (IMAGE * 2);
+	enemy->y = IMAGE * i;
+    assign_image(app, &(enemy->img), app->path.enemy);
+	deploy_image(app, enemy->img, enemy->x, enemy->y);
+    ft_lstadd_back(&(app->items.enemies), ft_lstnew(enemy));
+}
+
 static void deploy_snake(t_data *app, int j, int i)
 {
 	t_list		*ptr;
-	t_snake		*buf;
+	t_seg		*buf;
 	
 	app->xpos_snake = (X_BLOCK * j) - (IMAGE * 2); // moving the head in the first position of X_BLOCK
 	app->ypos_snake = IMAGE * i;
@@ -34,20 +49,20 @@ static void deploy_snake(t_data *app, int j, int i)
 
 static void	deploy_col(t_data *app, int j, int i)
 {
-	t_food		*col;
+	t_seg		*col;
 	static int	n_food = 0;
 
 	n_food++;
-	col = (t_food *)malloc(sizeof(t_food));
+	col = (t_seg *)malloc(sizeof(t_seg));
 	if (!col)
-		free_start(app);
-	if (n_food % 2 == 0)
+		free_game(app);
+    if (n_food % 2 == 0)
 		assign_image(app, &(col->img), app->path.egg);
 	else
 		assign_image(app, &(col->img), app->path.apple);
-	col->x = (X_BLOCK * j) - (IMAGE * 2);
+	col->x = (X_BLOCK * j) - IMAGE;
 	col->y = IMAGE * i;
-	ft_lstadd_back(&(app->items.food), ft_lstnew(col));	
+    ft_lstadd_back(&(app->items.food), ft_lstnew(col));	
 	deploy_image(app, col->img, col->x, col->y);
 }
 
@@ -99,7 +114,7 @@ void		deploy_items(t_data *app)
 			else if (app->map[i][j] == 'E')
 				deploy_gate_anim(app, j, i);
 			else if (app->map[i][j] == 'I')
-				add_enemy_anim(app, j, i);
+				deploy_enemy(app, j, i);
 		}		
 	}
 }

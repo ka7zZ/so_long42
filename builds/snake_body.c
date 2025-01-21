@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:21:00 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 17:57:37 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:54:10 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,36 @@
 int		dead_head(t_data *app, char type)
 {
 	t_list	*ptr;
-	t_snake	*buf;
+	t_seg	*buf;
+    int     h;
 
-
-	ptr = app->snake;
-	buf = ptr->content;
-	mlx_destroy_image(app->mlx, buf->img);
-	buf->img = NULL;
-	if (type == 'g')
-		assign_image(app, &(buf->img), app->path.snake_gdhead);
-	if (type == 'y')
-		assign_image(app, &(buf->img), app->path.snake_ydhead);
-	if (buf->img)
-		deploy_image(app, buf->img, buf->x, buf->y);
-	else
-		ft_printf("Error loading the protocols!\n");
-	return (0);	
+	h = -1;
+    ptr = app->snake;
+    while (ptr)
+    {
+        buf = ptr->content;
+        if (++h == 0)
+        {
+            mlx_destroy_image(app->mlx, buf->img);
+            buf->img = NULL;
+            if (type == 'g' && !buf->img)
+                assign_image(app, &(buf->img), app->path.snake_gdhead);
+            else if (type == 'y' && !buf->img)
+                assign_image(app, &(buf->img), app->path.snake_ydhead);
+            if (buf->img)
+                deploy_image(app, buf->img, buf->x, buf->y);
+            else
+                ft_printf("Error loading the protocols!\n");
+        }
+        ptr = ptr->next;
+    }	
+    return (0);	
 }
 
 int		change_skin(t_data *app)
 {
 	t_list	*ptr;
-	t_snake	*buf;
+	t_seg	*buf;
 	int		i;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:30:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 18:10:28 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:37:16 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		start_pressed(t_data *app, int keycode)
 		return (1);
 	return (0);
 }
+
 static void	key_pressed(t_data *app)
 {
 	if (app->k_pressed == 'w')
@@ -29,47 +30,46 @@ static void	key_pressed(t_data *app)
 		app->new_x = app->xpos_snake;
 		app->new_y = app->ypos_snake - IMAGE;
 	}
-	if (app->k_pressed == 'a')
+	else if (app->k_pressed == 'a')
 	{
-		app->new_x = app->xpos_snake -= IMAGE;
+		app->new_x = app->xpos_snake - IMAGE;
 		app->new_y = app->ypos_snake;
 	}
-	if (app->k_pressed == 's')
+	else if (app->k_pressed == 's')
 	{
 		app->new_x = app->xpos_snake;
 		app->new_y = app->ypos_snake + IMAGE;
 	}
-	if (app->k_pressed == 'd')
+	else if (app->k_pressed == 'd')
 	{
-		app->new_x = app->xpos_snake += IMAGE;
+		app->new_x = app->xpos_snake + IMAGE;
 		app->new_y = app->ypos_snake;
 	}
 }
 
-static int	action (t_data *app)
-{	
-	if (app->start == 0)
-		return (0);
-	app->frames += 1;
-	if (app->frames != FPS)
-		return (0);
-	app->frames = 0;
-	if (app->items.food)
-		app->s_type = 'g';
+static int	action(t_data *app)
+{
 	key_pressed(app);
-	check_gate(app, app->new_x, app->new_y);
-	if (!check_body(app, app->new_x, app->new_y))
-		free_game(app);
-	else if (check_body(app, app->new_x, app->new_y) > 1)
-		return (0);
-	if (check_wall(app, app->new_x, app->new_y))
-		free_game(app);
-	if (check_food(app, app->new_x, app->new_y))
-		add_body(app, app->xlast_snake, app->ylast_snake);
-	ft_printf("here\n");
-	moving_around(app, app->new_x, app->new_y);
-	app->xpos_snake = app->new_x;
-	app->ypos_snake = app->new_y;
+	if (app->start == 1)
+	{
+		app->frames += 1;
+		if (app->frames < FPS)
+			return (0);
+		app->frames = 0;
+		app->s_type = 'g';
+		if (check_body(app, app->new_x, app->new_y) == 0)
+			free_game(app);
+		else if (check_body(app, app->new_x, app->new_y) > 1)
+			return (0);
+		check_gate(app, app->new_x, app->new_y);
+		if (check_wall(app, app->new_x, app->new_y))
+			free_game(app);
+		if (check_food(app, app->new_x, app->new_y))
+			add_body(app, app->xlast_snake, app->ylast_snake);
+		moving_around(app, app->new_x, app->new_y);
+		app->xpos_snake = app->new_x;
+		app->ypos_snake = app->new_y;    
+	}
 	return (0);
 }
 
@@ -84,7 +84,6 @@ static int		on_keypress(int keycode, t_data *app)
 		free_game(app);
 	if (start_pressed(app, keycode))
 	{
-		app->start = 1;
 		if ((keycode == XK_w || keycode == XK_Up) && app->win_game)
 			app->k_pressed = 'w';
 		if ((keycode == XK_a || keycode == XK_Left) && app->win_game)
@@ -93,7 +92,7 @@ static int		on_keypress(int keycode, t_data *app)
 			app->k_pressed = 's';
 		if ((keycode == XK_d || keycode == XK_Right) && app->win_game)
 			app->k_pressed = 'd';
-		show_moves(app, keycode);
+		app->start = 1;
 	}
 	return (0);
 }
@@ -111,8 +110,6 @@ static int on_mouse_click(int button, int mouse_x, int mouse_y, t_data *app)
 		bttn = 0;
 	if (mouse_x >= min_x && mouse_x <= max_x && mouse_y >= min_y && mouse_y <= max_y)
 	{
-		mlx_destroy_image(app->mlx, app->img_start);
-		mlx_destroy_window(app->mlx, app->win_start);
 		game_window(app);
 	}
 	return 0;

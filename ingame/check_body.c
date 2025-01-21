@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 16:05:23 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:03:01 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_body(t_data *app, int x, int y)
 {
 	t_list	*ptr;
-	t_snake	*buf;
+	t_seg	*buf;
 	int     snake_nodes;
 
 	snake_nodes = 1;
@@ -25,8 +25,9 @@ int	check_body(t_data *app, int x, int y)
 		buf = ptr->content;
         if (buf->x == x && buf->y == y)
 		{
-			if (snake_nodes == 2)
-				return (write(1, "Choose another direction!\n", 26));
+            ft_printf("x(%d) -->> bufx(%d)\ny(%d) -->> bufy(%d)\n", x, buf->x, y, buf->y);
+			if (snake_nodes == 2 || snake_nodes == 3)
+				return (2);
 			if (snake_nodes > 2)
 			{
                 dead_head(app, app->s_type);
