@@ -6,18 +6,18 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:04 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/20 12:48:42 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:57:19 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ingame.h"
+#include "../so_long.h"
 
 int	check_food(t_data *app, int x, int y)
 {
-	t_list	*item; // food list pointer
-	t_list	*buf;  // next food list pointer
-	t_list	*prev; // previous food list pointer
-	t_seg	*ptr;  // food pointer
+	t_list	*item;
+	t_list	*buf;
+	t_list	*prev;
+	t_seg	*ptr;
 
 	item = app->items.food;
 	prev = NULL;

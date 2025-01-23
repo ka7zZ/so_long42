@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/16 16:06:34 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:09:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builds.h"
+#include "../so_long.h"
 
 static void	deploy_bg(t_data *app)
 {
@@ -18,24 +18,26 @@ static void	deploy_bg(t_data *app)
 	int	x;
 
 	assign_image(app, &(app->walls.bg), app->path.bg);
-	y = IMAGE;
-	while (y < app->ypos_win)
+	y = IMG;
+	while (y < app->ylen_win)
 	{
-		x = IMAGE;
-		while (x < app->xpos_win)
+		x = IMG;
+		while (x < app->xlen_win)
 		{
 			deploy_image(app, app->walls.bg, x, y);
-			x += IMAGE;
+			x += IMG;
 		}
-		y += IMAGE;
+		y += IMG;
 	}
 }
 
 static void	deploy_corners(t_data *app)
 {
-	t_wbox				*img;
-	t_sprites			*addr;
-	
+	t_wbox		*img;
+	t_image		*addr;
+	int			ext;
+
+	ext = IMG * 2;
 	img = &(app->walls);
 	addr = &(app->path);
 	assign_image(app, &(img->corner), addr->corner);
@@ -44,44 +46,44 @@ static void	deploy_corners(t_data *app)
 	assign_image(app, &(img->hor_left), addr->hor_left);
 	assign_image(app, &(img->hor_right), addr->hor_right);
 	deploy_image(app, img->corner, 0, 0);
-	deploy_image(app, img->corner, 0, app->ypos_win - IMAGE);
-	deploy_image(app, img->corner, app->xpos_win - IMAGE, 0);
-	deploy_image(app, img->corner, app->xpos_win - IMAGE, app->ypos_win - IMAGE);
-	deploy_image(app, img->ver_up, 0, IMAGE);
-	deploy_image(app, img->ver_up, app->xpos_win - IMAGE, IMAGE);
-	deploy_image(app, img->ver_down, 0, app->ypos_win - (IMAGE * 2));
-	deploy_image(app, img->ver_down, app->xpos_win - IMAGE, app->ypos_win - (IMAGE * 2));
-	deploy_image(app, img->hor_left, IMAGE, 0);
-	deploy_image(app, img->hor_left, IMAGE, app->ypos_win - IMAGE);
-	deploy_image(app, img->hor_right, app->xpos_win - (IMAGE * 2), 0);
-	deploy_image(app, img->hor_right, app->xpos_win - (IMAGE * 2), app->ypos_win - IMAGE);
+	deploy_image(app, img->corner, 0, app->ylen_win - IMG);
+	deploy_image(app, img->corner, app->xlen_win - IMG, 0);
+	deploy_image(app, img->corner, app->xlen_win - IMG, app->ylen_win - IMG);
+	deploy_image(app, img->ver_up, 0, IMG);
+	deploy_image(app, img->ver_up, app->xlen_win - IMG, IMG);
+	deploy_image(app, img->ver_down, 0, app->ylen_win - ext);
+	deploy_image(app, img->ver_down, app->xlen_win - IMG, app->ylen_win - ext);
+	deploy_image(app, img->hor_left, IMG, 0);
+	deploy_image(app, img->hor_left, IMG, app->ylen_win - IMG);
+	deploy_image(app, img->hor_right, app->xlen_win - ext, 0);
+	deploy_image(app, img->hor_right, app->xlen_win - ext, app->ylen_win - IMG);
 }
 
-void		deploy_immutable(t_data *app)
+void	deploy_immutable(t_data *app)
 {
-	t_wbox				*img;
-	t_sprites			*addr;
-	int x;
-	int y;
+	t_wbox		*img;
+	t_image		*addr;
+	int			x;
+	int			y;
 
 	img = &(app->walls);
 	addr = &(app->path);
-	x = IMAGE * 2;
-	y = IMAGE * 2;
+	x = IMG * 2;
+	y = IMG * 2;
 	deploy_bg(app);
 	deploy_corners(app);
 	assign_image(app, &(img->side_hor), addr->hor_wall);
 	assign_image(app, &(img->side_ver), addr->ver_wall);
-	while (x < (app->xpos_win - IMAGE * 2))
+	while (x < (app->xlen_win - IMG * 2))
 	{
-		deploy_image(app, img->side_hor, x, app->ypos_win - IMAGE);
+		deploy_image(app, img->side_hor, x, app->ylen_win - IMG);
 		deploy_image(app, img->side_hor, x, 0);
-		x += IMAGE;
+		x += IMG;
 	}
-	while (y < (app->ypos_win - IMAGE * 2))
+	while (y < (app->ylen_win - IMG * 2))
 	{
 		deploy_image(app, img->side_ver, 0, y);
-		deploy_image(app, img->side_ver, app->xpos_win - IMAGE, y);
-		y += IMAGE;
+		deploy_image(app, img->side_ver, app->xlen_win - IMG, y);
+		y += IMG;
 	}
 }

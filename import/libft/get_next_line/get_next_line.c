@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:05:02 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/04 15:53:46 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:15:03 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ static char	*ft_line(t_list **h, t_list *buf, char *res)
 {
 	size_t	idx;
 	char	*ptr;
-	char	*temp; 
-	
+	char	*temp;
+
 	while (*h)
 	{
 		buf = (*h)->next;

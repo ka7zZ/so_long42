@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_gate.c                                       :+:      :+:    :+:   */
+/*   free_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 12:56:03 by aghergut         ###   ########.fr       */
+/*   Created: 2025/01/13 15:23:45 by aghergut          #+#    #+#             */
+/*   Updated: 2025/01/23 13:41:27 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-void	check_gate(t_data *app, int x, int y)
+int	free_game(t_data *app)
 {
-	t_list	*food;
+	int	i;
 
-	food = app->items.food;
-	if (!food)
+	if (app->map)
 	{
-		change_skin(app);
-		show_exit(app);
-		app->items.finish = 1;
-		app->s_type = 'y';
+		i = -1;
+		while (app->map[++i])
+			free(app->map[i]);
+		free(app->map);
 	}
-	if (x == app->items.xpos_gate && \
-		y == app->items.ypos_gate && \
-		app->items.finish == 1)
-	{
-		ft_printf("You've reached the exit gate!\n");
-		free_game(app);
-	}
+	if (app->map_arg)
+		free(app->map_arg);
+	free_items(app);
+	mlx_destroy_window(app->mlx, app->win_game);
+	mlx_destroy_display(app->mlx);
+	free(app->mlx);
+	free(app);
+	ft_putstr_fd("Come again!\n", 1);
+	exit(0);
+	return (0);
 }

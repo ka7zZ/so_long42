@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:22:36 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/20 12:42:15 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:50:58 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builds.h"
+#include "../so_long.h"
 
 int	add_body(t_data*app, int x, int y)
 {

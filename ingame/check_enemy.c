@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:11 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/20 12:48:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:51:54 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ingame.h"
+#include "../so_long.h"
 
 int	check_enemy(t_data *app, int x, int y)
 {

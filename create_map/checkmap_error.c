@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_gate.c                                       :+:      :+:    :+:   */
+/*   checkmap_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 12:56:03 by aghergut         ###   ########.fr       */
+/*   Created: 2025/01/13 15:23:13 by aghergut          #+#    #+#             */
+/*   Updated: 2025/01/23 13:26:06 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../so_long.h"
+#include "create_map.h"
 
-void	check_gate(t_data *app, int x, int y)
+int	free_map(char **map)
 {
-	t_list	*food;
+	int	i;
 
-	food = app->items.food;
-	if (!food)
+	if (!map || !(*map))
+		return (0);
+	i = 0;
+	while (map[i] != NULL)
 	{
-		change_skin(app);
-		show_exit(app);
-		app->items.finish = 1;
-		app->s_type = 'y';
+		free(map[i]);
+		i++;
 	}
-	if (x == app->items.xpos_gate && \
-		y == app->items.ypos_gate && \
-		app->items.finish == 1)
-	{
-		ft_printf("You've reached the exit gate!\n");
-		free_game(app);
-	}
+	free(map);
+	map = NULL;
+	return (0);
+}
+
+int	checkmap_error(t_data *app)
+{
+	free_map(app->map);
+	free(app->map_arg);
+	free(app);
+	ft_printf("Check again the name/design of the map!\n");
+	exit(EXIT_FAILURE);
+	return (0);
 }
