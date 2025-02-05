@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:11 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/05 15:25:02 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:09:17 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	show_enemy_seq(t_data *app, int n, int x, int y)
 {
-	t_seg *buf;
+	t_seg	*buf;
 
 	buf = (t_seg *)malloc(sizeof(t_seg));
 	if (!buf)

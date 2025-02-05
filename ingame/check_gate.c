@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/05 15:23:49 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:08:48 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void	check_gate(t_data *app, int x, int y)
 		app->items.finish = 1;
 		app->s_type = 'y';
 	}
-	else if (x ==app->items.xpos_gate && \
+	else if (x == app->items.xpos_gate && \
 			y == app->items.ypos_gate)
 	{
 		ft_putstr_fd("Can't eat flames! You're not a dragon:)!\n", 1);
 		dead_head(app, app->s_type);
-		free_game(app);	
+		free_game(app);
 	}
 	if (x == app->items.xpos_gate && \
 		y == app->items.ypos_gate && \

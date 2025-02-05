@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/05 15:30:56 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:09:30 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	deploy_wall(t_data *app, int j, int i)
 static void	deploy_enemy(t_data *app, int j, int i)
 {
 	t_seg	*enemy;
-	
+
 	enemy = (t_seg *)malloc(sizeof(t_seg));
 	if (!enemy)
 		free_game(app);
