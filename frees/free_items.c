@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 13:18:07 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:40:07 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static int	free_collectibles(t_data *app)
 			free(app->items.food);
 			app->items.food = temp;
 		}
-		free(app->items.food);
 	}
 	free_immutable(app);
 	return (0);
@@ -105,7 +104,7 @@ static int	free_snake(t_data *app)
 		free(app->snake);
 		app->snake = temp;
 	}
-	return (free(app->snake), 0);
+	return (0);
 }
 
 int	free_items(t_data *app)
@@ -127,7 +126,6 @@ int	free_items(t_data *app)
 			free(app->items.enemies);
 			app->items.enemies = ptr;
 		}
-		free(app->items.enemies);
 	}
 	if (app->items.black)
 		mlx_destroy_image(app->mlx, app->items.black);

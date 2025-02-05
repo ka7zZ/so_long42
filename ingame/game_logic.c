@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:43 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/05 15:18:06 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:30:48 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ int	game_logic(t_data *app)
 		app->frames = 0;
 		app->s_type = 'g';
 		check_gate(app, app->new_x, app->new_y);
-		if (check_enemy(app, app->new_x, app->new_y))
+		if (check_wall(app, app->new_x, app->new_y))
 			free_game(app);
 		if (check_body(app, app->new_x, app->new_y) == 0)
 			free_game(app);
 		else if (check_body(app, app->new_x, app->new_y) == 2)
 			return (0);
-		if (check_wall(app, app->new_x, app->new_y))
+		if (check_enemy(app, app->new_x, app->new_y))
 			free_game(app);
 		if (check_food(app, app->new_x, app->new_y))
 			add_body(app, app->xlast_snake, app->ylast_snake);

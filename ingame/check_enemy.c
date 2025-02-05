@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:11 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/05 16:09:17 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:39:21 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static void	show_enemy_seq(t_data *app, int n, int x, int y)
 	buf->x = x;
 	buf->y = y;
 	deploy_image(app, buf->img, buf->x, buf->y);
-	free(buf->img);
+	if (buf->img)
+		mlx_destroy_image(app->mlx, buf->img);
 	free(buf);
 }
 
@@ -48,13 +49,14 @@ static int	enemy(t_data *app)
 
 	n++;
 	if (n == 5)
-		n = 1;
+		n = 0;
 	ptr = app->items.enemies;
 	temp = n;
 	while (ptr && temp--)
 	{
 		buf = ptr->content;
-		show_enemy_seq(app, n, buf->x, buf->y);
+		if (buf->img)
+			show_enemy_seq(app, n, buf->x, buf->y);
 		ptr = ptr->next;
 	}
 	return (0);
@@ -65,7 +67,6 @@ int	check_enemy(t_data *app, int x, int y)
 	t_list	*item;
 	t_seg	*ptr;
 
-	enemy(app);
 	item = app->items.enemies;
 	while (item)
 	{
@@ -78,5 +79,6 @@ int	check_enemy(t_data *app, int x, int y)
 		}
 		item = item->next;
 	}
+	enemy(app);
 	return (0);
 }
