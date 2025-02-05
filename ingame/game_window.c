@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:29:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 15:14:28 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 14:41:55 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	init_paths(t_data *app)
 	app->path.bg = "./assets/xpm/background.xpm";
 	app->path.egg = "./assets/xpm/egg.xpm";
 	app->path.apple = "./assets/xpm/food_apple.xpm";
-	app->path.enemy = "./assets/xpm/enemy.xpm";
+	app->path.enemy = "./assets/xpm/enemy0.xpm";
 	app->path.snake_ghead = "./assets/xpm/snake_ghead.xpm";
 	app->path.snake_gdhead = "./assets/xpm/snake_gdhead.xpm";
 	app->path.snake_gbody = "./assets/xpm/snake_gbody.xpm";
@@ -48,7 +48,6 @@ static int	init_paths(t_data *app)
 	app->path.snake_ydhead = "./assets/xpm/snake_ydhead.xpm";
 	app->path.snake_ybody = "./assets/xpm/snake_ybody.xpm";
 	app->path.black = "./assets/xpm/black.xpm";
-	app->path.enemy = "./assets/xpm/enemy.xpm";
 	return (0);
 }
 

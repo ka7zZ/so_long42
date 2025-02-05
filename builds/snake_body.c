@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:21:00 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 13:14:28 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:28:17 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,22 @@ int	change_skin(t_data *app)
 		i++;
 		ptr = ptr->next;
 	}
+	return (0);
+}
+
+int	add_body(t_data*app, int x, int y)
+{
+	t_seg		*seg;
+
+	seg = (t_seg *)malloc(sizeof(t_seg));
+	if (!seg)
+		free_game(app);
+	if (!app->snake)
+		assign_image(app, &(seg->img), app->path.snake_ghead);
+	else
+		assign_image(app, &(seg->img), app->path.snake_gbody);
+	seg->x = x;
+	seg->y = y;
+	ft_lstadd_back(&(app->snake), ft_lstnew(seg));
 	return (0);
 }

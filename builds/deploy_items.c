@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 15:00:07 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:30:56 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,20 @@ static void	deploy_wall(t_data *app, int j, int i)
 	ft_lstadd_back(&(app->items.wseg), ft_lstnew(wall_seg3));
 }
 
+static void	deploy_enemy(t_data *app, int j, int i)
+{
+	t_seg	*enemy;
+	
+	enemy = (t_seg *)malloc(sizeof(t_seg));
+	if (!enemy)
+		free_game(app);
+	assign_image(app, &(enemy->img), app->path.enemy);
+	enemy->x = (X_BLOCK * j) - IMG;
+	enemy->y = IMG * i;
+	ft_lstadd_back(&(app->items.enemies), ft_lstnew(enemy));
+	deploy_image(app, enemy->img, enemy->x, enemy->y);
+}
+
 void	deploy_items(t_data *app)
 {
 	size_t	i;
@@ -97,9 +111,9 @@ void	deploy_items(t_data *app)
 			else if (app->map[i][j] == '1' && app->map[i + 1] != NULL)
 				deploy_wall(app, j, i);
 			else if (app->map[i][j] == 'E')
-				deploy_gate_anim(app, j, i);
+				deploy_gate(app, j, i);
 			else if (app->map[i][j] == 'I')
-				deploy_enemy_anim(app, j, i);
+				deploy_enemy(app, j, i);
 		}
 	}
 }

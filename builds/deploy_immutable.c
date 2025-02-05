@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 13:09:53 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:27:43 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,57 @@ static void	deploy_corners(t_data *app)
 	deploy_image(app, img->hor_left, IMG, app->ylen_win - IMG);
 	deploy_image(app, img->hor_right, app->xlen_win - ext, 0);
 	deploy_image(app, img->hor_right, app->xlen_win - ext, app->ylen_win - IMG);
+}
+
+static void	add_gate_seg(t_data *app, int n, int x, int y)
+{
+	t_seg	*buf;
+
+	buf = (t_seg *)malloc(sizeof(t_seg));
+	if (!buf)
+		free_game(app);
+	buf->img = NULL;
+	if (!n)
+		assign_image(app, &(buf->img), app->anime.gate0);
+	else if (n == 1)
+		assign_image(app, &(buf->img), app->anime.gate1);
+	else if (n == 2)
+		assign_image(app, &(buf->img), app->anime.gate2);
+	else if (n == 3)
+		assign_image(app, &(buf->img), app->anime.gate3);
+	else if (n == 4)
+		assign_image(app, &(buf->img), app->anime.gate4);
+	else if (n == 5)
+		assign_image(app, &(buf->img), app->anime.gate5);
+	if (!buf->img)
+		free_game(app);
+	buf->x = x;
+	buf->y = y;
+	ft_lstadd_back(&(app->items.gate), ft_lstnew(buf));
+}
+
+void	deploy_gate(t_data *app, int j, int i)
+{
+	t_list	*ptr;
+	t_seg	*buf;
+	int		n;
+
+	app->items.xpos_gate = (X_BLOCK * j) - IMG;
+	app->items.ypos_gate = IMG * i;
+	n = -1;
+	while (++n < 6)
+		add_gate_seg(app, n, app->items.xpos_gate, app->items.ypos_gate);
+	ptr = app->items.gate;
+	if (!ptr)
+		free_game(app);
+	n = -1;
+	while (ptr)
+	{
+		buf = ptr->content;
+		if (buf && ++n == 0)
+			deploy_image(app, buf->img, buf->x, buf->y);
+		ptr = ptr->next;
+	}
 }
 
 void	deploy_immutable(t_data *app)

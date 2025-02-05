@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
-/*   Updated: 2025/01/23 15:04:58 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:29:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,15 +147,12 @@ int		assign_image(t_data *app, void **image, char *addr);
 int		deploy_image(t_data *app, void *image, int x, int y);
 void	deploy_immutable(t_data *app);
 void	deploy_items(t_data *app);
-void	deploy_gate_anim(t_data *app, int j, int i);
-void	deploy_enemy_anim(t_data *app, int j, int i);
+void	deploy_gate(t_data *app, int j, int i);
+
+// void	deploy_enemy_anim(t_data *app, int j, int i);
 int		add_body(t_data*app, int x, int y);
 int		dead_head(t_data *app, char type);
 int		change_skin(t_data *app);
-
-// animations
-int		show_exit(t_data *app);
-int		enemy(t_data *app);
 
 // main
 int		main(int argc, char **argv);

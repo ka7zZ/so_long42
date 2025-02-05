@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/01/23 12:25:43 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/05 15:39:28 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,7 @@ FREES_FOLDER = frees/
 SRCS1 = $(CREATEMAP_FOLDER)check_map.c \
 		$(CREATEMAP_FOLDER)checkmap_error.c \
 		$(CREATEMAP_FOLDER)create_map.c
-SRCS2 = $(BUILDS_FOLDER)add_body.c \
-		$(BUILDS_FOLDER)anime_loops.c \
-		$(BUILDS_FOLDER)deploy_anime.c \
-		$(BUILDS_FOLDER)deploy_immutable.c \
+SRCS2 = $(BUILDS_FOLDER)deploy_immutable.c \
 		$(BUILDS_FOLDER)deploy_items.c \
 		$(BUILDS_FOLDER)snake_body.c \
 		$(BUILDS_FOLDER)utils.c
