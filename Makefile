@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/05 15:39:28 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/20 16:11:45 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,82 +33,92 @@ MAKE_MLX = make -s -C import/mlx > /dev/null 2>&1
 
 LIBS = $(LIBFT_FLAGS) $(MLX_FLAGS)
 
-CREATEMAP_FOLDER = create_map/
-BUILDS_FOLDER = builds/
-INGAME_FOLDER = ingame/
-FREES_FOLDER = frees/
+SRCS_FOLDER = $(SRCS_FOLDER)srcs/
+MANDATORY_FOLDER = $(SRCS_FOLDER)mandatory/
+BONUS_FOLDER = $(SRCS_FOLDER)bonus/
 
-SRCS1 = $(CREATEMAP_FOLDER)check_map.c \
-		$(CREATEMAP_FOLDER)checkmap_error.c \
-		$(CREATEMAP_FOLDER)create_map.c
-SRCS2 = $(BUILDS_FOLDER)deploy_immutable.c \
-		$(BUILDS_FOLDER)deploy_items.c \
-		$(BUILDS_FOLDER)snake_body.c \
-		$(BUILDS_FOLDER)utils.c
-SRCS3 = $(INGAME_FOLDER)check_body.c \
-		$(INGAME_FOLDER)check_enemy.c \
-		$(INGAME_FOLDER)check_food.c \
-		$(INGAME_FOLDER)check_gate.c \
-		$(INGAME_FOLDER)check_wall.c \
-		$(INGAME_FOLDER)count_moves.c \
-		$(INGAME_FOLDER)game_logic.c \
-		$(INGAME_FOLDER)game_window.c \
-		$(INGAME_FOLDER)hooks.c
-SRCS4 = $(FREES_FOLDER)free_game.c \
-		$(FREES_FOLDER)free_items.c \
-		$(FREES_FOLDER)free_start.c
-MAIN = so_long.c
 
-OBJS_DIR_CHECKMAP = $(CREATEMAP_FOLDER)objs/
-OBJS_DIR_BUILDS = $(BUILDS_FOLDER)objs/
-OBJS_DIR_INGAME = $(INGAME_FOLDER)objs/
-OBJS_DIR_FREES = $(FREES_FOLDER)objs/
-OBJS_DIR_MAIN = objs/
+SRCS_UTILS =	$(UTILS_FOLDER)check_body.c \
+				$(UTILS_FOLDER)check_food.c \
+				$(UTILS_FOLDER)check_gate.c \
+				$(UTILS_FOLDER)check_wall.c \
+				$(UTILS_FOLDER)checkmap_error.c \
+				$(UTILS_FOLDER)count_moves.c \
+				$(UTILS_FOLDER)create_map.c \
+				$(UTILS_FOLDER)deploy_immutable.c \
+				$(UTILS_FOLDER)free_start.c \
+				$(UTILS_FOLDER)snake_body.c \
+				$(UTILS_FOLDER)utils.c
+SRCS_MANDATORY = 	$(MANDATORY_FOLDER)check_map.c \
+					$(MANDATORY_FOLDER)deploy_items.c \
+					$(MANDATORY_FOLDER)free_game.c \
+					$(MANDATORY_FOLDER)free_items.c \
+					$(MANDATORY_FOLDER)game_logic.c \
+					$(MANDATORY_FOLDER)hooks.c \
+					$(MANDATORY_FOLDER)game_window.c \
+					$(MANDATORY_FOLDER)so_long.c \
+					$(SRCS_UTILS)
+SRCS_BONUS =	$(BONUS_FOLDER)check_enemy_bonus.c \
+				$(BONUS_FOLDER)check_map_bonus.c \
+				$(BONUS_FOLDER)deploy_items_bonus.c \
+				$(BONUS_FOLDER)free_game_bonus.c \
+				$(BONUS_FOLDER)free_items_bonus.c \
+				$(BONUS_FOLDER)game_logic_bonus.c \
+				$(BONUS_FOLDER)game_window_bonus.c \
+				$(BONUS_FOLDER)hooks_bonus.c \
+				$(BONUS_FOLDER)so_long_bonus.c \
+				$(SRCS_UTILS)
 
-OBJS = $(SRCS1:$(CREATEMAP_FOLDER)%.c=$(OBJS_DIR_CHECKMAP)%.o) \
-	   $(SRCS2:$(BUILDS_FOLDER)%.c=$(OBJS_DIR_BUILDS)%.o) \
-	   $(SRCS3:$(INGAME_FOLDER)%.c=$(OBJS_DIR_INGAME)%.o) \
-	   $(SRCS4:$(FREES_FOLDER)%.c=$(OBJS_DIR_FREES)%.o) \
-	   $(MAIN:%.c=$(OBJS_DIR_MAIN)%.o)
+OBJSMAND_FOLDER = $(MANDATORY_FOLDER)/objects
+OBJSBONUS_FOLDER = $(BONUS_FOLDER)/objects
+OBJSUTI_FOLDER = $(UTILS_FOLDER)/objects
 
-INCLUDES = -Imlx -Ilibft -I.
+OBJS_MANDATORY = 	$(SRCS_MANDATORY:$(MANDATORY_FOLDER)%.c=$(OBJSMAND_FOLDER)%.o) \
+	   				$(SRCS_UTILS:$(UTILS_FOLDER)%.c=$(OBJSUTI_FOLDER)%.o)
+
+OBJS_BONUS =	$(SRCS_BONUS:$(BONUS_FOLDER)%.c=$(OBJSBONUS_FOLDER)%.o) \
+	   			$(SRCS_UTILS:$(UTILS_FOLDER)%.c=$(OBJSUTI_FOLDER)%.o)
+
+
+INCLUDES_IMPORTS = -Imlx -Ilibft -I.
+INCLUDES = -I include/
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS_MANDATORY)
 	@echo "$(GRAY)Compiling so_long...$(RESET_COLOR)"
 	@echo "$(YELLOW)Compiling libft...$(RESET_COLOR)"
 	@$(MAKE_LIBFT)
 	@echo "$(BLUE)Compiling mlx...$(RESET_COLOR)"
 	@$(MAKE_MLX)
 	@echo "$(MAGENTA)Linking...$(RESET_COLOR)"
-	@$(COMPILER) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
-	@echo "$(RED)Setup final datas...$(RESET_COLOR)"
-	@sleep 2
-	@echo "$(DARK_GREEN)so_long compiled successfully!$(RESET_COLOR)"	
+	@$(COMPILER) $(CFLAGS) $(OBJS_MANDATORY) $(LIBS) -o $(NAME)
+	@echo "$(RED)so_long compiled successfully!$(RESET_COLOR)"	
 
-$(OBJS_DIR_CHECKMAP)%.o: $(CREATEMAP_FOLDER)%.c
-	@mkdir -p $(OBJS_DIR_CHECKMAP)
-	@$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
-$(OBJS_DIR_BUILDS)%.o: $(BUILDS_FOLDER)%.c
-	@mkdir -p $(OBJS_DIR_BUILDS)
-	@$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
-$(OBJS_DIR_INGAME)%.o: $(INGAME_FOLDER)%.c
-	@mkdir -p $(OBJS_DIR_INGAME)
-	@$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
-$(OBJS_DIR_FREES)%.o: $(FREES_FOLDER)%.c
-	@mkdir -p $(OBJS_DIR_FREES)
-	@$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
-$(OBJS_DIR_MAIN)%.o: %.c
-	@mkdir -p $(OBJS_DIR_MAIN)
-	@$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
+$(OBJSMAND_FOLDER)%.o: $(MANDATORY_FOLDER)%.c
+	@mkdir -p $(OBJSMAND_FOLDER)
+	@$(COMPILER) $(CFLAGS) $(INCLUDES) $(INCLUDES_IMPORTS) -c $< -o $@
+
+$(OBJSUTI_FOLDER)%.o: $(UTILS_FOLDER)%.C
+	@mkdir -p $(OBJSUTI_FOLDER)
+	@$(COMPILER) $(CFLAGS) $(INCLUDES) $(INCLUDES_IMPORTS) -c $< -o $@
+
+$(OBJSBONUS_FOLDER)%.o: $(BONUS_FOLDER)%.c
+	@mkdir -p $(OBJSBONUS_FOLDER)
+	@$(COMPILER) $(CFLAGS) $(INCLUDES) $(INCLUDES_IMPORTS) -c $< -o $@
+
+bonus: fclean $(OBJS_BONUS)
+	@echo "$(GRAY)Compiling so_long with bonus...$(RESET_COLOR)"
+	@echo "$(YELLOW)Compiling libft...$(RESET_COLOR)"
+	@$(MAKE_LIBFT)
+	@echo "$(BLUE)Compiling mlx...$(RESET_COLOR)"
+	@$(MAKE_MLX)
+	@echo "$(MAGENTA)Linking...$(RESET_COLOR)"
+	@$(COMPILER) $(CFLAGS) $(OBJS_BONUS) $(LIBS) -o $(NAME)
+	@echo "$(RED)so_long compiled successfully!$(RESET_COLOR)"
 
 clean:
-	@rm -Rf $(OBJS_DIR_CHECKMAP)
-	@rm -Rf $(OBJS_DIR_BUILDS)
-	@rm -Rf $(OBJS_DIR_INGAME)
-	@rm -Rf $(OBJS_DIR_FREES)
-	@rm -Rf $(OBJS_DIR_MAIN)
+	@rm -Rf $(OBJSMAND_FOLDER) $(OBJSUTI_FOLDER) $(OBJSBONUS_FOLDER)
 	@make clean -s -C import/libft > /dev/null 2>&1
 	@make clean -s -C import/mlx > /dev/null 2>&1
 	@echo "so_long project successfully cleaned!"
