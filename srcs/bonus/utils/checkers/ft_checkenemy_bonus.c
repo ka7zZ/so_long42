@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:11 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:49:08 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:47:00 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/so_long_bonus.h"
+#include "../../../../includes/so_long.h"
 
 static void	ft_enemygif(t_data *app, int n, int x, int y)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_glogic_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_glogic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:43 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:38:35 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:39:19 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/so_long_bonus.h"
+#include "../../../includes/so_long.h"
 
 static void	ft_keypressed(t_data *app)
 {
@@ -74,8 +74,6 @@ int	ft_glogic(t_data *app)
 			ft_freegame(app);
 		else if (ft_checkbody(app, app->new_x, app->new_y) == 2)
 			return (0);
-		if (ft_checkenemy(app, app->new_x, app->new_y))
-			ft_freegame(app);
 		if (ft_checkfood(app, app->new_x, app->new_y))
 			ft_addbody(app, app->xlast_snake, app->ylast_snake);
 		ft_movesnake(app, app->new_x, app->new_y);

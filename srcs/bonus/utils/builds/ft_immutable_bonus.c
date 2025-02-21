@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:45:21 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:47:18 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "utils.h"
+#include "../../../../includes/so_long.h"
 
 static void	ft_bg(t_data *app)
 {

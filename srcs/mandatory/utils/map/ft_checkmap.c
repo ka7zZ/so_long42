@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkmap_bonus.c                                :+:      :+:    :+:   */
+/*   ft_checkmap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:01 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:32:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:42:42 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/so_long_bonus.h"
+# include "../../../../includes/so_long.h"
 
 static int	count_lines(char *argv)
 {
@@ -128,7 +128,7 @@ int	ft_checkmap(t_data *app, char *argv)
 		j = 0;
 		while (app->map[i][j] != '\0' && app->map[i][j] != '\n')
 		{
-			if (!ft_strchr("01EPCI", app->map[i][j]))
+			if (!ft_strchr("01EPC", app->map[i][j]))
 				ft_errormap(app);
 			j++;
 		}

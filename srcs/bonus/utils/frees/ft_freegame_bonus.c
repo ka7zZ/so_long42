@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:45 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:28:15 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:46:41 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/so_long_bonus.h"
+#include "../../../../includes/so_long.h"
 
 int	ft_freegame(t_data *app)
 {

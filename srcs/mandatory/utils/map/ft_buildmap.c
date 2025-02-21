@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_buildmap_bonus.c                                :+:      :+:    :+:   */
+/*   ft_buildmap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:30:39 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:42:38 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/so_long.h"
-# include "../../includes/so_long_bonus.h"
+# include "../../../../includes/so_long.h"
 
 static int	ft_checksnake(t_data *app)
 {
@@ -60,9 +59,6 @@ static int	ft_checkexit(t_data *app)
 int	ft_buildmap(t_data *app, char *argv)
 {
 	if (!ft_checkmap(app, argv) || !ft_checkexit(app) || !ft_checksnake(app))
-	{
-		ft_errormap(app);
-		return (0);
-	}
+		return (ft_errormap(app));
 	return (1);
 }

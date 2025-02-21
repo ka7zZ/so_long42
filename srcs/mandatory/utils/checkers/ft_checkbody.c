@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkbody_bonus.c                               :+:      :+:    :+:   */
+/*   ft_checkbody.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:18 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:47:26 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:42:02 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/so_long.h"
-# include "../../includes/so_long_bonus.h"
+# include "../../../../includes/so_long.h"
 
 int	ft_checkbody(t_data *app, int x, int y)
 {

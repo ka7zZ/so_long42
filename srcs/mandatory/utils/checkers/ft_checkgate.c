@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkgate_bonus.c                               :+:      :+:    :+:   */
+/*   ft_checkgate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:55:15 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:42:10 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/so_long.h"
-# include "../../includes/so_long_bonus.h"
+# include "../../../../includes/so_long.h"
 
 static int	ft_show(t_data *app)
 {
@@ -35,8 +34,7 @@ static int	ft_show(t_data *app)
 	return (0);
 }
 
-void	ft_checkgate
-(t_data *app, int x, int y)
+void	ft_checkgate(t_data *app, int x, int y)
 {
 	t_list	*food;
 
