@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:39:59 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 14:41:25 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:30:05 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_BONUSH
+#ifndef SO_LONG_BONUS_H
 # define SO_LONG_BONUS_H
 
 # include "../import/mlx/mlx.h"
@@ -126,8 +126,8 @@ typedef struct s_data
 }	t_data;
 
 // UTILS
-int	ft_assignimg(t_data *app, void **image, char *addr);
-int	ft_deployimg(t_data *app, void *image, int x, int y);
+int		ft_assignimg(t_data *app, void **image, char *addr);
+int		ft_deployimg(t_data *app, void *image, int x, int y);
 // PRINCIPAL
 int		ft_glogic(t_data *app);
 int		ft_gw(t_data *app);
@@ -136,7 +136,7 @@ void	ft_moves(t_data *app);
 // BUIDS
 void	ft_gate(t_data *app, int j, int i);
 void	ft_immutable(t_data *app);
-void	ft_items_bonus(t_data *app);
+void	ft_items(t_data *app);
 int		ft_deadhead(t_data *app, char type);
 int		ft_changeskin(t_data *app);
 int		ft_addbody(t_data*app, int x, int y);
@@ -147,14 +147,14 @@ void	ft_checkgate(t_data *app, int x, int y);
 int		ft_checkwall(t_data *app, int x, int y);
 int		ft_checkenemy(t_data *app, int x, int y);
 // FREES
-int	ft_freegame(t_data *app);
-int	ft_freeitems(t_data *app);
-int	ft_freestart(t_data *app);
+int		ft_freegame(t_data *app);
+int		ft_freeitems(t_data *app);
+int		ft_freestart(t_data *app);
 // MAP
-int	ft_buildmap(t_data *app, char *argv);
-int	ft_checkmap(t_data *app, char *argv);
-int	ft_freemap(char **map);
-int	ft_errormap(t_data *app);
+int		ft_buildmap(t_data *app, char *argv);
+int		ft_checkmap(t_data *app, char *argv);
+int		ft_freemap(char **map);
+int		ft_errormap(t_data *app);
 // main
 int		main(int argc, char **argv);
 #endif

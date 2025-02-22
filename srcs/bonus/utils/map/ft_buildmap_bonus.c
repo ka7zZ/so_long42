@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:07 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:46:26 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:24:41 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../includes/so_long.h"
+#include "../../../../includes/so_long_bonus.h"
 
 static int	ft_checksnake(t_data *app)
 {

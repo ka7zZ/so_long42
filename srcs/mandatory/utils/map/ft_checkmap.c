@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:01 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:42:42 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:43:21 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static int	count_lines(char *argv)
 	int		count;
 	int		bytes;
 	int		i;
-	char	buffer[BUFFER_SZ];
+	char	buffer[1024];
 
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
 		return (0);
-	bytes = read(fd, buffer, BUFFER_SZ);
+	bytes = read(fd, buffer, 1024);
 	if (bytes < 0)
 		return (close(fd), 0);
 	buffer[bytes] = '\0';

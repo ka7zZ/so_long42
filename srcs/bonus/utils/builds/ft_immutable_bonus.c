@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:47:18 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 16:30:36 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../includes/so_long.h"
+#include "../../../../includes/so_long_bonus.h"
 
 static void	ft_bg(t_data *app)
 {
@@ -127,14 +127,14 @@ void	ft_immutable(t_data *app)
 	ft_assignimg(app, &(img->side_ver), addr->ver_wall);
 	while (x < (app->xlen_win - IMG * 2))
 	{
-		ft_deploy_img(app, img->side_hor, x, app->ylen_win - IMG);
-		ft_deploy_img(app, img->side_hor, x, 0);
+		ft_deployimg(app, img->side_hor, x, app->ylen_win - IMG);
+		ft_deployimg(app, img->side_hor, x, 0);
 		x += IMG;
 	}
 	while (y < (app->ylen_win - IMG * 2))
 	{
-		ft_deploy_img(app, img->side_ver, 0, y);
-		ft_deploy_img(app, img->side_ver, app->xlen_win - IMG, y);
+		ft_deployimg(app, img->side_ver, 0, y);
+		ft_deployimg(app, img->side_ver, app->xlen_win - IMG, y);
 		y += IMG;
 	}
 }

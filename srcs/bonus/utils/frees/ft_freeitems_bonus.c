@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:46:45 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:09:49 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../includes/so_long.h"
+#include "../../../../includes/so_long_bonus.h"
 
 static int	ft_freegw(t_data	*app)
 {
@@ -107,7 +107,7 @@ static int	ft_freesnake(t_data *app)
 	return (0);
 }
 
-int	ft_freeitems_bonus(t_data *app)
+int	ft_freeitems(t_data *app)
 {
 	t_seg	*buf;
 	t_list	*ptr;

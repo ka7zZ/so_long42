@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:32:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/20 17:21:32 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:26:57 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "utils.h"
+# include "../../../includes/so_long.h"
 
 int	ft_assignimg(t_data *app, void **image, char *addr)
 {
@@ -21,7 +21,7 @@ int	ft_assignimg(t_data *app, void **image, char *addr)
 		exit(0);
 	*image = mlx_xpm_file_to_image(app->mlx, addr, &width, &height);
 	if (!(*image))
-		free_game(app);
+		ft_freegame(app);
 	return (0);
 }
 

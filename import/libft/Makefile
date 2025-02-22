@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 13:11:03 by aghergut          #+#    #+#              #
-#    Updated: 2025/01/13 15:35:19 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/22 14:07:12 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,15 +74,15 @@ OBJS_DIR_LISTS = $(LISTS_FOLDER)o_files/
 OBJS_DIR_FTPRINTF = $(FTPRINTF_FOLDER)o_files/
 
 # Object files with correct paths
-OBJS = $(addprefix $(OBJS_DIR_CHANGECHAR), $(notdir $(SRCS1:.c=.o))) \
-	$(addprefix $(OBJS_DIR_CHECKCHAR), $(notdir $(SRCS2:.c=.o))) \
-	$(addprefix $(OBJS_DIR_STRTOINT), $(notdir $(SRCS3:.c=.o))) \
-	$(addprefix $(OBJS_DIR_GET_NEXT_LINE), $(notdir $(SRCS4:.c=.o))) \
-	$(addprefix $(OBJS_DIR_STRINGS), $(notdir $(SRCS5:.c=.o))) \
-	$(addprefix $(OBJS_DIR_MEMORY), $(notdir $(SRCS6:.c=.o))) \
-	$(addprefix $(OBJS_DIR_PUTS), $(notdir $(SRCS7:.c=.o))) \
-	$(addprefix $(OBJS_DIR_LISTS), $(notdir $(SRCS8:.c=.o))) \
-	$(addprefix $(OBJS_DIR_FTPRINTF), $(notdir $(SRCS9:.c=.o)))
+OBJS = 	$(addprefix $(OBJS_DIR_CHANGECHAR), $(notdir $(SRCS1:.c=.o))) \
+		$(addprefix $(OBJS_DIR_CHECKCHAR), $(notdir $(SRCS2:.c=.o))) \
+		$(addprefix $(OBJS_DIR_STRTOINT), $(notdir $(SRCS3:.c=.o))) \
+		$(addprefix $(OBJS_DIR_GET_NEXT_LINE), $(notdir $(SRCS4:.c=.o))) \
+		$(addprefix $(OBJS_DIR_STRINGS), $(notdir $(SRCS5:.c=.o))) \
+		$(addprefix $(OBJS_DIR_MEMORY), $(notdir $(SRCS6:.c=.o))) \
+		$(addprefix $(OBJS_DIR_PUTS), $(notdir $(SRCS7:.c=.o))) \
+		$(addprefix $(OBJS_DIR_LISTS), $(notdir $(SRCS8:.c=.o))) \
+		$(addprefix $(OBJS_DIR_FTPRINTF), $(notdir $(SRCS9:.c=.o)))
 
 INCLUDES = -I.
 

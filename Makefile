@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/21 14:47:17 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/22 17:08:54 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ SRCS_BONUS_BUILDS =	$(SRCS)$(BONUS)$(UTILS)$(BUILDS)ft_immutable_bonus.c \
 SRCS_BONUS_CHECKERS =	$(SRCS)$(BONUS)$(UTILS)$(CHECKERS)ft_checkbody_bonus.c \
 							$(SRCS)$(BONUS)$(UTILS)$(CHECKERS)ft_checkfood_bonus.c \
 							$(SRCS)$(BONUS)$(UTILS)$(CHECKERS)ft_checkgate_bonus.c \
+							$(SRCS)$(BONUS)$(UTILS)$(CHECKERS)ft_checkenemy_bonus.c \
 							$(SRCS)$(BONUS)$(UTILS)$(CHECKERS)ft_checkwall_bonus.c
 SRCS_BONUS_FREES =	$(SRCS)$(BONUS)$(UTILS)$(FREES)ft_freegame_bonus.c \
 						$(SRCS)$(BONUS)$(UTILS)$(FREES)ft_freeitems_bonus.c \
@@ -104,30 +105,28 @@ BUILDS_OBJS = $(UTILS)$(BUILDS)objects/
 CHECKERS_OBJS = $(UTILS)$(CHECKERS)objects/
 FREES_OBJS = $(UTILS)$(FREES)objects/
 MAP_OBJS = $(UTILS)$(MAP)objects/
-UTIL_OBJ = $(UTILS)
 
 # MANDATORY OBJECTS
 OBJS_MANDATORY = 	$(addprefix $(MANDATORY_OBJS)$(GAME_OBJS), $(notdir $(SRCS_MANDATORY_GAME:.c=.o))) \
 					$(addprefix $(MANDATORY_OBJS)$(BUILDS_OBJS), $(notdir $(SRCS_MANDATORY_BUILDS:.c=.o))) \
 					$(addprefix $(MANDATORY_OBJS)$(CHECKERS_OBJS), $(notdir $(SRCS_MANDATORY_CHECKERS:.c=.o))) \
-					$(addprefix $(MANDATORY_OBJS)$(FREES_OBJS), $(notdir $(SRCS_BONUS_FREES:.c=.o))) \
-					$(addprefix $(MANDATORY_OBJS)$(MAP_OBJS), $(notdir $(SRCS_BONUS_MAP:.c=.o))) \
-					$(addprefix $(MANDATORY_OBJS)$(UTIL_OBJ), $(notdir $(SRCS_MANDATORY_UTILS:.c=.o))) \
+					$(addprefix $(MANDATORY_OBJS)$(FREES_OBJS), $(notdir $(SRCS_MANDATORY_FREES:.c=.o))) \
+					$(addprefix $(MANDATORY_OBJS)$(MAP_OBJS), $(notdir $(SRCS_MANDATORY_MAP:.c=.o))) \
+					$(addprefix $(MANDATORY_OBJS)$(UTILS), $(notdir $(SRCS_MANDATORY_UTILS:.c=.o))) \
 					$(addprefix $(MANDATORY_OBJS), $(notdir $(SRCS_MANDATORY_MAIN:.c=.o)))
 
 # BONUS OBJECTS
 OBJS_BONUS = 	$(addprefix $(BONUS_OBJS)$(GAME_OBJS), $(notdir $(SRCS_BONUS_GAME:.c=.o))) \
-					$(addprefix $(BONUS_OBJS)$(BUILDS_OBJS), $(notdir $(SRCS_BONUS_BUILDS:.c=.o))) \
-					$(addprefix $(BONUS_OBJS)$(CHECKERS_OBJS), $(notdir $(SRCS_BONUS_CHECKERS:.c=.o))) \
-					$(addprefix $(BONUS_OBJS)$(FREES_OBJS), $(notdir $(SRCS_BONUS_FREES:.c=.o))) \
-					$(addprefix $(BONUS_OBJS)$(MAP_OBJS), $(notdir $(SRCS_BONUS_MAP:.c=.o))) \
-					$(addprefix $(BONUS_OBJS)$(UTIL_OBJ), $(notdir $(SRCS_BONUS_UTILS:.c=.o))) \
-					$(addprefix $(BONUS_OBJS), $(notdir $(SRCS_BONUS_MAIN:.c=.o)))
+				$(addprefix $(BONUS_OBJS)$(BUILDS_OBJS), $(notdir $(SRCS_BONUS_BUILDS:.c=.o))) \
+				$(addprefix $(BONUS_OBJS)$(CHECKERS_OBJS), $(notdir $(SRCS_BONUS_CHECKERS:.c=.o))) \
+				$(addprefix $(BONUS_OBJS)$(FREES_OBJS), $(notdir $(SRCS_BONUS_FREES:.c=.o))) \
+				$(addprefix $(BONUS_OBJS)$(MAP_OBJS), $(notdir $(SRCS_BONUS_MAP:.c=.o))) \
+				$(addprefix $(BONUS_OBJS)$(UTILS), $(notdir $(SRCS_BONUS_UTILS:.c=.o))) \
+				$(addprefix $(BONUS_OBJS), $(notdir $(SRCS_BONUS_MAIN:.c=.o)))
 
 
 # HEADER FILES INCLUDES
-INCLUDES_IMPORTS = -Imlx -Ilibft -I.
-INCLUDES = -I include/
+INCLUDES = -Iimport/mlx -Iimport/libft -I include
 
 # FIRST TO BE EXECUTED
 all: $(NAME)
@@ -146,26 +145,23 @@ $(MANDATORY_OBJS)$(GAME_OBJS)%.o: $(SRCS)$(MANDATORY)$(GAME)%.c
 	@mkdir -p $(MANDATORY_OBJS)$(GAME_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MANDATORY_OBJS)$(BUILDS)%.o: $(SRCS)$(MANDATORY)$(BUILDS)%.c
-	@mkdir -p $(MANDATORY_OBJS)$(BUILDS)
+$(MANDATORY_OBJS)$(BUILDS_OBJS)%.o: $(SRCS)$(MANDATORY)$(UTILS)$(BUILDS)%.c
+	@mkdir -p $(MANDATORY_OBJS)$(BUILDS_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MANDATORY_OBJS)$(CHECKERS_OBJS)%.o: $(SRCS)$(MANDATORY)$(CHECKERS)%.c
-	@echo "wwwwwwww"
+$(MANDATORY_OBJS)$(CHECKERS_OBJS)%.o: $(SRCS)$(MANDATORY)$(UTILS)$(CHECKERS)%.c
 	@mkdir -p $(MANDATORY_OBJS)$(CHECKERS_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MANDATORY_OBJS)$(FREES_OBJS)%.o: $(SRCS)$(MANDATORY)$(FREES)%.c
-	@echo "wwwwwwww"
+$(MANDATORY_OBJS)$(FREES_OBJS)%.o: $(SRCS)$(MANDATORY)$(UTILS)$(FREES)%.c
 	@mkdir -p $(MANDATORY_OBJS)$(FREES_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MANDATORY_OBJS)$(MAP_OBJS)%.o: $(SRCS)$(MANDATORY)$(MAP)%.c
-	@echo "wwwwwwww"
+$(MANDATORY_OBJS)$(MAP_OBJS)%.o: $(SRCS)$(MANDATORY)$(UTILS)$(MAP)%.c
 	@mkdir -p $(MANDATORY_OBJS)$(MAP_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MANDATORY_OBJS)$(UTIL_OBJ)%.o: $(SRCS)$(MANDATORY)$(UTIL)%.c
+$(MANDATORY_OBJS)$(UTILS)%.o: $(SRCS)$(MANDATORY)$(UTILS)%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(MANDATORY_OBJS)%.o: $(SRCS)$(MANDATORY)%.c
@@ -182,27 +178,28 @@ bonus: fclean $(OBJS_BONUS)
 	@$(COMPILER) $(CFLAGS) $(OBJS_BONUS) $(LIBS) -o $(NAME)
 	@echo "$(RED)so_long compiled successfully!$(RESET_COLOR)"
 
+
 $(BONUS_OBJS)$(GAME_OBJS)%.o: $(SRCS)$(BONUS)$(GAME)%.c
 	@mkdir -p $(BONUS_OBJS)$(GAME_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUS_OBJS)$(BUILDS)%.o: $(SRCS)$(BONUS)$(BUILDS)%.c
-	@mkdir -p $(BONUS_OBJS)$(BUILDS)
+$(BONUS_OBJS)$(BUILDS_OBJS)%.o: $(SRCS)$(BONUS)$(UTILS)$(BUILDS)%.c
+	@mkdir -p $(BONUS_OBJS)$(BUILDS_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUS_OBJS)$(CHECKERS_OBJS)%.o: $(SRCS)$(BONUS)$(CHECKERS)%.c
+$(BONUS_OBJS)$(CHECKERS_OBJS)%.o: $(SRCS)$(BONUS)$(UTILS)$(CHECKERS)%.c
 	@mkdir -p $(BONUS_OBJS)$(CHECKERS_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUS_OBJS)$(FREES_OBJS)%.o: $(SRCS)$(BONUS)$(FREES)%.c
+$(BONUS_OBJS)$(FREES_OBJS)%.o: $(SRCS)$(BONUS)$(UTILS)$(FREES)%.c
 	@mkdir -p $(BONUS_OBJS)$(FREES_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUS_OBJS)$(MAP_OBJS)%.o: $(SRCS)$(BONUS)$(MAP)%.c
+$(BONUS_OBJS)$(MAP_OBJS)%.o: $(SRCS)$(BONUS)$(UTILS)$(MAP)%.c
 	@mkdir -p $(BONUS_OBJS)$(MAP_OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(BONUS_OBJS)$(UTIL_OBJ)%.o: $(SRCS)$(BONUS)$(UTIL)%.c
+$(BONUS_OBJS)$(UTILS)%.o: $(SRCS)$(BONUS)$(UTILS)%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(BONUS_OBJS)%.o: $(SRCS)$(BONUS)%.c

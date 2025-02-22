@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:42:27 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:35:40 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,6 @@ static int	ft_freesnake(t_data *app)
 
 int	ft_freeitems(t_data *app)
 {
-	t_seg	*buf;
-	t_list	*ptr;
-
 	ft_freeimmutable(app);
 	ft_freefood(app);
 	ft_freesnake(app);
