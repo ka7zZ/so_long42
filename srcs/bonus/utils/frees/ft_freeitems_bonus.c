@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 17:09:49 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:01:53 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ static int	ft_freesnake(t_data *app)
 		temp = app->snake->next;
 		buf = app->snake->content;
 		if (buf)
-		{
-			mlx_destroy_image(app->mlx, buf->img);
 			free(buf);
-		}
 		free(app->snake);
 		app->snake = temp;
 	}

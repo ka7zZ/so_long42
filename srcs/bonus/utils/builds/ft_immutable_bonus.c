@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:21:13 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 16:30:36 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:36:01 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	ft_bg(t_data *app)
 		x = IMG;
 		while (x < app->xlen_win)
 		{
+	
 			ft_deployimg(app, app->walls.bg, x, y);
 			x += IMG;
 		}

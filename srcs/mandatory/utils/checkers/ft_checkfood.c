@@ -6,7 +6,7 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:22:04 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:42:05 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:57:46 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	ft_checkfood(t_data *app, int x, int y)
 		ptr = item->content;
 		if (ptr && ptr->x == x && ptr->y == y)
 		{
-			mlx_destroy_image(app->mlx, ptr->img);
 			ft_lstdelone(item, free);
 			if (prev)
 				prev->next = buf;
