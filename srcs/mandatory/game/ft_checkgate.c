@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 10:12:32 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:50:43 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../includes/so_long.h"
+#include "../../../includes/so_long.h"
 
 static int	ft_show(t_data *app)
 {

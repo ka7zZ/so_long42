@@ -6,7 +6,7 @@
 #    By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/13 14:17:20 by aghergut          #+#    #+#              #
-#    Updated: 2025/02/24 11:19:18 by aghergut         ###   ########.fr        #
+#    Updated: 2025/02/24 15:13:24 by aghergut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,6 @@ BONUS = bonus/
 # SUBFOLDERS
 GAME = game/
 UTILS = utils/
-FREES = frees/
 MAP = map/
 
 # SOURCES FILES
@@ -70,9 +69,9 @@ SRCS_MANDATORY =	$(SRCS)$(MANDATORY)$(GAME)$(MAP)ft_buildmap.c \
 					$(SRCS)$(MANDATORY)$(UTILS)ft_items.c \
 					$(SRCS)$(MANDATORY)$(UTILS)ft_snake_body.c \
 					$(SRCS)$(MANDATORY)$(UTILS)ft_utils.c \
-					$(SRCS)$(MANDATORY)$(UTILS)$(FREES)ft_freegame.c \
-					$(SRCS)$(MANDATORY)$(UTILS)$(FREES)ft_freeitems.c \
-					$(SRCS)$(MANDATORY)$(UTILS)$(FREES)ft_freestart.c \
+					$(SRCS)$(MANDATORY)$(UTILS)ft_freegame.c \
+					$(SRCS)$(MANDATORY)$(UTILS)ft_freeitems.c \
+					$(SRCS)$(MANDATORY)$(UTILS)ft_freestart.c \
 					$(SRCS)$(MANDATORY)so_long.c
 
 SRCS_BONUS =	$(SRCS)$(BONUS)$(GAME)$(MAP)ft_buildmap_bonus.c \
@@ -87,9 +86,9 @@ SRCS_BONUS =	$(SRCS)$(BONUS)$(GAME)$(MAP)ft_buildmap_bonus.c \
 				$(SRCS)$(BONUS)$(GAME)ft_gw_bonus.c \
 				$(SRCS)$(BONUS)$(GAME)ft_hooks_bonus.c \
 				$(SRCS)$(BONUS)$(GAME)ft_moves_bonus.c \
-				$(SRCS)$(BONUS)$(UTILS)$(FREES)ft_freegame_bonus.c \
-				$(SRCS)$(BONUS)$(UTILS)$(FREES)ft_freeitems_bonus.c \
-				$(SRCS)$(BONUS)$(UTILS)$(FREES)ft_freestart_bonus.c \
+				$(SRCS)$(BONUS)$(UTILS)ft_freegame_bonus.c \
+				$(SRCS)$(BONUS)$(UTILS)ft_freeitems_bonus.c \
+				$(SRCS)$(BONUS)$(UTILS)ft_freestart_bonus.c \
 				$(SRCS)$(BONUS)$(UTILS)ft_utils_bonus.c \
 				$(SRCS)$(BONUS)$(UTILS)ft_immutable_bonus.c \
 				$(SRCS)$(BONUS)$(UTILS)ft_items_bonus.c \

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freegame.c                                      :+:      :+:    :+:   */
+/*   ft_freestart_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 15:23:45 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/21 11:42:20 by aghergut         ###   ########.fr       */
+/*   Created: 2025/01/23 11:11:57 by aghergut          #+#    #+#             */
+/*   Updated: 2025/02/24 14:49:48 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../../includes/so_long.h"
+#include "../../../includes/so_long_bonus.h"
 
-int	ft_freegame(t_data *app)
+int	ft_freestart(t_data *app)
 {
 	int	i;
 
@@ -25,12 +25,13 @@ int	ft_freegame(t_data *app)
 	}
 	if (app->map_arg)
 		free(app->map_arg);
-	ft_freeitems(app);
-	mlx_destroy_window(app->mlx, app->win_game);
+	if (app->img_start)
+		mlx_destroy_image(app->mlx, app->img_start);
+	if (app->win_start)
+		mlx_destroy_window(app->mlx, app->win_start);
 	mlx_destroy_display(app->mlx);
 	free(app->mlx);
 	free(app);
-	ft_putstr_fd("Come again!\n", 1);
 	exit(0);
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:21:00 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/24 10:13:34 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:51:34 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../includes/so_long.h"
+#include "../../../includes/so_long.h"
 
 int	ft_deadhead(t_data *app, char type)
 {

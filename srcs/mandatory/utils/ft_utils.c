@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:32:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 14:26:57 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:02:39 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../includes/so_long.h"
+#include "../../../includes/so_long.h"
 
 int	ft_assignimg(t_data *app, void **image, char *addr)
 {

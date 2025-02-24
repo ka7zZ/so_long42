@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:01 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 14:43:21 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:51:12 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../../includes/so_long.h"
+#include "../../../../includes/so_long.h"
 
 static int	count_lines(char *argv)
 {

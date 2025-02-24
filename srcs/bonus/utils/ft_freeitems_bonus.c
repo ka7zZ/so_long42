@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freeitems.c                                     :+:      :+:    :+:   */
+/*   ft_freeitems_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 14:47:28 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 14:35:40 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:49:52 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../../includes/so_long.h"
+#include "../../../includes/so_long_bonus.h"
 
-static int	ft_free_gatewalls(t_data	*app)
+static int	ft_freegw(t_data	*app)
 {
 	t_seg	*gbuf;
 	t_wseg	*wbuf;
@@ -58,7 +58,7 @@ static int	ft_freeimmutable(t_data *app)
 		mlx_destroy_image(app->mlx, app->walls.side_hor);
 	if (app->walls.side_ver)
 		mlx_destroy_image(app->mlx, app->walls.side_ver);
-	ft_free_gatewalls(app);
+	ft_freegw(app);
 	return (0);
 }
 
@@ -83,6 +83,7 @@ static int	ft_freefood(t_data *app)
 			app->items.food = temp;
 		}
 	}
+	ft_freeimmutable(app);
 	return (0);
 }
 
@@ -96,10 +97,7 @@ static int	ft_freesnake(t_data *app)
 		temp = app->snake->next;
 		buf = app->snake->content;
 		if (buf)
-		{
-			mlx_destroy_image(app->mlx, buf->img);
 			free(buf);
-		}
 		free(app->snake);
 		app->snake = temp;
 	}
@@ -108,9 +106,24 @@ static int	ft_freesnake(t_data *app)
 
 int	ft_freeitems(t_data *app)
 {
-	ft_freeimmutable(app);
+	t_seg	*buf;
+	t_list	*ptr;
+
 	ft_freefood(app);
 	ft_freesnake(app);
+	if (app->items.enemies)
+	{
+		while (app->items.enemies)
+		{
+			ptr = app->items.enemies->next;
+			buf = app->items.enemies->content;
+			if (buf->img)
+				mlx_destroy_image(app->mlx, buf->img);
+			free(buf);
+			free(app->items.enemies);
+			app->items.enemies = ptr;
+		}
+	}
 	if (app->items.black)
 		mlx_destroy_image(app->mlx, app->items.black);
 	return (0);
