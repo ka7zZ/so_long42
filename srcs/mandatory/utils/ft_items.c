@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_items_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_items.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:23:38 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 16:29:18 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:13:27 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../includes/so_long_bonus.h"
+# include "../../../includes/so_long.h"
 
 static void	ft_snake(t_data *app, int j, int i)
 {
@@ -76,20 +76,6 @@ static void	ft_wall(t_data *app, int j, int i)
 	ft_lstadd_back(&(app->items.wseg), ft_lstnew(wall_seg3));
 }
 
-static void	ft_enemy(t_data *app, int j, int i)
-{
-	t_seg	*enemy;
-
-	enemy = (t_seg *)malloc(sizeof(t_seg));
-	if (!enemy)
-		ft_freegame(app);
-	ft_assignimg(app, &(enemy->img), app->path.enemy);
-	enemy->x = (X_BLOCK * j) - IMG;
-	enemy->y = IMG * i;
-	ft_lstadd_back(&(app->items.enemies), ft_lstnew(enemy));
-	ft_deployimg(app, enemy->img, enemy->x, enemy->y);
-}
-
 void	ft_items(t_data *app)
 {
 	size_t	i;
@@ -112,8 +98,6 @@ void	ft_items(t_data *app)
 				ft_wall(app, j, i);
 			else if (app->map[i][j] == 'E')
 				ft_gate(app, j, i);
-			else if (app->map[i][j] == 'I')
-				ft_enemy(app, j, i);
 		}
 	}
 }

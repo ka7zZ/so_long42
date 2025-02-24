@@ -6,11 +6,11 @@
 /*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 15:21:58 by aghergut          #+#    #+#             */
-/*   Updated: 2025/02/22 18:18:31 by aghergut         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:11:29 by aghergut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../includes/so_long.h"
+#include "../../../includes/so_long_bonus.h"
 
 static int	ft_show(t_data *app)
 {
@@ -43,7 +43,6 @@ void	ft_checkgate
 	if (!food)
 	{
 		ft_changeskin(app);
-		ft_putstr_fd("wowowo show it\n", 1);
 		ft_show(app);
 		app->items.finish = 1;
 		app->s_type = 'y';
