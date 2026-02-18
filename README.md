@@ -280,24 +280,6 @@ Steps:
    ✓ Count P, E, C
    ✓ Check valid characters
    ✓ Verify rectangular shape
-5. After parsing:
-   ✓ Check wall enclosure
-   ✓ Flood-fill for path validation
-```
-
-### Path Validation (Flood-Fill)
-
-```c
-Algorithm:
-1. Create copy of map
-2. Start from player position (P)
-3. Recursively mark reachable cells:
-   - Replace '0' → 'V' (visited)
-   - Replace 'C' → 'V' (collectible found)
-   - Replace 'E' → 'V' (exit found)
-   - Stop at walls ('1')
-4. Check if all C and E were visited
-5. Free copy map
 ```
 
 ### Animation Timing
